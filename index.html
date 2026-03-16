@@ -3,45 +3,267 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mon premier site internet</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 800px;
-      margin: 50px auto;
-      padding: 0 20px;
-      background-color: #f5f5f5;
-      color: #333;
-    }
-
-    h1 {
-      color: #2c7be5;
-      border-bottom: 2px solid #2c7be5;
-      padding-bottom: 10px;
-    }
-
-    p {
-      line-height: 1.6;
-    }
-
-    footer {
-      margin-top: 40px;
-      padding: 15px 0;
-      border-top: 2px solid #2c7be5;
-      text-align: center;
-      color: #888;
-      font-size: 0.9em;
-    }
-  </style>
+  <title>WebCraft — Création de sites internet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Mon premier site internet</h1>
-  <p>Bienvenue sur mon premier site internet !</p>
-  <p>C'est le debut d'une belle aventure sur le web.</p>
-  <p>Chaque grand voyage commence par un premier pas. Me voila parti !</p>
 
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">Web<span>Craft</span></a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#process">Processus</a></li>
+      <li><a href="#tarifs">Tarifs</a></li>
+      <li><a href="#avis">Avis</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Démarrer →</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <canvas id="stars-canvas"></canvas>
+    <div class="badge">Agence web nouvelle génération</div>
+    <h1>Votre site internet,<br><em>livré en 4 jours.</em></h1>
+    <p>Des sites performants, modernes et sur-mesure pour entrepreneurs, freelances et PME qui veulent briller en ligne.</p>
+    <div class="hero-actions">
+      <a href="#tarifs" class="btn-primary">Voir les offres</a>
+      <a href="#process" class="btn-secondary">Comment ça marche</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <strong data-target="150" data-suffix="+">0</strong>
+        <span>Sites livrés</span>
+      </div>
+      <div class="stat">
+        <strong data-target="98" data-suffix="%">0</strong>
+        <span>Clients satisfaits</span>
+      </div>
+      <div class="stat">
+        <strong data-target="7" data-suffix=" j">0</strong>
+        <span>Délai moyen</span>
+      </div>
+      <div class="stat">
+        <strong>24/7</strong>
+        <span>Support inclus</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOGOS -->
+  <div class="logos">
+    <p>Ils nous font confiance</p>
+    <div class="logos-track">
+      <span class="logo-item">Artisan+</span>
+      <span class="logo-item">Studio Nova</span>
+      <span class="logo-item">Café Bloom</span>
+      <span class="logo-item">LexAvocats</span>
+      <span class="logo-item">FitPro</span>
+      <span class="logo-item">ImmoParis</span>
+      <!-- dupliqué pour boucle infinie -->
+      <span class="logo-item">Artisan+</span>
+      <span class="logo-item">Studio Nova</span>
+      <span class="logo-item">Café Bloom</span>
+      <span class="logo-item">LexAvocats</span>
+      <span class="logo-item">FitPro</span>
+      <span class="logo-item">ImmoParis</span>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="container">
+      <div class="section-label reveal">Services</div>
+      <h2 class="section-title reveal">Tout ce dont vous avez<br>besoin pour exister en ligne</h2>
+      <p class="section-sub reveal">De la vitrine simple au e-commerce complet, on s'occupe de tout.</p>
+      <div class="services-grid">
+        <div class="service-card reveal">
+          <div class="service-icon">🌐</div>
+          <h3>Site Vitrine</h3>
+          <p>Un site élégant et professionnel pour présenter votre activité, rassurer vos visiteurs et générer des contacts.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">🛒</div>
+          <h3>E-commerce</h3>
+          <p>Vendez vos produits ou services en ligne avec une boutique optimisée pour la conversion et la performance.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">📱</div>
+          <h3>Design Responsive</h3>
+          <p>Chaque site est parfait sur mobile, tablette et ordinateur. Votre image est soignée sur tous les écrans.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">🔍</div>
+          <h3>SEO & Référencement</h3>
+          <p>Vos pages sont optimisées dès le départ pour apparaître dans Google et attirer des visiteurs qualifiés.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">⚡</div>
+          <h3>Performance</h3>
+          <p>Sites ultra-rapides, score Lighthouse &gt;90, hébergement premium. Vos clients n'attendent jamais.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">🛠️</div>
+          <h3>Maintenance</h3>
+          <p>Mises à jour, sauvegardes et support réactif inclus. Vous vous concentrez sur votre business.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process" class="process">
+    <div class="container">
+      <div class="section-label reveal">Processus</div>
+      <h2 class="section-title reveal">De zéro à en ligne<br>en 4 étapes simples</h2>
+      <p class="section-sub reveal">Un processus clair et sans surprise, du premier échange à la mise en ligne.</p>
+      <div class="process-steps">
+        <div class="step reveal">
+          <div class="step-num">1</div>
+          <h3>Échange initial</h3>
+          <p>On discute de votre projet, vos objectifs et votre cible lors d'un appel de 30 min gratuit.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">2</div>
+          <h3>Maquette & Design</h3>
+          <p>On vous présente une maquette complète sous 48h. Vous validez avant qu'on développe.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">3</div>
+          <h3>Développement</h3>
+          <p>On code votre site avec les dernières technologies. Vous suivez l'avancement en temps réel.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">4</div>
+          <h3>Mise en ligne</h3>
+          <p>Votre site est publié, testé et optimisé. On vous forme à l'administration en 1h.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="tarifs">
+    <div class="container">
+      <div class="section-label reveal">Tarifs</div>
+      <h2 class="section-title reveal">Des prix clairs,<br>sans mauvaise surprise</h2>
+      <p class="section-sub reveal">Choisissez la formule qui correspond à vos besoins. Pas d'abonnement caché.</p>
+      <div class="pricing-grid">
+        <div class="pricing-card reveal">
+          <div class="plan-name">Essentiel</div>
+          <div class="plan-price"><sup>€</sup>990</div>
+          <div class="plan-desc">Idéal pour démarrer avec une présence professionnelle.</div>
+          <ul class="plan-features">
+            <li>Site vitrine 3 pages</li>
+            <li>Design personnalisé</li>
+            <li>Responsive mobile</li>
+            <li>Formulaire de contact</li>
+            <li>SEO de base</li>
+            <li>Livraison en 5 jours</li>
+          </ul>
+          <a href="#contact" class="btn-plan btn-plan-outline">Commencer →</a>
+        </div>
+        <div class="pricing-card featured reveal">
+          <div class="plan-name">Pro</div>
+          <div class="plan-price"><sup>€</sup>1690</div>
+          <div class="plan-desc">Pour les professionnels qui veulent se démarquer vraiment.</div>
+          <ul class="plan-features">
+            <li>Site jusqu'à 8 pages</li>
+            <li>Design premium sur-mesure</li>
+            <li>Blog intégré</li>
+            <li>SEO avancé</li>
+            <li>Google Analytics</li>
+            <li>3 mois de maintenance</li>
+            <li>Livraison en 7 jours</li>
+          </ul>
+          <a href="#contact" class="btn-plan btn-plan-filled">Commencer →</a>
+        </div>
+        <div class="pricing-card reveal">
+          <div class="plan-name">E-commerce</div>
+          <div class="plan-price"><sup>€</sup>3090</div>
+          <div class="plan-desc">Une boutique complète pour vendre en ligne dès demain.</div>
+          <ul class="plan-features">
+            <li>Boutique illimitée</li>
+            <li>Paiement en ligne sécurisé</li>
+            <li>Gestion des stocks</li>
+            <li>Emails automatiques</li>
+            <li>SEO e-commerce</li>
+            <li>6 mois de maintenance</li>
+            <li>Formation incluse</li>
+          </ul>
+          <a href="#contact" class="btn-plan btn-plan-outline">Commencer →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="avis" class="testimonials">
+    <div class="container">
+      <div class="section-label reveal">Avis clients</div>
+      <h2 class="section-title reveal">Ils ont sauté le pas.<br>Voici ce qu'ils en pensent.</h2>
+      <div class="testimonials-grid">
+        <div class="testimonial-card reveal">
+          <div class="stars">★★★★★</div>
+          <blockquote>"Livraison en 6 jours, site magnifique, et mes clients me font régulièrement des compliments. Meilleur investissement de l'année."</blockquote>
+          <div class="testimonial-author">
+            <div class="avatar">SM</div>
+            <div class="author-info">
+              <strong>Sophie M.</strong>
+              <span>Coach bien-être</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card reveal">
+          <div class="stars">★★★★★</div>
+          <blockquote>"J'avais peur que ce soit compliqué. Tout s'est passé sans accroc, ils ont su exactement ce dont j'avais besoin. Je recommande à 100%."</blockquote>
+          <div class="testimonial-author">
+            <div class="avatar">TL</div>
+            <div class="author-info">
+              <strong>Thomas L.</strong>
+              <span>Artisan menuisier</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card reveal">
+          <div class="stars">★★★★★</div>
+          <blockquote>"Notre boutique en ligne a généré 3 000€ de chiffre d'affaires le premier mois. L'investissement a été rentabilisé en quelques semaines."</blockquote>
+          <div class="testimonial-author">
+            <div class="avatar">AC</div>
+            <div class="author-info">
+              <strong>Amandine C.</strong>
+              <span>Créatrice de bijoux</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="contact" class="cta-section">
+    <canvas id="stars-canvas-cta"></canvas>
+    <div class="container">
+      <h2 class="reveal">Prêt à lancer<br><span class="cta-gradient">votre site ?</span></h2>
+      <p class="reveal">Réservez votre appel découverte gratuit de 30 minutes. On vous répond sous 24h.</p>
+      <a href="mailto:contact@webcraft.fr" class="btn-primary reveal">Prendre rendez-vous →</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
   <footer>
-    <p>&copy; 2026 Mon premier site internet. Tous droits réservés.</p>
+    <a href="#" class="footer-logo">Web<span>Craft</span></a>
+    <p>© 2026 WebCraft. Tous droits réservés.</p>
+    <ul class="footer-links">
+      <li><a href="#">Mentions légales</a></li>
+      <li><a href="#">Confidentialité</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
   </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>

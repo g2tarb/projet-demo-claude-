@@ -1,0 +1,11 @@
+{
+    "language": "french",
+    "permissions": {
+    "allow": [
+      "Bash(git remote:*)",
+      "Bash(git push:*)",
+      "Bash(gh auth:*)"
+    ],
+    "deny": ["bash(sudo:*)"]
+  }
+}
