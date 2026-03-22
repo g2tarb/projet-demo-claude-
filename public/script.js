@@ -125,6 +125,10 @@
     if (typeof THREE === 'undefined') return;
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+    // Détection appareil bas de gamme (< 4 cœurs ou mobile)
+    const isMobile  = matchMedia('(max-width: 768px)').matches;
+    const isLowEnd  = (navigator.hardwareConcurrency || 4) <= 2 || isMobile;
+
     const canvas = document.createElement('canvas');
     canvas.id = 'three-bg';
     canvas.style.cssText = `
@@ -136,13 +140,13 @@
 
     const scene    = new THREE.Scene();
     const camera   = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 2000);
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false });
-    renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false, powerPreference: 'low-power' });
+    renderer.setPixelRatio(1); // toujours 1 — le plus gros gain de perf
     renderer.setSize(innerWidth, innerHeight);
     camera.position.z = 380;
 
     // ── STAR FIELD ──────────────────────────────────────
-    const starCount = innerWidth < 768 ? 800 : 2200;
+    const starCount = isLowEnd ? 400 : 1200;
     const sGeo = new THREE.BufferGeometry();
     const sPos = new Float32Array(starCount * 3);
     for (let i = 0; i < starCount; i++) {
@@ -152,12 +156,12 @@
     }
     sGeo.setAttribute('position', new THREE.BufferAttribute(sPos, 3));
     const starPts = new THREE.Points(sGeo, new THREE.PointsMaterial({
-      color: 0xffffff, size: 1.0, transparent: true, opacity: 0.55, sizeAttenuation: true,
+      color: 0xffffff, size: 1.0, transparent: true, opacity: 0.5, sizeAttenuation: true,
     }));
     scene.add(starPts);
 
-    // ── BRAND NEBULA (orange + purple + amber) ─────────
-    const nebCount = innerWidth < 768 ? 250 : 700;
+    // ── BRAND NEBULA ────────────────────────────────────
+    const nebCount = isLowEnd ? 120 : 400;
     const nGeo = new THREE.BufferGeometry();
     const nPos = new Float32Array(nebCount * 3);
     const nCol = new Float32Array(nebCount * 3);
@@ -185,7 +189,7 @@
     scene.add(nebula);
 
     // ── NEURAL NODES ────────────────────────────────────
-    const nCount = innerWidth < 768 ? 50 : 110;
+    const nCount = isLowEnd ? 30 : 60; // réduit : 110→60/30
     const nodeGeo = new THREE.BufferGeometry();
     const nodePos = new Float32Array(nCount * 3);
     const nodeVel = [];
@@ -207,32 +211,37 @@
     const nodes = new THREE.Points(nodeGeo, nodeMat);
     scene.add(nodes);
 
-    // ── CONNECTIONS ──────────────────────────────────────
-    const lineGroup = new THREE.Group();
-    scene.add(lineGroup);
+    // ── CONNECTIONS (buffer réutilisé — zéro allocation) ─
+    const MAX_LINES = nCount * nCount; // max théorique
+    const linePosArr = new Float32Array(MAX_LINES * 6); // 2 points × xyz
+    const lineGeo = new THREE.BufferGeometry();
+    lineGeo.setAttribute('position', new THREE.BufferAttribute(linePosArr, 3));
+    const lineMat = new THREE.LineSegments(lineGeo, new THREE.LineBasicMaterial({
+      color: 0xf2b13b, transparent: true, opacity: 0.12,
+      blending: THREE.AdditiveBlending, depthWrite: false,
+    }));
+    scene.add(lineMat);
     const maxDist = 155;
 
     function rebuildLines() {
-      while (lineGroup.children.length) lineGroup.remove(lineGroup.children[0]);
       const pos = nodeGeo.attributes.position.array;
+      let count = 0;
       for (let i = 0; i < nCount; i++) {
         for (let j = i + 1; j < nCount; j++) {
           const ax=pos[i*3],ay=pos[i*3+1],az=pos[i*3+2];
           const bx=pos[j*3],by=pos[j*3+1],bz=pos[j*3+2];
-          const d = Math.sqrt((ax-bx)**2+(ay-by)**2+(az-bz)**2);
-          if (d < maxDist) {
-            const alpha = (1 - d/maxDist) * 0.22;
-            const g = new THREE.BufferGeometry().setFromPoints([
-              new THREE.Vector3(ax,ay,az),
-              new THREE.Vector3(bx,by,bz),
-            ]);
-            lineGroup.add(new THREE.Line(g, new THREE.LineBasicMaterial({
-              color: 0xDA5426, transparent: true, opacity: alpha,
-              blending: THREE.AdditiveBlending, depthWrite: false,
-            })));
+          const dx=ax-bx, dy=ay-by, dz=az-bz;
+          const d2 = dx*dx + dy*dy + dz*dz;
+          if (d2 < maxDist * maxDist) {
+            const base = count * 6;
+            linePosArr[base]   = ax; linePosArr[base+1] = ay; linePosArr[base+2] = az;
+            linePosArr[base+3] = bx; linePosArr[base+4] = by; linePosArr[base+5] = bz;
+            count++;
           }
         }
       }
+      lineGeo.setDrawRange(0, count * 2);
+      lineGeo.attributes.position.needsUpdate = true;
     }
 
     // ── MOUSE PARALLAX ───────────────────────────────────
@@ -248,12 +257,28 @@
       renderer.setSize(innerWidth, innerHeight);
     }, { passive: true });
 
+    // ── PAUSE QUAND ONGLET CACHÉ ─────────────────────────
+    let paused = false;
+    document.addEventListener('visibilitychange', () => {
+      paused = document.hidden;
+      if (!paused) raf(animate);
+    });
+
+    // ── FPS CAP à 30 ─────────────────────────────────────
+    const FPS_INTERVAL = 1000 / 30;
+    let lastTime = 0;
     let frame = 0, lineTimer = 0;
 
-    function animate() {
+    function animate(now = 0) {
+      if (paused) return;
       raf(animate);
+
+      const elapsed = now - lastTime;
+      if (elapsed < FPS_INTERVAL) return; // saute la frame si trop tôt
+      lastTime = now - (elapsed % FPS_INTERVAL);
+
       frame++;
-      const t = frame * 0.003;
+      const t = frame * 0.006; // ×2 car 30fps au lieu de 60
 
       // Animate nodes
       const pos = nodeGeo.attributes.position.array;
@@ -267,7 +292,8 @@
       }
       nodeGeo.attributes.position.needsUpdate = true;
 
-      if (++lineTimer % 5 === 0) rebuildLines();
+      // Rebuild lines toutes les 20 frames (au lieu de 5)
+      if (++lineTimer % 20 === 0) rebuildLines();
 
       // Rotations
       starPts.rotation.y  = t * 0.035;
@@ -285,10 +311,19 @@
       nebMat.opacity  = 0.22 + Math.sin(t * 0.9) * 0.08;
       nodeMat.opacity = 0.55 + Math.sin(t * 1.3) * 0.2;
 
+      // Color cycling — orange → amber → purple → orange
+      const cycle  = (Math.sin(t * 0.4) + 1) / 2;
+      const phase2 = (Math.sin(t * 0.4 - Math.PI * 2/3) + 1) / 2;
+      const r = 0xDA/255 * (1 - phase2) + 0xf2/255 * phase2 * (1 - cycle) + 0x88/255 * cycle;
+      const g = 0x54/255 * (1 - phase2) + 0xb1/255 * phase2 * (1 - cycle) + 0x40/255 * cycle;
+      const b = 0x26/255 * (1 - phase2) + 0x3b/255 * phase2 * (1 - cycle) + 0x83/255 * cycle;
+      nodeMat.color.setRGB(r, g, b);
+      lineMat.material.color.setRGB(r, g, b);
+
       renderer.render(scene, camera);
     }
 
-    animate();
+    raf(animate);
     setTimeout(() => { canvas.style.opacity = '1'; }, 400);
   }
 
@@ -390,40 +425,35 @@
     });
   }
 
-  /* ── 12. SOCIAL PROOF TOASTS ──────────────────────────── */
+  /* ── 12. SOCIAL PROOF TOASTS (chargés depuis l'API) ───── */
   function initToasts() {
     if (matchMedia('(max-width: 768px)').matches) return;
     const container = $('#toast-container');
     if (!container) return;
 
-    const data = [
-      { emoji: '🇫🇷', name: 'Marie L. vient de commander', detail: 'Site vitrine professionnel', time: 'il y a 2 min' },
-      { emoji: '⭐', name: 'Thomas B. signe son contrat', detail: 'Refonte complète e-commerce', time: 'il y a 9 min' },
-      { emoji: '🚀', name: 'Sophie R. donne 5 étoiles', detail: '"Résultat incroyable, merci !"', time: 'il y a 15 min' },
-      { emoji: '💼', name: 'Karim D. réserve une démo', detail: 'Application web sur-mesure', time: 'il y a 24 min' },
-      { emoji: '📈', name: 'Julie M. — +340% de conv.', detail: 'Site Pro + SEO avancé', time: 'il y a 1h' },
-      { emoji: '🎯', name: 'Amandine C. — 3 000€/mois', detail: 'Boutique e-commerce lancée', time: 'il y a 2h' },
-    ];
-    let idx = 0;
-
-    function show() {
-      const d = data[idx++ % data.length];
-      const t = document.createElement('div');
-      t.className = 'toast';
-      t.innerHTML = `
-        <div class="toast-av">${d.emoji}</div>
-        <div class="toast-body">
-          <div class="toast-name">${d.name}</div>
-          <div class="toast-detail">${d.detail}</div>
-        </div>
-        <div class="toast-time">${d.time}</div>
-      `;
-      container.appendChild(t);
-      raf(() => raf(() => t.classList.add('show')));
-      setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 500); }, 5500);
-    }
-
-    setTimeout(() => { show(); setInterval(show, 9000); }, 5000);
+    fetch('/api/toasts')
+      .then(r => r.json())
+      .then(data => {
+        let idx = 0;
+        function show() {
+          const d = data[idx++ % data.length];
+          const t = document.createElement('div');
+          t.className = 'toast';
+          t.innerHTML = `
+            <div class="toast-av">${d.emoji}</div>
+            <div class="toast-body">
+              <div class="toast-name">${d.name}</div>
+              <div class="toast-detail">${d.detail}</div>
+            </div>
+            <div class="toast-time">${d.time}</div>
+          `;
+          container.appendChild(t);
+          raf(() => raf(() => t.classList.add('show')));
+          setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 500); }, 5500);
+        }
+        setTimeout(() => { show(); setInterval(show, 9000); }, 5000);
+      })
+      .catch(() => {}); // silencieux si pas de serveur
   }
 
   /* ── 13. FAQ ACCORDION ────────────────────────────────── */
