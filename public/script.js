@@ -518,8 +518,108 @@
     // Three.js after THREE is loaded
     setTimeout(initThreeUniverse, 300);
 
+    // Formulaire Node.js
+    initContactForm();
+
     console.log('%c4DAYVELOPMENT', 'color:#f2b13b;font-size:22px;font-weight:900;font-family:Syne,sans-serif;');
     console.log('%cMasterclass 2026 · Maximum Conversion', 'color:#DA5426;font-size:12px;');
+  }
+
+  /* ── FORMULAIRE CONTACT → API Node.js ────────────────── */
+  function initContactForm() {
+    const form     = $('#contact-form');
+    if (!form) return;
+
+    const btnText   = $('#btn-text');
+    const btnLoader = $('#btn-loader');
+    const btnSubmit = $('#btn-submit');
+    const feedback  = $('#form-feedback');
+
+    // Budget chips
+    $$('.budget-chip').forEach(chip => {
+      on(chip, 'click', () => {
+        $$('.budget-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        $('#f-budget').value = chip.dataset.value;
+      });
+    });
+
+    // Validation temps réel
+    function validateField(input) {
+      const err = document.getElementById('err-' + input.name);
+      if (!err) return true;
+      if (input.required && !input.value.trim()) {
+        input.classList.add('error');
+        err.textContent = 'Ce champ est requis.';
+        return false;
+      }
+      if (input.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)) {
+        input.classList.add('error');
+        err.textContent = 'Email invalide.';
+        return false;
+      }
+      input.classList.remove('error');
+      err.textContent = '';
+      return true;
+    }
+
+    ['f-name','f-email','f-message'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) on(el, 'blur', () => validateField(el));
+      if (el) on(el, 'input', () => { if (el.classList.contains('error')) validateField(el); });
+    });
+
+    // Soumission
+    on(form, 'submit', async (e) => {
+      e.preventDefault();
+
+      // Validate all required fields
+      const fields = ['f-name','f-email','f-message'].map(id => document.getElementById(id));
+      const valid = fields.every(f => validateField(f));
+      if (!valid) return;
+
+      // Loading state
+      btnSubmit.disabled = true;
+      btnText.hidden     = true;
+      btnLoader.hidden   = false;
+      feedback.className = 'form-feedback';
+      feedback.textContent = '';
+
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name:    $('#f-name').value.trim(),
+            email:   $('#f-email').value.trim(),
+            phone:   $('#f-phone').value.trim(),
+            service: $('#f-service').value,
+            budget:  $('#f-budget').value,
+            message: $('#f-message').value.trim(),
+          }),
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          feedback.className   = 'form-feedback success visible';
+          feedback.textContent = '✅ ' + data.message;
+          form.reset();
+          $$('.budget-chip').forEach(c => c.classList.remove('active'));
+        } else {
+          const msg = data.errors ? data.errors.join(' ') : data.message;
+          feedback.className   = 'form-feedback error visible';
+          feedback.textContent = '❌ ' + msg;
+        }
+      } catch (err) {
+        feedback.className   = 'form-feedback error visible';
+        feedback.textContent = '❌ Erreur réseau. Vérifiez votre connexion et réessayez.';
+      } finally {
+        btnSubmit.disabled = false;
+        btnText.hidden     = false;
+        btnLoader.hidden   = true;
+      }
+    });
   }
 
   if (document.readyState === 'loading') {
