@@ -759,6 +759,7 @@ section { padding: 100px 24px; }
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 800;
   letter-spacing: -1px;
+  white-space: nowrap;
   line-height: 1.1;
   margin-bottom: 8px;
 }
@@ -2173,7 +2174,7 @@ footer {
 
   /* ─ Results 2×2 → 1×4 ─ */
   .results-inner { grid-template-columns: 1fr; }
-  .result-item { padding: 20px 20px; text-align: left; }
+  .result-item { padding: 20px 20px; text-align: center; }
   .result-num { font-size: 1.8rem; }
 
   /* ─ Process ─ */

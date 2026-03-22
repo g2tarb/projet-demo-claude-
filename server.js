@@ -9,25 +9,32 @@ const express    = require('express');
 const nodemailer = require('nodemailer');
 const cors       = require('cors');
 const rateLimit  = require('express-rate-limit');
+const helmet     = require('helmet');
 const path       = require('path');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
-/* ── Middlewares ──────────────────────────────────────── */
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+/* ── Sécurité HTTP (headers) ──────────────────────────── */
+app.use(helmet({
+  contentSecurityPolicy: false, // désactivé car on charge Three.js CDN
+}));
 
-// CORS
+/* ── Middlewares ──────────────────────────────────────── */
+app.use(express.json({ limit: '50kb' }));
+app.use(express.urlencoded({ extended: true, limit: '50kb' }));
+
+// CORS — restreint à l'origine définie en .env
+const allowedOrigin = process.env.ALLOWED_ORIGIN;
 app.use(cors({
-  origin: process.env.ALLOWED_ORIGIN || '*',
+  origin: allowedOrigin || false,
   methods: ['GET', 'POST'],
 }));
 
 // Servir les fichiers statiques depuis /public
 app.use(express.static(path.join(__dirname, 'public')));
 
-/* ── Rate limiting (anti-spam formulaire) ─────────────── */
+/* ── Rate limiting ────────────────────────────────────── */
 const contactLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 5,                    // 5 envois max par IP
@@ -35,6 +42,13 @@ const contactLimiter = rateLimit({
     success: false,
     message: 'Trop de tentatives. Réessayez dans 15 minutes.',
   },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const apiLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 60,             // 60 requêtes max par IP
   standardHeaders: true,
   legacyHeaders: false,
 });
@@ -140,7 +154,8 @@ function escapeHtml(str) {
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -209,8 +224,7 @@ app.post('/api/contact', contactLimiter, async (req, res) => {
 });
 
 /* ── GET /api/stats ───────────────────────────────────── */
-// Compteurs dynamiques (peut être connecté à une vraie BDD plus tard)
-app.get('/api/stats', (req, res) => {
+app.get('/api/stats', apiLimiter, (req, res) => {
   res.json({
     sites:       152,
     satisfaction: 98,
@@ -222,16 +236,15 @@ app.get('/api/stats', (req, res) => {
 });
 
 /* ── GET /api/toasts ──────────────────────────────────── */
-// Notifications social proof servies depuis le serveur
-app.get('/api/toasts', (req, res) => {
+app.get('/api/toasts', apiLimiter, (req, res) => {
   const toasts = [
-    { emoji: '🇫🇷', name: 'Marie L. vient de commander',  detail: 'Site vitrine professionnel',    time: 'il y a 2 min'  },
-    { emoji: '⭐', name: 'Thomas B. signe son contrat',   detail: 'Refonte complète e-commerce',   time: 'il y a 9 min'  },
-    { emoji: '🚀', name: 'Sophie R. donne 5 étoiles',     detail: '"Résultat incroyable, merci !"', time: 'il y a 15 min' },
-    { emoji: '💼', name: 'Karim D. réserve une démo',     detail: 'Application web sur-mesure',    time: 'il y a 24 min' },
-    { emoji: '📈', name: 'Julie M. — +340% de conv.',     detail: 'Site Pro + SEO avancé',         time: 'il y a 1h'     },
-    { emoji: '🎯', name: 'Amandine C. — 3 000€/mois',     detail: 'Boutique e-commerce lancée',    time: 'il y a 2h'     },
-    { emoji: '🇧🇪', name: 'Lucas V. démarre son projet',   detail: 'Site vitrine + blog',           time: 'il y a 3h'     },
+    { emoji: '🇫🇷', name: 'Marie L. vient de commander',  detail: 'Site vitrine professionnel',    time: 'au cours du mois' },
+    { emoji: '⭐', name: 'Thomas B. signe son contrat',   detail: 'Refonte complète e-commerce',   time: 'au cours du mois' },
+    { emoji: '🚀', name: 'Sophie R. donne 5 étoiles',     detail: '"Résultat incroyable, merci !"', time: 'au cours du mois' },
+    { emoji: '💼', name: 'Karim D. réserve une démo',     detail: 'Application web sur-mesure',    time: 'au cours du mois' },
+    { emoji: '📈', name: 'Julie M. — +340% de conv.',     detail: 'Site Pro + SEO avancé',         time: 'au cours du mois' },
+    { emoji: '🎯', name: 'Amandine C. — 3 000€/mois',     detail: 'Boutique e-commerce lancée',    time: 'au cours du mois' },
+    { emoji: '🇧🇪', name: 'Lucas V. démarre son projet',   detail: 'Site vitrine + blog',           time: 'au cours du mois' },
   ];
   res.json(toasts);
 });
