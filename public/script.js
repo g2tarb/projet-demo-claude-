@@ -465,9 +465,7 @@
     $$('.faq-item').forEach(item => {
       const btn = $('.faq-question', item);
       on(btn, 'click', () => {
-        const isOpen = item.classList.contains('open');
-        $$('.faq-item.open').forEach(o => o.classList.remove('open'));
-        if (!isOpen) item.classList.add('open');
+        item.classList.toggle('open');
       });
     });
   }
