@@ -311,14 +311,18 @@
       nebMat.opacity  = 0.22 + Math.sin(t * 0.9) * 0.08;
       nodeMat.opacity = 0.55 + Math.sin(t * 1.3) * 0.2;
 
-      // Color cycling — orange → amber → purple → orange
-      const cycle  = (Math.sin(t * 0.4) + 1) / 2;
-      const phase2 = (Math.sin(t * 0.4 - Math.PI * 2/3) + 1) / 2;
-      const r = 0xDA/255 * (1 - phase2) + 0xf2/255 * phase2 * (1 - cycle) + 0x88/255 * cycle;
-      const g = 0x54/255 * (1 - phase2) + 0xb1/255 * phase2 * (1 - cycle) + 0x40/255 * cycle;
-      const b = 0x26/255 * (1 - phase2) + 0x3b/255 * phase2 * (1 - cycle) + 0x83/255 * cycle;
-      nodeMat.color.setRGB(r, g, b);
-      lineMat.material.color.setRGB(r, g, b);
+      // Color cycling — orange → violet → jaune → orange
+      // 3 couleurs : orange #DA5426 | violet #7B2FBE | jaune #FFD700
+      const p = (t * 0.25) % (Math.PI * 2);
+      const w1 = Math.max(0, Math.cos(p));               // orange
+      const w2 = Math.max(0, Math.cos(p - Math.PI * 2/3)); // violet
+      const w3 = Math.max(0, Math.cos(p - Math.PI * 4/3)); // jaune
+      const total = w1 + w2 + w3 || 1;
+      const cr = (0xDA/255 * w1 + 0x7B/255 * w2 + 0xFF/255 * w3) / total;
+      const cg = (0x54/255 * w1 + 0x2F/255 * w2 + 0xD7/255 * w3) / total;
+      const cb = (0x26/255 * w1 + 0xBE/255 * w2 + 0x00/255 * w3) / total;
+      nodeMat.color.setRGB(cr, cg, cb);
+      lineMat.material.color.setRGB(cr, cg, cb);
 
       renderer.render(scene, camera);
     }
@@ -571,6 +575,9 @@
         $$('.budget-chip').forEach(c => c.classList.remove('active'));
         chip.classList.add('active');
         $('#f-budget').value = chip.dataset.value;
+        if (chip.dataset.value === '5 000€ et plus') {
+          window.location.href = '/lead.html';
+        }
       });
     });
 
