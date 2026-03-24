@@ -216,7 +216,7 @@
           <div class="maintenance-offer">
             <div class="maintenance-price">
               <span class="mo-amount">80€</span>
-              <span class="mo-per">/mois</span>
+              <span class="mo-per" data-i18n="mo-per">/mois</span>
             </div>
             <div class="mo-detail" data-i18n="maint-detail">Engagement 12 mois · Sans surprise</div>
             <a href="#contact" class="mo-cta" data-i18n="maint-cta">Souscrire →</a>
@@ -324,7 +324,7 @@
             <div class="plan-paiement">ou 3× 330€</div>
           </div>
           <div class="plan-desc" data-i18n="plan1-desc">Idéal pour démarrer avec une présence professionnelle qui rassure et convertit.</div>
-          <ul class="plan-features">
+          <ul class="plan-features" data-i18n="plan1-features">
             <li>Site vitrine 3 pages</li>
             <li>Design personnalisé</li>
             <li>Responsive mobile</li>
@@ -344,7 +344,7 @@
             <div class="plan-paiement">ou 3× 564€</div>
           </div>
           <div class="plan-desc" data-i18n="plan2-desc">Pour les professionnels qui veulent se démarquer et générer des leads qualifiés.</div>
-          <ul class="plan-features">
+          <ul class="plan-features" data-i18n="plan2-features">
             <li>Site jusqu'à 8 pages</li>
             <li>Design premium sur-mesure</li>
             <li>Blog intégré</li>
@@ -364,7 +364,7 @@
             <div class="plan-paiement">ou 3× 1 030€</div>
           </div>
           <div class="plan-desc" data-i18n="plan3-desc">Une boutique complète pour vendre en ligne et rentabiliser en quelques semaines.</div>
-          <ul class="plan-features">
+          <ul class="plan-features" data-i18n="plan3-features">
             <li>Boutique produits illimitée</li>
             <li>Paiement en ligne sécurisé</li>
             <li>Gestion des stocks</li>
@@ -374,7 +374,7 @@
             <li>Formation 2h incluse</li>
             <li>⚡ Livraison en 4 jours*</li>
           </ul>
-          <p style="font-size:11px;color:#444;margin-top:12px;line-height:1.5;">* Délai indicatif à partir de 4 jours. Selon la complexité du projet, le délai peut être ajusté lors du brief.</p>
+          <p style="font-size:11px;color:#444;margin-top:12px;line-height:1.5;" data-i18n="plan3-note">* Délai indicatif à partir de 4 jours. Selon la complexité du projet, le délai peut être ajusté lors du brief.</p>
           <a href="#contact" class="btn-plan btn-plan-outline magnetic" data-i18n="plan-cta3">Commencer →</a>
         </div>
 
@@ -406,7 +406,7 @@
   <section id="avis" class="testimonials">
     <div class="container">
       <div class="section-header">
-        <div class="section-label reveal">Avis clients</div>
+        <div class="section-label reveal" data-i18n="avis-label">Avis clients</div>
         <h2 class="section-title reveal" data-i18n="avis-title">Ils ont sauté le pas.<br><em class="gradient-text">Voici ce qu'ils en pensent.</em></h2>
       </div>
 
@@ -658,7 +658,8 @@
             <div class="form-group">
               <label for="f-message" data-i18n="form-message">Décrivez votre projet *</label>
               <textarea id="f-message" name="message" rows="5"
-                placeholder="Parlez-nous de votre activité, vos objectifs, votre cible, vos délais..." required></textarea>
+                placeholder="Parlez-nous de votre activité, vos objectifs, votre cible, vos délais..."
+                data-i18n-ph="form-message-ph" required></textarea>
               <span class="form-error" id="err-message"></span>
             </div>
 
@@ -670,7 +671,7 @@
                 <svg class="spin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18">
                   <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
                 </svg>
-                Envoi en cours...
+                <span data-i18n="form-sending">Envoi en cours...</span>
               </span>
             </button>
 
@@ -698,40 +699,40 @@
       </div>
 
       <div class="footer-links-group">
-        <h4>Services</h4>
+        <h4 data-i18n="footer-srv-h">Services</h4>
         <ul>
-          <li><a href="#services">Site Vitrine</a></li>
-          <li><a href="#services">E-commerce</a></li>
-          <li><a href="#services">SEO & Référencement</a></li>
-          <li><a href="#services">Maintenance</a></li>
+          <li><a href="#services" data-i18n="footer-srv-1">Site Vitrine</a></li>
+          <li><a href="#services" data-i18n="footer-srv-2">E-commerce</a></li>
+          <li><a href="#services" data-i18n="footer-srv-3">SEO & Référencement</a></li>
+          <li><a href="#services" data-i18n="footer-srv-4">Maintenance</a></li>
         </ul>
       </div>
 
       <div class="footer-links-group">
-        <h4>Agence</h4>
+        <h4 data-i18n="footer-agen-h">Agence</h4>
         <ul>
-          <li><a href="#process">Notre Processus</a></li>
-          <li><a href="#tarifs">Tarifs</a></li>
-          <li><a href="#avis">Avis clients</a></li>
-          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#process" data-i18n="footer-agen-1">Notre Processus</a></li>
+          <li><a href="#tarifs" data-i18n="footer-agen-2">Tarifs</a></li>
+          <li><a href="#avis" data-i18n="footer-agen-3">Avis clients</a></li>
+          <li><a href="#faq" data-i18n="footer-agen-4">FAQ</a></li>
         </ul>
       </div>
 
       <div class="footer-links-group">
-        <h4>Contact</h4>
+        <h4 data-i18n="footer-cont-h">Contact</h4>
         <ul>
-          <li><a href="#contact">Prendre RDV</a></li>
+          <li><a href="#contact" data-i18n="footer-cont-1">Prendre RDV</a></li>
           <li><a href="mailto:contact@4dayvelopment.fr">contact@4dayvelopment.fr</a></li>
         </ul>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <p>© 2026 4dayvelopment. Tous droits réservés.</p>
+      <p data-i18n="footer-copy">© 2026 4dayvelopment. Tous droits réservés.</p>
       <ul class="footer-legal">
-        <li><a href="#">Mentions légales</a></li>
-        <li><a href="#">Confidentialité</a></li>
-        <li><a href="#">CGV</a></li>
+        <li><a href="#" data-i18n="footer-legal-1">Mentions légales</a></li>
+        <li><a href="#" data-i18n="footer-legal-2">Confidentialité</a></li>
+        <li><a href="#" data-i18n="footer-legal-3">CGV</a></li>
       </ul>
     </div>
   </footer>
@@ -740,7 +741,7 @@
   <div id="floating-cta">
     <div class="fcta-menu" id="fcta-menu">
       <div class="fcta-item" onclick="window.location.href='#contact'">
-        <span class="fcta-label">Réserver un appel</span>
+        <span class="fcta-label" data-i18n="fcta-call">Réserver un appel</span>
         <div class="fcta-icon fcta-cal">📅</div>
       </div>
       <div class="fcta-item" onclick="window.open('https://wa.me/33600000000','_blank')">
@@ -761,12 +762,12 @@
     <div id="exit-backdrop"></div>
     <div id="exit-modal">
       <div class="exit-emoji">🚀</div>
-      <div class="exit-title">Attendez !<br>Un audit <span class="gradient-text">gratuit</span> vous attend.</div>
-      <p class="exit-desc">Avant de partir, recevez une analyse gratuite de votre présence digitale — sans engagement.</p>
-      <a href="#contact" class="exit-cta" onclick="document.getElementById('exit-overlay').classList.remove('show')">
+      <div class="exit-title" data-i18n="exit-title">Attendez !<br>Un audit <span class="gradient-text">gratuit</span> vous attend.</div>
+      <p class="exit-desc" data-i18n="exit-desc">Avant de partir, recevez une analyse gratuite de votre présence digitale — sans engagement.</p>
+      <a href="#contact" class="exit-cta" data-i18n="exit-cta" onclick="document.getElementById('exit-overlay').classList.remove('show')">
         🎯 Obtenir mon audit gratuit
       </a>
-      <button class="exit-close" onclick="document.getElementById('exit-overlay').classList.remove('show')">
+      <button class="exit-close" data-i18n="exit-close" onclick="document.getElementById('exit-overlay').classList.remove('show')">
         Non merci, je peux me débrouiller seul
       </button>
     </div>
