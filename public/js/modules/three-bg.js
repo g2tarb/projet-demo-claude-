@@ -1,6 +1,14 @@
 /* ── Three.js Universe Background ── */
 import { on, raf } from './utils.js';
 
+function debounce(fn, delay) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), delay);
+  };
+}
+
 export function initThreeUniverse() {
   if (typeof THREE === 'undefined') return;
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -129,11 +137,11 @@ export function initThreeUniverse() {
     mouseY = (e.clientY / innerHeight - 0.5) * 2;
   });
 
-  on(window, 'resize', () => {
+  on(window, 'resize', debounce(() => {
     camera.aspect = innerWidth / innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(innerWidth, innerHeight);
-  }, { passive: true });
+  }, 150), { passive: true });
 
   let paused = false;
   document.addEventListener('visibilitychange', () => {

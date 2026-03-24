@@ -9,6 +9,7 @@ import { initContactForm, initBudgetChips, initToasts, initExit } from './module
 import { initLang } from './modules/i18n.js';
 import { checkMotion, initTheme, initFAQ } from './modules/ui.js';
 import { initThreeUniverse } from './modules/three-bg.js';
+import { initConsent } from './modules/consent.js';
 
 async function init() {
   // Priorité haute — bloquant le rendu si absent
@@ -38,6 +39,9 @@ async function init() {
 
   // Three.js : attend que la lib CDN soit chargée
   setTimeout(initThreeUniverse, 300);
+
+  // RGPD : bannière après 1s si pas de consentement enregistré
+  initConsent();
 
   console.log('%c4DAYVELOPMENT', 'color:#f2b13b;font-size:22px;font-weight:900;font-family:Syne,sans-serif;');
   console.log('%cMasterclass 2026 · Maximum Conversion', 'color:#DA5426;font-size:12px;');
