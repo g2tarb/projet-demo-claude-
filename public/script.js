@@ -603,6 +603,24 @@
       'form-message': 'Décrivez votre projet *', 'form-submit': 'Envoyer mon message →',
       'form-legal': 'En soumettant ce formulaire, vous acceptez que vos données soient utilisées pour vous recontacter. Aucun spam.',
       'footer-tagline': 'Agence web nouvelle génération.<br>Sites livrés en 4 jours, garantis.',
+      'mo-per': '/mois',
+      'avis-label': 'Avis clients',
+      'plan1-features': '<li>Site vitrine 3 pages</li><li>Design personnalisé</li><li>Responsive mobile</li><li>Formulaire de contact</li><li>SEO de base</li><li>⚡ Livraison en 4 jours</li>',
+      'plan2-features': '<li>Site jusqu\'à 8 pages</li><li>Design premium sur-mesure</li><li>Blog intégré</li><li>SEO avancé</li><li>Google Analytics + Tag Manager</li><li>3 mois de maintenance</li><li>⚡ Livraison en 4 jours</li>',
+      'plan3-features': '<li>Boutique produits illimitée</li><li>Paiement en ligne sécurisé</li><li>Gestion des stocks</li><li>Emails automatiques</li><li>SEO e-commerce avancé</li><li>6 mois de maintenance</li><li>Formation 2h incluse</li><li>⚡ Livraison en 4 jours*</li>',
+      'plan3-note': '* Délai indicatif à partir de 4 jours. Selon la complexité du projet, le délai peut être ajusté lors du brief.',
+      'footer-srv-h': 'Services', 'footer-srv-1': 'Site Vitrine', 'footer-srv-2': 'E-commerce', 'footer-srv-3': 'SEO & Référencement', 'footer-srv-4': 'Maintenance',
+      'footer-agen-h': 'Agence', 'footer-agen-1': 'Notre Processus', 'footer-agen-2': 'Tarifs', 'footer-agen-3': 'Avis clients', 'footer-agen-4': 'FAQ',
+      'footer-cont-h': 'Contact', 'footer-cont-1': 'Prendre RDV',
+      'footer-copy': '© 2026 4dayvelopment. Tous droits réservés.',
+      'footer-legal-1': 'Mentions légales', 'footer-legal-2': 'Confidentialité', 'footer-legal-3': 'CGV',
+      'exit-title': 'Attendez !<br>Un audit <span class="gradient-text">gratuit</span> vous attend.',
+      'exit-desc': 'Avant de partir, recevez une analyse gratuite de votre présence digitale — sans engagement.',
+      'exit-cta': '🎯 Obtenir mon audit gratuit',
+      'exit-close': 'Non merci, je peux me débrouiller seul',
+      'fcta-call': 'Réserver un appel',
+      'form-sending': 'Envoi en cours...',
+      'form-message-ph': 'Parlez-nous de votre activité, vos objectifs, votre cible, vos délais...',
     },
     en: {
       'nav-services': 'Services', 'nav-process': 'Process', 'nav-tarifs': 'Pricing',
@@ -676,6 +694,24 @@
       'form-message': 'Describe your project *', 'form-submit': 'Send my message →',
       'form-legal': 'By submitting this form, you agree that your data will be used to contact you back. No spam.',
       'footer-tagline': 'Next-generation web agency.<br>Websites delivered in 4 days, guaranteed.',
+      'mo-per': '/mo',
+      'avis-label': 'Client reviews',
+      'plan1-features': '<li>3-page showcase website</li><li>Custom design</li><li>Mobile responsive</li><li>Contact form</li><li>Basic SEO</li><li>⚡ Delivered in 4 days</li>',
+      'plan2-features': '<li>Website up to 8 pages</li><li>Premium custom design</li><li>Integrated blog</li><li>Advanced SEO</li><li>Google Analytics + Tag Manager</li><li>3 months maintenance</li><li>⚡ Delivered in 4 days</li>',
+      'plan3-features': '<li>Unlimited product store</li><li>Secure online payment</li><li>Stock management</li><li>Automated emails</li><li>Advanced e-commerce SEO</li><li>6 months maintenance</li><li>2h training included</li><li>⚡ Delivered in 4 days*</li>',
+      'plan3-note': '* Indicative timeline from 4 days. Depending on project complexity, the timeline may be adjusted during briefing.',
+      'footer-srv-h': 'Services', 'footer-srv-1': 'Showcase Website', 'footer-srv-2': 'E-commerce', 'footer-srv-3': 'SEO & Search', 'footer-srv-4': 'Maintenance',
+      'footer-agen-h': 'Agency', 'footer-agen-1': 'Our Process', 'footer-agen-2': 'Pricing', 'footer-agen-3': 'Client reviews', 'footer-agen-4': 'FAQ',
+      'footer-cont-h': 'Contact', 'footer-cont-1': 'Book a call',
+      'footer-copy': '© 2026 4dayvelopment. All rights reserved.',
+      'footer-legal-1': 'Legal notice', 'footer-legal-2': 'Privacy', 'footer-legal-3': 'T&Cs',
+      'exit-title': 'Wait!<br>A <span class="gradient-text">free</span> audit awaits you.',
+      'exit-desc': 'Before you go, receive a free analysis of your digital presence — no commitment.',
+      'exit-cta': '🎯 Get my free audit',
+      'exit-close': 'No thanks, I\'ll manage on my own',
+      'fcta-call': 'Book a call',
+      'form-sending': 'Sending...',
+      'form-message-ph': 'Tell us about your business, goals, target audience, timelines...',
     },
   };
 
@@ -684,6 +720,10 @@
     $$('[data-i18n]').forEach(el => {
       const key = el.dataset.i18n;
       if (t[key] !== undefined) el.innerHTML = t[key];
+    });
+    $$('[data-i18n-ph]').forEach(el => {
+      const key = el.dataset.i18nPh;
+      if (t[key] !== undefined) el.placeholder = t[key];
     });
     const btn = $('#lang-toggle');
     if (btn) btn.innerHTML = lang === 'fr' ? '🇬🇧 EN' : '🇫🇷 FR';
