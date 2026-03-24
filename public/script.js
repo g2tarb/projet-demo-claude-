@@ -621,6 +621,11 @@
       'fcta-call': 'Réserver un appel',
       'form-sending': 'Envoi en cours...',
       'form-message-ph': 'Parlez-nous de votre activité, vos objectifs, votre cible, vos délais...',
+      'nav-phone': '📞 Appel gratuit',
+      'plan-from': 'à partir de €',
+      'plan2-paiement': 'ou 3× 564€',
+      'plan3-paiement': 'ou 3× 1 030€',
+      'prospect-note': 'Projet ambitieux · Brief complet · Devis ultra-précis sous 24h',
     },
     en: {
       'nav-services': 'Services', 'nav-process': 'Process', 'nav-tarifs': 'Pricing',
@@ -712,6 +717,11 @@
       'fcta-call': 'Book a call',
       'form-sending': 'Sending...',
       'form-message-ph': 'Tell us about your business, goals, target audience, timelines...',
+      'nav-phone': '📞 Free call',
+      'plan-from': 'from €',
+      'plan2-paiement': 'or 3× €564',
+      'plan3-paiement': 'or 3× €1,030',
+      'prospect-note': 'Ambitious project · Full brief · Precise quote within 24h',
     },
   };
 
