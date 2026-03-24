@@ -111,6 +111,14 @@ a { text-decoration: none; color: inherit; }
 img { max-width: 100%; display: block; }
 button { border: none; background: none; }
 
+/* ── Mobile UX fondamentaux ─────────────────────────────────── */
+/* Supprime le délai de 300ms sur iOS et Android anciens */
+button, a, label, [role="button"] { touch-action: manipulation; }
+/* Supprime le flash bleu au tap */
+* { -webkit-tap-highlight-color: transparent; }
+/* Empêche l'overscroll bounce sur le corps, autorise dans les scroll-areas */
+html { overscroll-behavior-y: none; }
+
 /* ── CUSTOM CURSOR — uniquement souris / trackpad précis ───── */
 @media (pointer: fine) {
   body { cursor: none; }
@@ -255,7 +263,7 @@ nav.scrolled {
 }
 
 .nav-logo { display: flex; align-items: center; }
-.logo-img { height: 113px; width: auto; object-fit: contain; transition: filter .3s; }
+.logo-img { height: clamp(72px, 10vw, 113px); width: auto; object-fit: contain; transition: filter .3s; }
 .nav-logo:hover .logo-img { filter: drop-shadow(0 0 12px rgba(242,177,59,0.4)); }
 
 .nav-links {
@@ -1772,7 +1780,7 @@ footer {
   grid-template-columns: 2fr 1fr 1fr 1fr;
   gap: 48px;
 }
-.footer-brand .logo-img { height: 94px; margin-bottom: 16px; }
+.footer-brand .logo-img { height: clamp(60px, 8vw, 94px); margin-bottom: 16px; }
 .footer-brand p {
   font-size: 14px;
   color: var(--muted);
@@ -2337,7 +2345,8 @@ footer {
   }
   .contact-left { text-align: center; }
   .contact-left h2 { text-align: center; font-size: clamp(1.8rem, 8vw, 2.6rem); }
-  .contact-guarantees { align-items: flex-start; max-width: 400px; margin: 0 auto 32px; }
+  .contact-guarantees { align-items: flex-start; max-width: min(400px, 100%); margin: 0 auto 32px; }
+  .contact-layout { gap: 32px; }
   .cta-urgency { justify-content: center; font-size: 12px; padding: 8px 16px; }
   .contact-right { padding: 32px 24px; border-radius: var(--radius-lg); }
   .form-row { grid-template-columns: 1fr; gap: 0; }
@@ -2357,7 +2366,7 @@ footer {
   .footer-brand {
     grid-column: 1 / -1;
   }
-  .footer-brand .logo-img { height: 78px; }
+  .footer-brand .logo-img { height: clamp(56px, 9vw, 78px); }
   .footer-brand p { font-size: 13px; }
   .footer-links-group h4 { font-size: 11px; margin-bottom: 14px; }
   .footer-links-group a { font-size: 13px; }
@@ -2399,7 +2408,6 @@ footer {
   /* ─ Nav ─ */
   nav { padding: 12px 16px; }
   .nav-cta { display: none; } /* hamburger is enough */
-  .logo-img { height: 90px; }
 
   /* ─ Hero ─ */
   .hero { padding: 100px 16px 64px; }
@@ -2484,13 +2492,23 @@ footer {
   .faq-question { padding: 16px; font-size: 13px; }
   .faq-answer p { padding: 0 16px 18px; }
 
+  /* ─ iOS fix : évite le zoom auto au focus sur les champs ─ */
+  .form-group input,
+  .form-group select,
+  .form-group textarea { font-size: 16px; }
+
+  /* ─ Logos fade ─ */
+  .logos-wrapper::before,
+  .logos-wrapper::after { width: 40px; }
+
   /* ─ Contact / CTA ─ */
+  .contact-layout { gap: 20px; }
   .cta-section { padding: 56px 16px; }
   .contact-left h2 { font-size: clamp(1.5rem, 9vw, 2rem); }
   .contact-right { padding: 28px 18px; }
   .budget-chips { gap: 6px; }
-  .budget-chip { padding: 6px 12px; font-size: 12px; }
-  .btn-submit { font-size: 14px; padding: 14px; }
+  .budget-chip { padding: 8px 14px; font-size: 12px; min-height: 44px; display: flex; align-items: center; }
+  .btn-submit { font-size: 15px; padding: 16px; min-height: 52px; }
   .cta-trust { font-size: 11px; }
 
   /* ─ Footer ─ */
@@ -2510,6 +2528,7 @@ footer {
   #floating-cta { bottom: 16px; right: 12px; }
   #fcta-main { width: 48px; height: 48px; }
   .fcta-label { display: none; } /* icon only on tiny screens */
+
 }
 
 /* ── 375px — Petits mobiles (iPhone SE) ─────────────────────── */
@@ -2520,10 +2539,33 @@ footer {
   .section-title { font-size: 1.5rem; }
   .plan-price { font-size: 2.3rem; }
   nav { padding: 12px 14px; }
-  .logo-img { height: 78px; }
-  .cta-section h2 { font-size: 1.5rem; }
+  .logo-img { height: clamp(60px, 18vw, 78px); }
+  .footer-brand .logo-img { height: clamp(52px, 16vw, 68px); }
+  .cta-section h2, .contact-left h2 { font-size: clamp(1.4rem, 8vw, 1.7rem); }
   .exit-title { font-size: 1.2rem; }
   .exit-desc { font-size: 13px; }
+  section { padding: 52px 14px; }
+  .contact-right { padding: 22px 14px; }
+  .form-group input,
+  .form-group select,
+  .form-group textarea { font-size: 16px; padding: 11px 14px; }
+}
+
+/* ── Support encoche / Dynamic Island (safe-area-inset) ─────── */
+@supports (padding: env(safe-area-inset-bottom)) {
+  #floating-cta {
+    bottom: calc(28px + env(safe-area-inset-bottom));
+  }
+  #rgpd-banner {
+    bottom: calc(24px + env(safe-area-inset-bottom));
+  }
+  @media (max-width: 768px) {
+    #floating-cta { bottom: calc(20px + env(safe-area-inset-bottom)); }
+  }
+  @media (max-width: 480px) {
+    #floating-cta { bottom: calc(16px + env(safe-area-inset-bottom)); }
+    #rgpd-banner  { bottom: calc(16px + env(safe-area-inset-bottom)); }
+  }
 }
 
 /* ── Touch devices — pas d'effets hover complexes ───────────── */
