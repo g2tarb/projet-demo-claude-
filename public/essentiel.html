@@ -29,6 +29,11 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
+      animation: pageEnter 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    @keyframes pageEnter {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     /* ── Header ── */

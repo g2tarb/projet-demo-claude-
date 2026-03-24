@@ -1,6 +1,24 @@
 /* ── Navigation : bar, progress, navbar, smooth scroll, floating CTA ── */
 import { $, $$, on } from './utils.js';
 
+export function initPageTransition() {
+  const overlay = $('#page-transition');
+  if (!overlay) return;
+
+  // Sélectionne tous les liens vers les formes externes
+  const formLinks = $$('a[href="/essentiel.html"], a[href="/lead.html"], a[href="/brief.html"]');
+
+  formLinks.forEach(link => {
+    on(link, 'click', e => {
+      e.preventDefault();
+      const target = link.getAttribute('href');
+      overlay.style.pointerEvents = 'all';
+      overlay.classList.add('active');
+      setTimeout(() => { window.location.href = target; }, 460);
+    });
+  });
+}
+
 export function initBar() {
   const bar = $('#announcement-bar');
   if (!bar || sessionStorage.getItem('bar-off')) { bar && bar.remove(); return; }

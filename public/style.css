@@ -168,6 +168,20 @@ html { overscroll-behavior-y: none; }
   border: 0;
 }
 
+/* ── PAGE TRANSITION OVERLAY ───────────────────────────────── */
+#page-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 9999999;
+  background: linear-gradient(135deg, #DA5426 0%, #f2b13b 50%, #884083 100%);
+  transform: translateY(100%);
+  transition: transform 0.45s cubic-bezier(0.76, 0, 0.24, 1);
+  pointer-events: none;
+}
+#page-transition.active {
+  transform: translateY(0%);
+}
+
 /* ── GRAIN OVERLAY ─────────────────────────────────────────── */
 body::after {
   content: '';

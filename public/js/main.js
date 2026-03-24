@@ -3,7 +3,7 @@
    Orchestrateur ES6 modules · Sans bundler
    ================================================================ */
 
-import { initBar, initProgress, initNav, initSmoothScroll, initFloatingCTA } from './modules/navigation.js';
+import { initBar, initProgress, initNav, initSmoothScroll, initFloatingCTA, initPageTransition } from './modules/navigation.js';
 import { initCursor, initGlow, initMagnetic, initScramble, initReveal, initCounters } from './modules/animations.js';
 import { initContactForm, initBudgetChips, initToasts, initExit } from './modules/form.js';
 import { initLang } from './modules/i18n.js';
@@ -18,6 +18,7 @@ async function init() {
   await initLang();       // async : applique la langue sauvegardée avant le premier paint
   initBar();
   initProgress();
+  initPageTransition();
   initNav();
   initGlow();
   initReveal();
