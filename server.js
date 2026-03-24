@@ -25,13 +25,9 @@ const logger = pino(
 function bootstrap() {
   const required = ['MAIL_USER', 'MAIL_PASS', 'ALLOWED_ORIGIN'];
   const missing  = required.filter(k => !process.env[k]);
-  if (missing.length === 0) return;
-
-  logger.fatal(
-    { missing },
-    'Variables d\'environnement manquantes. Créez un fichier .env avec : ' + missing.join(', ')
-  );
-  process.exit(1);
+  if (missing.length > 0) {
+    logger.warn({ missing }, 'Variables d\'environnement manquantes : ' + missing.join(', '));
+  }
 }
 bootstrap();
 
