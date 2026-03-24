@@ -139,6 +139,9 @@ export function initExit() {
       sessionStorage.setItem('exit-shown', '1');
     }
   });
-  on($('#exit-backdrop'), 'click', () => overlay.classList.remove('show'));
-  on(document, 'keydown', e => { if (e.key === 'Escape') overlay.classList.remove('show'); });
+  const close = () => overlay.classList.remove('show');
+  on($('#exit-backdrop'),   'click',   close);
+  on($('#exit-close-btn'),  'click',   close);
+  on($('#exit-cta-btn'),    'click',   close);
+  on(document, 'keydown', e => { if (e.key === 'Escape') close(); });
 }

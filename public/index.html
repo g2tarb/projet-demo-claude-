@@ -21,6 +21,9 @@
 </head>
 <body>
 
+  <!-- ── PAGE TRANSITION ── -->
+  <div id="page-transition"></div>
+
   <!-- ── SCROLL PROGRESS ── -->
   <div id="scroll-progress"></div>
 
@@ -766,10 +769,10 @@
       <div class="exit-emoji">🚀</div>
       <div class="exit-title" data-i18n="exit-title">Attendez !<br>Un audit <span class="gradient-text">gratuit</span> vous attend.</div>
       <p class="exit-desc" data-i18n="exit-desc">Avant de partir, recevez une analyse gratuite de votre présence digitale — sans engagement.</p>
-      <a href="#contact" class="exit-cta" data-i18n="exit-cta" onclick="document.getElementById('exit-overlay').classList.remove('show')">
+      <a href="#contact" class="exit-cta" id="exit-cta-btn" data-i18n="exit-cta">
         🎯 Obtenir mon audit gratuit
       </a>
-      <button class="exit-close" data-i18n="exit-close" onclick="document.getElementById('exit-overlay').classList.remove('show')">
+      <button class="exit-close" id="exit-close-btn" data-i18n="exit-close">
         Non merci, je peux me débrouiller seul
       </button>
     </div>
