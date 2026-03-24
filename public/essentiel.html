@@ -617,21 +617,51 @@
     }
     .lang-btn-ext:hover { background: rgba(255,255,255,0.12); color: var(--text); }
 
-    /* Responsive */
+    /* ── Mobile UX fondamentaux ── */
+    * { -webkit-tap-highlight-color: transparent; }
+    body { overflow-x: hidden; }
+    button, a, label { touch-action: manipulation; }
+
+    /* ── Responsive ── */
     @media (max-width: 900px) {
       .page { grid-template-columns: 1fr; }
       .pitch {
-        padding: 40px 24px;
+        padding: 40px 28px;
         border-right: none;
         border-bottom: 1px solid var(--border);
       }
-      .form-side { padding: 32px 24px; }
+      .form-side { padding: 32px 28px; }
     }
-    @media (max-width: 480px) {
-      header { padding: 12px 20px; }
-      .pitch { padding: 32px 20px; }
-      .form-side { padding: 24px 20px; }
+
+    @media (max-width: 600px) {
+      header { padding: 10px 16px; }
+      header img { height: 64px; }
+      .back-link { font-size: 12px; }
+      .pitch { padding: 28px 16px; gap: 24px; }
+      .pitch h1 { font-size: clamp(1.6rem, 7vw, 2.2rem); letter-spacing: -1px; }
+      .pitch p.desc { font-size: 14px; }
+      .prix-block { flex-direction: column; align-items: flex-start; gap: 10px; padding: 18px 16px; }
+      .prix-montant { font-size: 2.2rem; }
+      .maintenance-block { padding: 16px; }
+      .form-side { padding: 24px 16px; }
+      .form-title { font-size: 16px; }
+      .form-subtitle { font-size: 12px; margin-bottom: 20px; }
+      .field { margin-bottom: 14px; }
+      /* iOS : évite le zoom auto au focus */
+      .field input,
+      .field select,
+      .field textarea { font-size: 16px; padding: 12px 14px; }
+      .urg-btns { flex-direction: column; }
+      .urg-btn { width: 100%; justify-content: center; padding: 14px; min-height: 50px; }
+      .btn-submit-wrap { position: sticky; bottom: 0; background: var(--card); padding: 12px 0 0; }
+    }
+
+    @media (max-width: 400px) {
+      header img { height: 52px; }
+      .pitch { padding: 20px 14px; }
+      .form-side { padding: 20px 14px; }
       .pages-grid { grid-template-columns: 1fr; }
+      .prix-montant { font-size: 1.9rem; }
     }
   </style>
 </head>

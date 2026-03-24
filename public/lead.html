@@ -668,23 +668,65 @@
       gap: 6px;
     }
 
+    /* ── Mobile UX fondamentaux ── */
+    * { -webkit-tap-highlight-color: transparent; }
+    body { overflow-x: hidden; }
+    button, a, label { touch-action: manipulation; }
+
     /* ── Responsive ── */
     @media (max-width: 768px) {
       .lead-header { padding: 12px 20px; }
-      .lead-hero { padding: 48px 20px 32px; }
-      .steps-indicator { padding: 0 20px 32px; }
+      .lead-logo img { height: 72px; }
+      .secure-badge { display: none; }
+      .lead-hero { padding: 40px 20px 28px; }
+      .lead-hero h1 { font-size: clamp(1.6rem, 7vw, 2.4rem); letter-spacing: -1px; }
+      .lead-hero p { font-size: 15px; }
+      .lead-badge { font-size: 12px; padding: 5px 14px; margin-bottom: 16px; }
+      .steps-indicator { padding: 0 20px 28px; }
       .si-step span:not(.si-dot) { display: none; }
       .si-line { max-width: 40px; }
+      .lead-main { padding: 0 16px 60px; }
+      .section-title-wrap { margin-bottom: 24px; }
+      .section-title-wrap h2 { font-size: clamp(1.3rem, 5vw, 1.7rem); }
       .form-grid { grid-template-columns: 1fr; }
       .card-grid { grid-template-columns: repeat(2, 1fr); }
       .card-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
       .recap-grid { grid-template-columns: 1fr; }
+      /* iOS : évite le zoom auto au focus */
+      .form-group input,
+      .form-group select,
+      .form-group textarea { font-size: 16px; }
     }
+
     @media (max-width: 480px) {
-      .card-grid { grid-template-columns: 1fr 1fr; }
-      .form-nav { flex-direction: column-reverse; align-items: stretch; }
+      .lead-header { padding: 10px 14px; }
+      .lead-logo img { height: 58px; }
+      .lead-hero { padding: 28px 16px 20px; }
+      .lead-hero h1 { font-size: clamp(1.4rem, 8vw, 2rem); }
+      .lead-hero p { font-size: 14px; }
+      .steps-indicator { padding: 0 14px 20px; gap: 0; }
+      .si-dot { width: 24px; height: 24px; font-size: 10px; }
+      .lead-main { padding: 0 14px 48px; }
+      .card-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .choice-card { padding: 14px 10px; }
+      .choice-card .card-icon { font-size: 20px; }
+      .choice-card .card-label { font-size: 12px; }
+      .form-nav { flex-direction: column-reverse; align-items: stretch; gap: 10px; }
       .btn-prev { justify-content: center; }
-      .btn-next-sec { justify-content: center; }
+      .btn-next-sec { justify-content: center; min-height: 50px; font-size: 15px; }
+      .form-group input,
+      .form-group select,
+      .form-group textarea { font-size: 16px; padding: 12px 14px; }
+      .tag-group { gap: 6px; }
+      .style-tag { padding: 8px 14px; font-size: 12px; min-height: 40px; }
+    }
+
+    @media (max-width: 375px) {
+      .lead-logo img { height: 48px; }
+      .lead-hero { padding: 20px 14px 16px; }
+      .card-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
+      .choice-card { padding: 12px 8px; }
+      .lead-main { padding: 0 12px 40px; }
     }
     .lang-btn-ext {
       background: rgba(255,255,255,0.06);
