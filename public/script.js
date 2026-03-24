@@ -516,7 +516,193 @@
     });
   }
 
-  /* ── 17. PERFORMANCE: REDUCED MOTION ─────────────────── */
+  /* ── 17. THEME TOGGLE (dark / light) ─────────────────── */
+  function initTheme() {
+    const btn = $('#theme-toggle');
+    if (!btn) return;
+    const saved = localStorage.getItem('theme');
+    if (saved === 'light') { document.body.classList.add('light-mode'); btn.textContent = '☀️'; }
+    on(btn, 'click', () => {
+      const isLight = document.body.classList.toggle('light-mode');
+      btn.textContent = isLight ? '☀️' : '🌙';
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    });
+  }
+
+  /* ── 18. LANGUAGE TOGGLE (FR / EN) ───────────────────── */
+  const translations = {
+    fr: {
+      'nav-services': 'Services', 'nav-process': 'Processus', 'nav-tarifs': 'Tarifs',
+      'nav-avis': 'Avis', 'nav-faq': 'FAQ', 'nav-cta': 'Démarrer →',
+      'nav-cta-mobile': 'Démarrer mon projet →',
+      'bar-text': '🔥 <strong>3 places restantes ce mois-ci</strong> — Délai de livraison garanti en 4 jours',
+      'bar-cta': 'Réserver ma place',
+      'hero-badge': 'Agence web nouvelle génération · 2026',
+      'hero-h1': 'Votre site internet,<br><em class="gradient-text">livré en 4 jours.</em>',
+      'hero-desc': 'Des sites performants, modernes et sur-mesure pour entrepreneurs, freelances et PME qui veulent dominer leur marché en ligne.',
+      'hero-cta1': 'Voir les offres', 'hero-cta2': 'Comment ça marche',
+      'stat-sites': 'Sites livrés', 'stat-clients': 'Clients satisfaits',
+      'stat-delai': 'Délai garanti', 'stat-support': 'Support inclus',
+      'proof-text': 'Note moyenne 4.9/5 · 150 clients',
+      'logos-label': 'Ils nous font confiance',
+      'services-title': 'Tout ce dont vous avez<br>besoin pour <em class="gradient-text">dominer en ligne</em>',
+      'services-sub': 'De la vitrine simple au e-commerce complet, on s\'occupe de tout — sans jargon, sans surprise.',
+      'srv-vitrine-h': 'Site Vitrine', 'srv-vitrine-p': 'Un site élégant et professionnel pour présenter votre activité, rassurer vos visiteurs et générer des contacts qualifiés.',
+      'srv-ecom-h': 'E-commerce', 'srv-ecom-p': 'Vendez vos produits ou services en ligne avec une boutique optimisée pour la conversion et la performance maximale.',
+      'srv-responsive-h': 'Design Responsive', 'srv-responsive-p': 'Chaque site est parfait sur mobile, tablette et ordinateur. 72% du trafic vient du mobile — on ne laisse rien au hasard.',
+      'srv-seo-h': 'SEO & Référencement', 'srv-seo-p': 'Vos pages sont optimisées dès le départ pour apparaître dans Google et attirer des visiteurs qualifiés prêts à acheter.',
+      'srv-perf-h': 'Performance', 'srv-perf-p': 'Sites ultra-rapides, score Lighthouse >90, hébergement premium. Chaque seconde de chargement coûte des clients.',
+      'srv-maint-h': 'Maintenance', 'srv-maint-p': 'Mises à jour, corrections de bugs, sauvegardes quotidiennes et support réactif. Vous vous concentrez sur votre business, on gère le reste.',
+      'maint-detail': 'Engagement 12 mois · Sans surprise', 'maint-cta': 'Souscrire →',
+      'res-conv': 'de conversions moyennes<br>après refonte',
+      'res-ca': 'de CA généré le premier<br>mois pour Amandine C.',
+      'res-delai': 'délai de livraison<br>garanti contractuellement',
+      'res-clients': 'de clients qui<br>recommandent l\'agence',
+      'proc-title': 'De zéro à en ligne<br>en <em class="gradient-text">4 étapes simples</em>',
+      'proc-sub': 'Un processus clair et sans surprise, du premier échange à la mise en ligne.',
+      'proc-1-h': 'Échange initial', 'proc-1-p': 'On discute de votre projet, vos objectifs et votre cible lors d\'un appel de 30 min <strong>100% gratuit</strong>.', 'proc-1-d': '⏱ Jour 1',
+      'proc-2-h': 'Maquette & Design', 'proc-2-p': 'On vous présente une maquette complète sous 48h. Vous validez avant qu\'on développe une seule ligne.', 'proc-2-d': '⏱ Jour 2',
+      'proc-3-h': 'Développement', 'proc-3-p': 'On code votre site avec les dernières technologies. Vous suivez l\'avancement en temps réel sur notre espace client.', 'proc-3-d': '⏱ Jours 3–4',
+      'proc-4-h': 'Mise en ligne', 'proc-4-p': 'Votre site est publié, testé et optimisé. On vous forme à l\'administration en 1h et on reste disponibles.', 'proc-4-d': '⏱ Jour 4',
+      'proc-cta': 'Démarrer mon projet gratuitement →', 'proc-cta-note': 'Appel de 30 min · Sans engagement · Réponse sous 24h',
+      'prix-title': 'Des prix clairs,<br><em class="gradient-text">sans mauvaise surprise</em>',
+      'prix-sub': 'Choisissez la formule qui correspond à vos besoins. Paiement en 3× possible. Pas d\'abonnement caché.',
+      'plan1-badge': 'Démarrage', 'plan1-desc': 'Idéal pour démarrer avec une présence professionnelle qui rassure et convertit.',
+      'plan-popular': '⭐ Le plus populaire', 'plan2-badge': 'Professionnel', 'plan2-desc': 'Pour les professionnels qui veulent se démarquer et générer des leads qualifiés.',
+      'plan3-badge': 'Boutique', 'plan3-desc': 'Une boutique complète pour vendre en ligne et rentabiliser en quelques semaines.',
+      'plan-cta': 'Commencer →', 'plan-cta2': 'Commencer →', 'plan-cta3': 'Commencer →',
+      'guar-1': 'Paiement 100% sécurisé', 'guar-2': 'Satisfait ou remboursé 14j', 'guar-3': 'Délai garanti contractuellement', 'guar-4': 'Support prioritaire inclus',
+      'avis-title': 'Ils ont sauté le pas.<br><em class="gradient-text">Voici ce qu\'ils en pensent.</em>',
+      'test-1': '"Livraison en 4 jours, site magnifique, et mes clients me font régulièrement des compliments. Meilleur investissement de l\'année."',
+      'test-1-role': 'Coach bien-être · Site Pro',
+      'test-2': '"J\'avais peur que ce soit compliqué. Tout s\'est passé sans accroc, ils ont su exactement ce dont j\'avais besoin. Je recommande à 100%."',
+      'test-2-role': 'Artisan menuisier · Site Essentiel',
+      'test-3': '"Notre boutique en ligne a généré <strong>3 000€ de chiffre d\'affaires le premier mois</strong>. L\'investissement a été rentabilisé en quelques semaines."',
+      'test-3-role': 'Créatrice de bijoux · E-commerce', 'test-3-result': '📈 ROI en 3 semaines',
+      'faq-title': 'Les questions<br><em class="gradient-text">qu\'on nous pose souvent</em>',
+      'faq-1-q': 'Comment fonctionne la livraison en 4 jours ?',
+      'faq-1-a': 'Dès réception de vos contenus et du premier acompte, on démarre immédiatement. <strong>Jour 1 :</strong> brief & maquette. <strong>Jour 2 :</strong> validation & développement. <strong>Jours 3–4 :</strong> finalisation, tests et mise en ligne. Simple, rapide, garanti contractuellement.',
+      'faq-2-q': 'Que comprend exactement la maintenance ?',
+      'faq-2-a': 'Notre maintenance couvre tout ce dont votre site a besoin pour rester performant et sécurisé :',
+      'faq-3-q': 'Et si je ne suis pas satisfait du résultat ?',
+      'faq-3-a': 'On offre des allers-retours <strong>illimités</strong> pendant la phase de design jusqu\'à ce que vous soyez 100% satisfait. Et si malgré tout vous n\'êtes pas content dans les <strong>14 jours</strong> suivant la livraison, on vous rembourse intégralement. Zéro risque pour vous.',
+      'faq-4-q': 'Je n\'ai pas de textes ni de photos, vous pouvez m\'aider ?',
+      'faq-4-a': 'Absolument. On propose un service de <strong>rédaction (copywriting)</strong> et de sélection d\'images libres de droits. On peut partir de zéro et construire tout votre contenu de marque. Mentionnez-le lors de votre brief et on intègre tout ça dans le devis.',
+      'faq-5-q': 'Vais-je pouvoir modifier mon site moi-même ?',
+      'faq-5-a': 'Oui ! Chaque site est livré avec une interface d\'administration <strong>simple et intuitive</strong>. Une formation d\'1h est incluse pour que vous puissiez mettre à jour textes, images et pages en autonomie. Aucune compétence technique requise.',
+      'faq-6-q': 'Mon site sera-t-il visible sur Google ?',
+      'faq-6-a': 'Tous nos sites intègrent un <strong>SEO technique de base</strong> (balises meta, vitesse, structure). Les formules Pro et E-commerce incluent un SEO avancé avec audit de mots-clés, optimisation des pages et soumission au Search Console. Votre site sera indexé et positionné dès le lancement.',
+      'contact-badge': '🚀 Réponse sous 24h · Sans engagement',
+      'contact-h2': 'Prêt à faire décoller<br><em class="cta-gradient">votre projet ?</em>',
+      'contact-p': 'Décrivez votre projet ci-contre. On vous répond <strong>sous 24h</strong> avec un plan d\'action concret et un devis personnalisé.',
+      'cg-1': 'Réponse sous 24h garantie', 'cg-2': 'Données 100% confidentielles', 'cg-3': 'Devis gratuit & personnalisé', 'cg-4': 'Satisfait ou remboursé 14j',
+      'urgency-text': '🔥 Seulement <strong>3 places disponibles</strong> ce mois-ci',
+      'prospect-btn': 'Vous avez un grand projet sur-mesure ? Dites-nous tout →',
+      'form-name': 'Nom complet *', 'form-email': 'Email *', 'form-phone': 'Téléphone',
+      'form-service': 'Service souhaité', 'form-budget': 'Budget approximatif',
+      'form-message': 'Décrivez votre projet *', 'form-submit': 'Envoyer mon message →',
+      'form-legal': 'En soumettant ce formulaire, vous acceptez que vos données soient utilisées pour vous recontacter. Aucun spam.',
+      'footer-tagline': 'Agence web nouvelle génération.<br>Sites livrés en 4 jours, garantis.',
+    },
+    en: {
+      'nav-services': 'Services', 'nav-process': 'Process', 'nav-tarifs': 'Pricing',
+      'nav-avis': 'Reviews', 'nav-faq': 'FAQ', 'nav-cta': 'Get started →',
+      'nav-cta-mobile': 'Start my project →',
+      'bar-text': '🔥 <strong>3 spots left this month</strong> — Delivery guaranteed in 4 days',
+      'bar-cta': 'Reserve my spot',
+      'hero-badge': 'Next-generation web agency · 2026',
+      'hero-h1': 'Your professional website,<br><em class="gradient-text">delivered in 4 days.</em>',
+      'hero-desc': 'High-performance, modern, tailor-made websites for entrepreneurs, freelancers and SMBs who want to dominate their market online.',
+      'hero-cta1': 'See our offers', 'hero-cta2': 'How it works',
+      'stat-sites': 'Websites delivered', 'stat-clients': 'Satisfied clients',
+      'stat-delai': 'Guaranteed deadline', 'stat-support': 'Support included',
+      'proof-text': 'Average rating 4.9/5 · 150 clients',
+      'logos-label': 'They trust us',
+      'services-title': 'Everything you need<br>to <em class="gradient-text">dominate online</em>',
+      'services-sub': 'From simple showcase to full e-commerce, we handle everything — no jargon, no surprises.',
+      'srv-vitrine-h': 'Showcase Website', 'srv-vitrine-p': 'An elegant and professional website to present your business, reassure visitors and generate qualified leads.',
+      'srv-ecom-h': 'E-commerce', 'srv-ecom-p': 'Sell your products or services online with a store optimized for conversion and maximum performance.',
+      'srv-responsive-h': 'Responsive Design', 'srv-responsive-p': 'Every site is perfect on mobile, tablet and desktop. 72% of traffic comes from mobile — we leave nothing to chance.',
+      'srv-seo-h': 'SEO & Search', 'srv-seo-p': 'Your pages are optimized from the start to appear on Google and attract qualified visitors ready to buy.',
+      'srv-perf-h': 'Performance', 'srv-perf-p': 'Ultra-fast sites, Lighthouse score >90, premium hosting. Every second of load time costs you clients.',
+      'srv-maint-h': 'Maintenance', 'srv-maint-p': 'Updates, bug fixes, daily backups and reactive support. You focus on your business, we handle the rest.',
+      'maint-detail': '12-month commitment · No surprises', 'maint-cta': 'Subscribe →',
+      'res-conv': 'average conversion increase<br>after redesign',
+      'res-ca': 'revenue generated in the first<br>month for Amandine C.',
+      'res-delai': 'delivery time<br>contractually guaranteed',
+      'res-clients': 'of clients who<br>recommend the agency',
+      'proc-title': 'From zero to online<br>in <em class="gradient-text">4 simple steps</em>',
+      'proc-sub': 'A clear and surprise-free process, from first contact to launch.',
+      'proc-1-h': 'Initial Call', 'proc-1-p': 'We discuss your project, goals and target audience in a <strong>100% free</strong> 30-min call.', 'proc-1-d': '⏱ Day 1',
+      'proc-2-h': 'Mockup & Design', 'proc-2-p': 'We present a complete mockup within 48h. You approve before we write a single line of code.', 'proc-2-d': '⏱ Day 2',
+      'proc-3-h': 'Development', 'proc-3-p': 'We build your site with the latest technologies. Track progress in real time on our client portal.', 'proc-3-d': '⏱ Days 3–4',
+      'proc-4-h': 'Launch', 'proc-4-p': 'Your site is published, tested and optimized. We train you on the admin panel in 1h and stay available.', 'proc-4-d': '⏱ Day 4',
+      'proc-cta': 'Start my project for free →', 'proc-cta-note': '30-min call · No commitment · Reply within 24h',
+      'prix-title': 'Clear pricing,<br><em class="gradient-text">no hidden surprises</em>',
+      'prix-sub': 'Choose the plan that fits your needs. Pay in 3× instalments. No hidden subscription.',
+      'plan1-badge': 'Starter', 'plan1-desc': 'Ideal for getting started with a professional online presence that reassures and converts.',
+      'plan-popular': '⭐ Most popular', 'plan2-badge': 'Professional', 'plan2-desc': 'For professionals who want to stand out and generate qualified leads.',
+      'plan3-badge': 'Shop', 'plan3-desc': 'A complete online store to sell online and break even within weeks.',
+      'plan-cta': 'Get started →', 'plan-cta2': 'Get started →', 'plan-cta3': 'Get started →',
+      'guar-1': '100% secure payment', 'guar-2': 'Money-back guarantee 14 days', 'guar-3': 'Delivery guaranteed contractually', 'guar-4': 'Priority support included',
+      'avis-title': 'They took the leap.<br><em class="gradient-text">Here\'s what they think.</em>',
+      'test-1': '"Delivered in 4 days, beautiful site, and my clients compliment it regularly. Best investment of the year."',
+      'test-1-role': 'Wellness coach · Pro Website',
+      'test-2': '"I was afraid it would be complicated. Everything went smoothly, they knew exactly what I needed. 100% recommend."',
+      'test-2-role': 'Carpenter craftsman · Essentiel Website',
+      'test-3': '"Our online store generated <strong>€3,000 in revenue in the first month</strong>. The investment paid off within weeks."',
+      'test-3-role': 'Jewelry creator · E-commerce', 'test-3-result': '📈 ROI in 3 weeks',
+      'faq-title': 'Questions<br><em class="gradient-text">we get asked often</em>',
+      'faq-1-q': 'How does the 4-day delivery work?',
+      'faq-1-a': 'As soon as we receive your content and first payment, we start immediately. <strong>Day 1:</strong> brief & mockup. <strong>Day 2:</strong> validation & development. <strong>Days 3–4:</strong> finalization, testing and launch. Simple, fast, contractually guaranteed.',
+      'faq-2-q': 'What does maintenance include?',
+      'faq-2-a': 'Our maintenance covers everything your site needs to stay performant and secure:',
+      'faq-3-q': 'What if I\'m not satisfied with the result?',
+      'faq-3-a': 'We offer <strong>unlimited</strong> revisions during the design phase until you\'re 100% happy. And if you\'re still not satisfied within <strong>14 days</strong> of delivery, we\'ll give you a full refund. Zero risk for you.',
+      'faq-4-q': 'I don\'t have texts or photos — can you help?',
+      'faq-4-a': 'Absolutely. We offer a <strong>copywriting</strong> and royalty-free image selection service. We can start from scratch and build all your brand content. Just mention it in your brief and we\'ll include it in the quote.',
+      'faq-5-q': 'Will I be able to update my site myself?',
+      'faq-5-a': 'Yes! Every site comes with a <strong>simple and intuitive</strong> admin interface. A 1-hour training session is included so you can update texts, images and pages on your own. No technical skills required.',
+      'faq-6-q': 'Will my site be visible on Google?',
+      'faq-6-a': 'All our sites include basic <strong>technical SEO</strong> (meta tags, speed, structure). Pro and E-commerce plans include advanced SEO with keyword audit, page optimization and Search Console submission. Your site will be indexed from day one.',
+      'contact-badge': '🚀 Reply within 24h · No commitment',
+      'contact-h2': 'Ready to launch<br><em class="cta-gradient">your project?</em>',
+      'contact-p': 'Describe your project. We\'ll get back to you <strong>within 24h</strong> with a concrete action plan and a personalised quote.',
+      'cg-1': 'Reply guaranteed within 24h', 'cg-2': '100% confidential data', 'cg-3': 'Free & personalised quote', 'cg-4': 'Money-back guarantee 14 days',
+      'urgency-text': '🔥 Only <strong>3 spots available</strong> this month',
+      'prospect-btn': 'Have a large custom project? Tell us everything →',
+      'form-name': 'Full name *', 'form-email': 'Email *', 'form-phone': 'Phone',
+      'form-service': 'Service needed', 'form-budget': 'Approximate budget',
+      'form-message': 'Describe your project *', 'form-submit': 'Send my message →',
+      'form-legal': 'By submitting this form, you agree that your data will be used to contact you back. No spam.',
+      'footer-tagline': 'Next-generation web agency.<br>Websites delivered in 4 days, guaranteed.',
+    },
+  };
+
+  function applyLang(lang) {
+    const t = translations[lang];
+    $$('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      if (t[key] !== undefined) el.innerHTML = t[key];
+    });
+    const btn = $('#lang-toggle');
+    if (btn) btn.innerHTML = lang === 'fr' ? '🇬🇧 EN' : '🇫🇷 FR';
+    document.documentElement.lang = lang;
+  }
+
+  function initLang() {
+    const btn = $('#lang-toggle');
+    if (!btn) return;
+    let lang = localStorage.getItem('lang') || 'fr';
+    if (lang === 'en') applyLang('en');
+    on(btn, 'click', () => {
+      lang = lang === 'fr' ? 'en' : 'fr';
+      applyLang(lang);
+      localStorage.setItem('lang', lang);
+    });
+  }
+
+  /* ── 19. PERFORMANCE: REDUCED MOTION ─────────────────── */
   function checkMotion() {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
       const s = document.createElement('style');
@@ -528,6 +714,8 @@
   /* ── INIT ─────────────────────────────────────────────── */
   function init() {
     checkMotion();
+    initTheme();
+    initLang();
     initBar();
     initProgress();
     initNav();
@@ -573,6 +761,9 @@
         $$('.budget-chip').forEach(c => c.classList.remove('active'));
         chip.classList.add('active');
         $('#f-budget').value = chip.dataset.value;
+        if (chip.dataset.value === 'Moins de 1 000€') {
+          window.location.href = '/essentiel.html';
+        }
         if (chip.dataset.value === '5 000€ et plus') {
           window.location.href = '/lead.html';
         }
