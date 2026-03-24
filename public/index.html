@@ -26,8 +26,8 @@
 
   <!-- ── ANNOUNCEMENT BAR ── -->
   <div id="announcement-bar">
-    <span class="bar-text">🔥 <strong>3 places restantes ce mois-ci</strong> — Délai de livraison garanti en 4 jours</span>
-    <a class="bar-cta" href="#tarifs">Réserver ma place</a>
+    <span class="bar-text" data-i18n="bar-text">🔥 <strong>3 places restantes ce mois-ci</strong> — Délai de livraison garanti en 4 jours</span>
+    <a class="bar-cta" data-i18n="bar-cta" href="#tarifs">Réserver ma place</a>
     <button class="bar-close" aria-label="Fermer">×</button>
   </div>
 
@@ -37,15 +37,17 @@
       <img src="logo/4dayvelopment_logo.png" alt="4dayvelopment" class="logo-img">
     </a>
     <ul class="nav-links">
-      <li><a href="#services">Services</a></li>
-      <li><a href="#process">Processus</a></li>
-      <li><a href="#tarifs">Tarifs</a></li>
-      <li><a href="#avis">Avis</a></li>
-      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#services" data-i18n="nav-services">Services</a></li>
+      <li><a href="#process" data-i18n="nav-process">Processus</a></li>
+      <li><a href="#tarifs" data-i18n="nav-tarifs">Tarifs</a></li>
+      <li><a href="#avis" data-i18n="nav-avis">Avis</a></li>
+      <li><a href="#faq" data-i18n="nav-faq">FAQ</a></li>
     </ul>
     <div class="nav-right">
+      <button id="theme-toggle" class="nav-toggle" aria-label="Mode clair/sombre" title="Mode clair/sombre">🌙</button>
+      <button id="lang-toggle" class="nav-toggle lang-btn" aria-label="Langue" title="Switch language">🇬🇧 EN</button>
       <span class="nav-phone">📞 Appel gratuit</span>
-      <a href="#contact" class="nav-cta">Démarrer →</a>
+      <a href="#contact" class="nav-cta" data-i18n="nav-cta">Démarrer →</a>
     </div>
     <button class="hamburger" id="hamburger" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -55,12 +57,12 @@
   <!-- Mobile menu -->
   <div class="mobile-menu" id="mobile-menu">
     <ul>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#process">Processus</a></li>
-      <li><a href="#tarifs">Tarifs</a></li>
-      <li><a href="#avis">Avis</a></li>
-      <li><a href="#faq">FAQ</a></li>
-      <li><a href="#contact" class="mobile-cta">Démarrer mon projet →</a></li>
+      <li><a href="#services" data-i18n="nav-services">Services</a></li>
+      <li><a href="#process" data-i18n="nav-process">Processus</a></li>
+      <li><a href="#tarifs" data-i18n="nav-tarifs">Tarifs</a></li>
+      <li><a href="#avis" data-i18n="nav-avis">Avis</a></li>
+      <li><a href="#faq" data-i18n="nav-faq">FAQ</a></li>
+      <li><a href="#contact" class="mobile-cta" data-i18n="nav-cta-mobile">Démarrer mon projet →</a></li>
     </ul>
   </div>
 
@@ -69,46 +71,45 @@
     <div class="hero-inner">
       <div class="badge reveal">
         <span class="badge-dot"></span>
-        Agence web nouvelle génération · 2026
+        <span data-i18n="hero-badge">Agence web nouvelle génération · 2026</span>
       </div>
 
       <h1 class="hero-title reveal">
-        Votre site internet,<br>
-        <em class="gradient-text">livré en 4 jours.</em>
+        <span data-i18n="hero-h1">Votre site internet,<br><em class="gradient-text">livré en 4 jours.</em></span>
       </h1>
 
-      <p class="hero-desc reveal">
+      <p class="hero-desc reveal" data-i18n="hero-desc">
         Des sites performants, modernes et sur-mesure pour entrepreneurs,
         freelances et PME qui veulent dominer leur marché en ligne.
       </p>
 
       <div class="hero-actions reveal">
         <a href="#tarifs" class="btn-primary magnetic">
-          <span>Voir les offres</span>
+          <span data-i18n="hero-cta1">Voir les offres</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <a href="#process" class="btn-secondary magnetic">Comment ça marche</a>
+        <a href="#process" class="btn-secondary magnetic" data-i18n="hero-cta2">Comment ça marche</a>
       </div>
 
       <div class="hero-stats reveal">
         <div class="stat">
           <strong data-target="150" data-suffix="+">0</strong>
-          <span>Sites livrés</span>
+          <span data-i18n="stat-sites">Sites livrés</span>
         </div>
         <div class="stat-sep"></div>
         <div class="stat">
           <strong data-target="98" data-suffix="%">0</strong>
-          <span>Clients satisfaits</span>
+          <span data-i18n="stat-clients">Clients satisfaits</span>
         </div>
         <div class="stat-sep"></div>
         <div class="stat">
           <strong data-target="4" data-suffix="j">0</strong>
-          <span>Délai garanti</span>
+          <span data-i18n="stat-delai">Délai garanti</span>
         </div>
         <div class="stat-sep"></div>
         <div class="stat">
           <strong>24/7</strong>
-          <span>Support inclus</span>
+          <span data-i18n="stat-support">Support inclus</span>
         </div>
       </div>
 
@@ -123,7 +124,7 @@
         </div>
         <div class="proof-text">
           <div class="proof-stars">★★★★★</div>
-          <span>Note moyenne 4.9/5 · 150 clients</span>
+          <span data-i18n="proof-text">Note moyenne 4.9/5 · 150 clients</span>
         </div>
       </div>
     </div>
@@ -136,7 +137,7 @@
 
   <!-- ── LOGOS TICKER ── -->
   <div class="logos-section">
-    <p class="logos-label">Ils nous font confiance</p>
+    <p class="logos-label" data-i18n="logos-label">Ils nous font confiance</p>
     <div class="logos-wrapper">
       <div class="logos-track">
         <span class="logo-item">Artisan<span class="logo-plus">+</span></span>
@@ -172,46 +173,54 @@
     <div class="container">
       <div class="section-header">
         <div class="section-label reveal">Services</div>
-        <h2 class="section-title reveal">Tout ce dont vous avez<br>besoin pour <em class="gradient-text">dominer en ligne</em></h2>
-        <p class="section-sub reveal">De la vitrine simple au e-commerce complet, on s'occupe de tout — sans jargon, sans surprise.</p>
+        <h2 class="section-title reveal" data-i18n="services-title">Tout ce dont vous avez<br>besoin pour <em class="gradient-text">dominer en ligne</em></h2>
+        <p class="section-sub reveal" data-i18n="services-sub">De la vitrine simple au e-commerce complet, on s'occupe de tout — sans jargon, sans surprise.</p>
       </div>
 
       <div class="services-grid">
         <div class="service-card reveal" data-delay="0">
           <div class="service-icon">🌐</div>
-          <h3>Site Vitrine</h3>
-          <p>Un site élégant et professionnel pour présenter votre activité, rassurer vos visiteurs et générer des contacts qualifiés.</p>
+          <h3 data-i18n="srv-vitrine-h">Site Vitrine</h3>
+          <p data-i18n="srv-vitrine-p">Un site élégant et professionnel pour présenter votre activité, rassurer vos visiteurs et générer des contacts qualifiés.</p>
           <div class="service-tag">Dès 990€</div>
         </div>
         <div class="service-card reveal" data-delay="100">
           <div class="service-icon">🛒</div>
-          <h3>E-commerce</h3>
-          <p>Vendez vos produits ou services en ligne avec une boutique optimisée pour la conversion et la performance maximale.</p>
+          <h3 data-i18n="srv-ecom-h">E-commerce</h3>
+          <p data-i18n="srv-ecom-p">Vendez vos produits ou services en ligne avec une boutique optimisée pour la conversion et la performance maximale.</p>
           <div class="service-tag">Dès 3 090€</div>
         </div>
         <div class="service-card reveal" data-delay="200">
           <div class="service-icon">📱</div>
-          <h3>Design Responsive</h3>
-          <p>Chaque site est parfait sur mobile, tablette et ordinateur. 72% du trafic vient du mobile — on ne laisse rien au hasard.</p>
+          <h3 data-i18n="srv-responsive-h">Design Responsive</h3>
+          <p data-i18n="srv-responsive-p">Chaque site est parfait sur mobile, tablette et ordinateur. 72% du trafic vient du mobile — on ne laisse rien au hasard.</p>
           <div class="service-tag">Inclus</div>
         </div>
         <div class="service-card reveal" data-delay="300">
           <div class="service-icon">🔍</div>
-          <h3>SEO & Référencement</h3>
-          <p>Vos pages sont optimisées dès le départ pour apparaître dans Google et attirer des visiteurs qualifiés prêts à acheter.</p>
+          <h3 data-i18n="srv-seo-h">SEO & Référencement</h3>
+          <p data-i18n="srv-seo-p">Vos pages sont optimisées dès le départ pour apparaître dans Google et attirer des visiteurs qualifiés prêts à acheter.</p>
           <div class="service-tag">Inclus</div>
         </div>
         <div class="service-card reveal" data-delay="400">
           <div class="service-icon">⚡</div>
-          <h3>Performance</h3>
-          <p>Sites ultra-rapides, score Lighthouse >90, hébergement premium. Chaque seconde de chargement coûte des clients.</p>
+          <h3 data-i18n="srv-perf-h">Performance</h3>
+          <p data-i18n="srv-perf-p">Sites ultra-rapides, score Lighthouse >90, hébergement premium. Chaque seconde de chargement coûte des clients.</p>
           <div class="service-tag">Score >90</div>
         </div>
         <div class="service-card reveal" data-delay="500">
           <div class="service-icon">🛠️</div>
-          <h3>Maintenance</h3>
-          <p>Mises à jour, sauvegardes automatiques et support réactif inclus. Vous vous concentrez sur votre business, on gère le reste.</p>
+          <h3 data-i18n="srv-maint-h">Maintenance</h3>
+          <p data-i18n="srv-maint-p">Mises à jour, corrections de bugs, sauvegardes quotidiennes et support réactif. Vous vous concentrez sur votre business, on gère le reste.</p>
           <div class="service-tag">Support 24/7</div>
+          <div class="maintenance-offer">
+            <div class="maintenance-price">
+              <span class="mo-amount">80€</span>
+              <span class="mo-per">/mois</span>
+            </div>
+            <div class="mo-detail" data-i18n="maint-detail">Engagement 12 mois · Sans surprise</div>
+            <a href="#contact" class="mo-cta" data-i18n="maint-cta">Souscrire →</a>
+          </div>
         </div>
       </div>
     </div>
@@ -222,22 +231,22 @@
     <div class="results-inner">
       <div class="result-item reveal">
         <div class="result-num gradient-text">+340%</div>
-        <div class="result-label">de conversions moyennes<br>après refonte</div>
+        <div class="result-label" data-i18n="res-conv">de conversions moyennes<br>après refonte</div>
       </div>
       <div class="result-divider"></div>
       <div class="result-item reveal">
         <div class="result-num gradient-text">3 000€</div>
-        <div class="result-label">de CA généré le premier<br>mois pour Amandine C.</div>
+        <div class="result-label" data-i18n="res-ca">de CA généré le premier<br>mois pour Amandine C.</div>
       </div>
       <div class="result-divider"></div>
       <div class="result-item reveal">
         <div class="result-num gradient-text">4 jours</div>
-        <div class="result-label">délai de livraison<br>garanti contractuellement</div>
+        <div class="result-label" data-i18n="res-delai">délai de livraison<br>garanti contractuellement</div>
       </div>
       <div class="result-divider"></div>
       <div class="result-item reveal">
         <div class="result-num gradient-text">98%</div>
-        <div class="result-label">de clients qui<br>recommandent l'agence</div>
+        <div class="result-label" data-i18n="res-clients">de clients qui<br>recommandent l'agence</div>
       </div>
     </div>
   </div>
@@ -247,8 +256,8 @@
     <div class="container">
       <div class="section-header">
         <div class="section-label reveal">Processus</div>
-        <h2 class="section-title reveal">De zéro à en ligne<br>en <em class="gradient-text">4 étapes simples</em></h2>
-        <p class="section-sub reveal">Un processus clair et sans surprise, du premier échange à la mise en ligne.</p>
+        <h2 class="section-title reveal" data-i18n="proc-title">De zéro à en ligne<br>en <em class="gradient-text">4 étapes simples</em></h2>
+        <p class="section-sub reveal" data-i18n="proc-sub">Un processus clair et sans surprise, du premier échange à la mise en ligne.</p>
       </div>
 
       <div class="process-steps">
@@ -256,42 +265,42 @@
           <div class="step-connector"></div>
           <div class="step-num">1</div>
           <div class="step-content">
-            <h3>Échange initial</h3>
-            <p>On discute de votre projet, vos objectifs et votre cible lors d'un appel de 30 min <strong>100% gratuit</strong>.</p>
-            <div class="step-duration">⏱ Jour 1</div>
+            <h3 data-i18n="proc-1-h">Échange initial</h3>
+            <p data-i18n="proc-1-p">On discute de votre projet, vos objectifs et votre cible lors d'un appel de 30 min <strong>100% gratuit</strong>.</p>
+            <div class="step-duration" data-i18n="proc-1-d">⏱ Jour 1</div>
           </div>
         </div>
         <div class="step reveal">
           <div class="step-connector"></div>
           <div class="step-num">2</div>
           <div class="step-content">
-            <h3>Maquette & Design</h3>
-            <p>On vous présente une maquette complète sous 48h. Vous validez avant qu'on développe une seule ligne.</p>
-            <div class="step-duration">⏱ Jour 2</div>
+            <h3 data-i18n="proc-2-h">Maquette & Design</h3>
+            <p data-i18n="proc-2-p">On vous présente une maquette complète sous 48h. Vous validez avant qu'on développe une seule ligne.</p>
+            <div class="step-duration" data-i18n="proc-2-d">⏱ Jour 2</div>
           </div>
         </div>
         <div class="step reveal">
           <div class="step-connector"></div>
           <div class="step-num">3</div>
           <div class="step-content">
-            <h3>Développement</h3>
-            <p>On code votre site avec les dernières technologies. Vous suivez l'avancement en temps réel sur notre espace client.</p>
-            <div class="step-duration">⏱ Jours 3–4</div>
+            <h3 data-i18n="proc-3-h">Développement</h3>
+            <p data-i18n="proc-3-p">On code votre site avec les dernières technologies. Vous suivez l'avancement en temps réel sur notre espace client.</p>
+            <div class="step-duration" data-i18n="proc-3-d">⏱ Jours 3–4</div>
           </div>
         </div>
         <div class="step reveal">
           <div class="step-num last">4</div>
           <div class="step-content">
-            <h3>Mise en ligne</h3>
-            <p>Votre site est publié, testé et optimisé. On vous forme à l'administration en 1h et on reste disponibles.</p>
-            <div class="step-duration">⏱ Jour 4</div>
+            <h3 data-i18n="proc-4-h">Mise en ligne</h3>
+            <p data-i18n="proc-4-p">Votre site est publié, testé et optimisé. On vous forme à l'administration en 1h et on reste disponibles.</p>
+            <div class="step-duration" data-i18n="proc-4-d">⏱ Jour 4</div>
           </div>
         </div>
       </div>
 
       <div class="process-cta reveal">
-        <a href="#contact" class="btn-primary magnetic">Démarrer mon projet gratuitement →</a>
-        <p class="process-cta-note">Appel de 30 min · Sans engagement · Réponse sous 24h</p>
+        <a href="#contact" class="btn-primary magnetic" data-i18n="proc-cta">Démarrer mon projet gratuitement →</a>
+        <p class="process-cta-note" data-i18n="proc-cta-note">Appel de 30 min · Sans engagement · Réponse sous 24h</p>
       </div>
     </div>
   </section>
@@ -301,20 +310,20 @@
     <div class="container">
       <div class="section-header">
         <div class="section-label reveal">Tarifs</div>
-        <h2 class="section-title reveal">Des prix clairs,<br><em class="gradient-text">sans mauvaise surprise</em></h2>
-        <p class="section-sub reveal">Choisissez la formule qui correspond à vos besoins. Paiement en 3× possible. Pas d'abonnement caché.</p>
+        <h2 class="section-title reveal" data-i18n="prix-title">Des prix clairs,<br><em class="gradient-text">sans mauvaise surprise</em></h2>
+        <p class="section-sub reveal" data-i18n="prix-sub">Choisissez la formule qui correspond à vos besoins. Paiement en 3× possible. Pas d'abonnement caché.</p>
       </div>
 
       <div class="pricing-grid">
 
         <div class="pricing-card reveal">
-          <div class="plan-badge">Démarrage</div>
+          <div class="plan-badge" data-i18n="plan1-badge">Démarrage</div>
           <div class="plan-name">Essentiel</div>
           <div class="plan-price-wrap">
             <div class="plan-price"><sup>€</sup>990</div>
             <div class="plan-paiement">ou 3× 330€</div>
           </div>
-          <div class="plan-desc">Idéal pour démarrer avec une présence professionnelle qui rassure et convertit.</div>
+          <div class="plan-desc" data-i18n="plan1-desc">Idéal pour démarrer avec une présence professionnelle qui rassure et convertit.</div>
           <ul class="plan-features">
             <li>Site vitrine 3 pages</li>
             <li>Design personnalisé</li>
@@ -323,18 +332,18 @@
             <li>SEO de base</li>
             <li>⚡ Livraison en 4 jours</li>
           </ul>
-          <a href="#contact" class="btn-plan btn-plan-outline magnetic">Commencer →</a>
+          <a href="/essentiel.html" class="btn-plan btn-plan-outline magnetic" data-i18n="plan-cta">Commencer →</a>
         </div>
 
         <div class="pricing-card featured reveal">
-          <div class="plan-popular">⭐ Le plus populaire</div>
-          <div class="plan-badge">Professionnel</div>
+          <div class="plan-popular" data-i18n="plan-popular">⭐ Le plus populaire</div>
+          <div class="plan-badge" data-i18n="plan2-badge">Professionnel</div>
           <div class="plan-name">Pro</div>
           <div class="plan-price-wrap">
             <div class="plan-price"><sup>à partir de €</sup>1 690</div>
             <div class="plan-paiement">ou 3× 564€</div>
           </div>
-          <div class="plan-desc">Pour les professionnels qui veulent se démarquer et générer des leads qualifiés.</div>
+          <div class="plan-desc" data-i18n="plan2-desc">Pour les professionnels qui veulent se démarquer et générer des leads qualifiés.</div>
           <ul class="plan-features">
             <li>Site jusqu'à 8 pages</li>
             <li>Design premium sur-mesure</li>
@@ -344,17 +353,17 @@
             <li>3 mois de maintenance</li>
             <li>⚡ Livraison en 4 jours</li>
           </ul>
-          <a href="#contact" class="btn-plan btn-plan-filled magnetic">Commencer →</a>
+          <a href="#contact" class="btn-plan btn-plan-filled magnetic" data-i18n="plan-cta2">Commencer →</a>
         </div>
 
         <div class="pricing-card reveal">
-          <div class="plan-badge">Boutique</div>
+          <div class="plan-badge" data-i18n="plan3-badge">Boutique</div>
           <div class="plan-name">E-commerce</div>
           <div class="plan-price-wrap">
             <div class="plan-price"><sup>à partir de €</sup>3 090</div>
             <div class="plan-paiement">ou 3× 1 030€</div>
           </div>
-          <div class="plan-desc">Une boutique complète pour vendre en ligne et rentabiliser en quelques semaines.</div>
+          <div class="plan-desc" data-i18n="plan3-desc">Une boutique complète pour vendre en ligne et rentabiliser en quelques semaines.</div>
           <ul class="plan-features">
             <li>Boutique produits illimitée</li>
             <li>Paiement en ligne sécurisé</li>
@@ -366,7 +375,7 @@
             <li>⚡ Livraison en 4 jours*</li>
           </ul>
           <p style="font-size:11px;color:#444;margin-top:12px;line-height:1.5;">* Délai indicatif à partir de 4 jours. Selon la complexité du projet, le délai peut être ajusté lors du brief.</p>
-          <a href="#contact" class="btn-plan btn-plan-outline magnetic">Commencer →</a>
+          <a href="#contact" class="btn-plan btn-plan-outline magnetic" data-i18n="plan-cta3">Commencer →</a>
         </div>
 
       </div>
@@ -375,19 +384,19 @@
       <div class="guarantees reveal">
         <div class="guarantee-item">
           <span class="g-icon">🔒</span>
-          <span>Paiement 100% sécurisé</span>
+          <span data-i18n="guar-1">Paiement 100% sécurisé</span>
         </div>
         <div class="guarantee-item">
           <span class="g-icon">↩️</span>
-          <span>Satisfait ou remboursé 14j</span>
+          <span data-i18n="guar-2">Satisfait ou remboursé 14j</span>
         </div>
         <div class="guarantee-item">
           <span class="g-icon">📅</span>
-          <span>Délai garanti contractuellement</span>
+          <span data-i18n="guar-3">Délai garanti contractuellement</span>
         </div>
         <div class="guarantee-item">
           <span class="g-icon">💬</span>
-          <span>Support prioritaire inclus</span>
+          <span data-i18n="guar-4">Support prioritaire inclus</span>
         </div>
       </div>
     </div>
@@ -398,19 +407,19 @@
     <div class="container">
       <div class="section-header">
         <div class="section-label reveal">Avis clients</div>
-        <h2 class="section-title reveal">Ils ont sauté le pas.<br><em class="gradient-text">Voici ce qu'ils en pensent.</em></h2>
+        <h2 class="section-title reveal" data-i18n="avis-title">Ils ont sauté le pas.<br><em class="gradient-text">Voici ce qu'ils en pensent.</em></h2>
       </div>
 
       <div class="testimonials-grid">
         <div class="testimonial-card reveal">
           <div class="t-quote">"</div>
           <div class="stars">★★★★★</div>
-          <blockquote>"Livraison en 4 jours, site magnifique, et mes clients me font régulièrement des compliments. Meilleur investissement de l'année."</blockquote>
+          <blockquote data-i18n="test-1">"Livraison en 4 jours, site magnifique, et mes clients me font régulièrement des compliments. Meilleur investissement de l'année."</blockquote>
           <div class="testimonial-author">
             <div class="avatar" style="background:linear-gradient(135deg,#DA5426,#f2b13b)">SM</div>
             <div class="author-info">
               <strong>Sophie M.</strong>
-              <span>Coach bien-être · Site Pro</span>
+              <span data-i18n="test-1-role">Coach bien-être · Site Pro</span>
             </div>
           </div>
         </div>
@@ -418,12 +427,12 @@
         <div class="testimonial-card reveal">
           <div class="t-quote">"</div>
           <div class="stars">★★★★★</div>
-          <blockquote>"J'avais peur que ce soit compliqué. Tout s'est passé sans accroc, ils ont su exactement ce dont j'avais besoin. Je recommande à 100%."</blockquote>
+          <blockquote data-i18n="test-2">"J'avais peur que ce soit compliqué. Tout s'est passé sans accroc, ils ont su exactement ce dont j'avais besoin. Je recommande à 100%."</blockquote>
           <div class="testimonial-author">
             <div class="avatar" style="background:linear-gradient(135deg,#884083,#DA5426)">TL</div>
             <div class="author-info">
               <strong>Thomas L.</strong>
-              <span>Artisan menuisier · Site Essentiel</span>
+              <span data-i18n="test-2-role">Artisan menuisier · Site Essentiel</span>
             </div>
           </div>
         </div>
@@ -431,15 +440,15 @@
         <div class="testimonial-card featured-testimonial reveal">
           <div class="t-quote">"</div>
           <div class="stars">★★★★★</div>
-          <blockquote>"Notre boutique en ligne a généré <strong>3 000€ de chiffre d'affaires le premier mois</strong>. L'investissement a été rentabilisé en quelques semaines."</blockquote>
+          <blockquote data-i18n="test-3">"Notre boutique en ligne a généré <strong>3 000€ de chiffre d'affaires le premier mois</strong>. L'investissement a été rentabilisé en quelques semaines."</blockquote>
           <div class="testimonial-author">
             <div class="avatar" style="background:linear-gradient(135deg,#f2b13b,#884083)">AC</div>
             <div class="author-info">
               <strong>Amandine C.</strong>
-              <span>Créatrice de bijoux · E-commerce</span>
+              <span data-i18n="test-3-role">Créatrice de bijoux · E-commerce</span>
             </div>
           </div>
-          <div class="t-result">📈 ROI en 3 semaines</div>
+          <div class="t-result" data-i18n="test-3-result">📈 ROI en 3 semaines</div>
         </div>
       </div>
     </div>
@@ -450,7 +459,7 @@
     <div class="container">
       <div class="section-header">
         <div class="section-label reveal">FAQ</div>
-        <h2 class="section-title reveal">Les questions<br><em class="gradient-text">qu'on nous pose souvent</em></h2>
+        <h2 class="section-title reveal" data-i18n="faq-title">Les questions<br><em class="gradient-text">qu'on nous pose souvent</em></h2>
       </div>
 
       <div class="faq-list">
@@ -459,13 +468,13 @@
           <button class="faq-question">
             <span class="faq-q-inner">
               <span class="faq-num">01</span>
-              <span>Comment fonctionne la livraison en 4 jours ?</span>
+              <span data-i18n="faq-1-q">Comment fonctionne la livraison en 4 jours ?</span>
             </span>
             <span class="faq-icon">+</span>
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner">
-              <p>Dès réception de vos contenus et du premier acompte, on démarre immédiatement. <strong>Jour 1 :</strong> brief & maquette. <strong>Jour 2 :</strong> validation & développement. <strong>Jours 3–4 :</strong> finalisation, tests et mise en ligne. Simple, rapide, garanti contractuellement.</p>
+              <p data-i18n="faq-1-a">Dès réception de vos contenus et du premier acompte, on démarre immédiatement. <strong>Jour 1 :</strong> brief & maquette. <strong>Jour 2 :</strong> validation & développement. <strong>Jours 3–4 :</strong> finalisation, tests et mise en ligne. Simple, rapide, garanti contractuellement.</p>
             </div>
           </div>
         </div>
@@ -474,13 +483,13 @@
           <button class="faq-question">
             <span class="faq-q-inner">
               <span class="faq-num">02</span>
-              <span>Que comprend exactement la maintenance ?</span>
+              <span data-i18n="faq-2-q">Que comprend exactement la maintenance ?</span>
             </span>
             <span class="faq-icon">+</span>
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner">
-              <p>Notre maintenance couvre tout ce dont votre site a besoin pour rester performant et sécurisé :</p>
+              <p data-i18n="faq-2-a">Notre maintenance couvre tout ce dont votre site a besoin pour rester performant et sécurisé :</p>
               <ul class="faq-list-items">
                 <li>🔒 Mises à jour de sécurité régulières</li>
                 <li>🐛 Correction de bugs sous 24h</li>
@@ -489,7 +498,9 @@
                 <li>📧 Support réactif par email sous 4h</li>
                 <li>⚙️ Mises à jour des plugins et du CMS</li>
               </ul>
-              <p style="margin-top:12px;">Vous dormez tranquille, on s'occupe de tout.</p>
+              <p style="margin-top:16px;padding:12px 14px;background:rgba(218,84,38,0.06);border:1px solid rgba(218,84,38,0.15);border-radius:10px;font-size:13px;">
+                💡 <strong style="color:#e8e8e8;">80€/mois</strong> — Engagement 12 mois · Sans surprise · Résiliable à l'issue de l'engagement.
+              </p>
             </div>
           </div>
         </div>
@@ -498,13 +509,13 @@
           <button class="faq-question">
             <span class="faq-q-inner">
               <span class="faq-num">03</span>
-              <span>Et si je ne suis pas satisfait du résultat ?</span>
+              <span data-i18n="faq-3-q">Et si je ne suis pas satisfait du résultat ?</span>
             </span>
             <span class="faq-icon">+</span>
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner">
-              <p>On offre des allers-retours <strong>illimités</strong> pendant la phase de design jusqu'à ce que vous soyez 100% satisfait. Et si malgré tout vous n'êtes pas content dans les <strong>14 jours</strong> suivant la livraison, on vous rembourse intégralement. Zéro risque pour vous.</p>
+              <p data-i18n="faq-3-a">On offre des allers-retours <strong>illimités</strong> pendant la phase de design jusqu'à ce que vous soyez 100% satisfait. Et si malgré tout vous n'êtes pas content dans les <strong>14 jours</strong> suivant la livraison, on vous rembourse intégralement. Zéro risque pour vous.</p>
             </div>
           </div>
         </div>
@@ -513,13 +524,13 @@
           <button class="faq-question">
             <span class="faq-q-inner">
               <span class="faq-num">04</span>
-              <span>Je n'ai pas de textes ni de photos, vous pouvez m'aider ?</span>
+              <span data-i18n="faq-4-q">Je n'ai pas de textes ni de photos, vous pouvez m'aider ?</span>
             </span>
             <span class="faq-icon">+</span>
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner">
-              <p>Absolument. On propose un service de <strong>rédaction (copywriting)</strong> et de sélection d'images libres de droits. On peut partir de zéro et construire tout votre contenu de marque. Mentionnez-le lors de votre brief et on intègre tout ça dans le devis.</p>
+              <p data-i18n="faq-4-a">Absolument. On propose un service de <strong>rédaction (copywriting)</strong> et de sélection d'images libres de droits. On peut partir de zéro et construire tout votre contenu de marque. Mentionnez-le lors de votre brief et on intègre tout ça dans le devis.</p>
             </div>
           </div>
         </div>
@@ -528,13 +539,13 @@
           <button class="faq-question">
             <span class="faq-q-inner">
               <span class="faq-num">05</span>
-              <span>Vais-je pouvoir modifier mon site moi-même ?</span>
+              <span data-i18n="faq-5-q">Vais-je pouvoir modifier mon site moi-même ?</span>
             </span>
             <span class="faq-icon">+</span>
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner">
-              <p>Oui ! Chaque site est livré avec une interface d'administration <strong>simple et intuitive</strong>. Une formation d'1h est incluse pour que vous puissiez mettre à jour textes, images et pages en autonomie. Aucune compétence technique requise.</p>
+              <p data-i18n="faq-5-a">Oui ! Chaque site est livré avec une interface d'administration <strong>simple et intuitive</strong>. Une formation d'1h est incluse pour que vous puissiez mettre à jour textes, images et pages en autonomie. Aucune compétence technique requise.</p>
             </div>
           </div>
         </div>
@@ -543,13 +554,13 @@
           <button class="faq-question">
             <span class="faq-q-inner">
               <span class="faq-num">06</span>
-              <span>Mon site sera-t-il visible sur Google ?</span>
+              <span data-i18n="faq-6-q">Mon site sera-t-il visible sur Google ?</span>
             </span>
             <span class="faq-icon">+</span>
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner">
-              <p>Tous nos sites intègrent un <strong>SEO technique de base</strong> (balises meta, vitesse, structure). Les formules Pro et E-commerce incluent un SEO avancé avec audit de mots-clés, optimisation des pages et soumission au Search Console. Votre site sera indexé et positionné dès le lancement.</p>
+              <p data-i18n="faq-6-a">Tous nos sites intègrent un <strong>SEO technique de base</strong> (balises meta, vitesse, structure). Les formules Pro et E-commerce incluent un SEO avancé avec audit de mots-clés, optimisation des pages et soumission au Search Console. Votre site sera indexé et positionné dès le lancement.</p>
             </div>
           </div>
         </div>
@@ -566,20 +577,20 @@
 
         <!-- Colonne gauche : pitch -->
         <div class="contact-left">
-          <div class="cta-badge reveal">🚀 Réponse sous 24h · Sans engagement</div>
-          <h2 class="reveal">Prêt à faire décoller<br><em class="cta-gradient">votre projet ?</em></h2>
-          <p class="reveal">Décrivez votre projet ci-contre. On vous répond <strong>sous 24h</strong> avec un plan d'action concret et un devis personnalisé.</p>
+          <div class="cta-badge reveal" data-i18n="contact-badge">🚀 Réponse sous 24h · Sans engagement</div>
+          <h2 class="reveal" data-i18n="contact-h2">Prêt à faire décoller<br><em class="cta-gradient">votre projet ?</em></h2>
+          <p class="reveal" data-i18n="contact-p">Décrivez votre projet ci-contre. On vous répond <strong>sous 24h</strong> avec un plan d'action concret et un devis personnalisé.</p>
 
           <div class="contact-guarantees reveal">
-            <div class="cg-item"><span class="cg-icon">⚡</span><span>Réponse sous 24h garantie</span></div>
-            <div class="cg-item"><span class="cg-icon">🔒</span><span>Données 100% confidentielles</span></div>
-            <div class="cg-item"><span class="cg-icon">🎯</span><span>Devis gratuit & personnalisé</span></div>
-            <div class="cg-item"><span class="cg-icon">↩️</span><span>Satisfait ou remboursé 14j</span></div>
+            <div class="cg-item"><span class="cg-icon">⚡</span><span data-i18n="cg-1">Réponse sous 24h garantie</span></div>
+            <div class="cg-item"><span class="cg-icon">🔒</span><span data-i18n="cg-2">Données 100% confidentielles</span></div>
+            <div class="cg-item"><span class="cg-icon">🎯</span><span data-i18n="cg-3">Devis gratuit & personnalisé</span></div>
+            <div class="cg-item"><span class="cg-icon">↩️</span><span data-i18n="cg-4">Satisfait ou remboursé 14j</span></div>
           </div>
 
           <div class="cta-urgency reveal">
             <div class="urgency-pulse"></div>
-            <span>🔥 Seulement <strong>3 places disponibles</strong> ce mois-ci</span>
+            <span data-i18n="urgency-text">🔥 Seulement <strong>3 places disponibles</strong> ce mois-ci</span>
           </div>
 
           <div class="reveal" style="margin-top:28px;">
@@ -587,7 +598,7 @@
               <span class="btn-prospect-bg"></span>
               <span class="btn-prospect-content">
                 <span class="btn-prospect-icon">📋</span>
-                <span class="btn-prospect-text">Vous avez un grand projet sur-mesure ? Dites-nous tout →</span>
+                <span class="btn-prospect-text" data-i18n="prospect-btn">Vous avez un grand projet sur-mesure ? Dites-nous tout →</span>
               </span>
             </a>
             <p style="font-size:13px;color:#555;margin-top:10px;">Projet ambitieux · Brief complet · Devis ultra-précis sous 24h</p>
@@ -603,12 +614,12 @@
 
             <div class="form-row">
               <div class="form-group">
-                <label for="f-name">Nom complet *</label>
+                <label for="f-name" data-i18n="form-name">Nom complet *</label>
                 <input type="text" id="f-name" name="name" placeholder="Jean Dupont" required autocomplete="name">
                 <span class="form-error" id="err-name"></span>
               </div>
               <div class="form-group">
-                <label for="f-email">Email *</label>
+                <label for="f-email" data-i18n="form-email">Email *</label>
                 <input type="email" id="f-email" name="email" placeholder="jean@exemple.fr" required autocomplete="email">
                 <span class="form-error" id="err-email"></span>
               </div>
@@ -616,11 +627,11 @@
 
             <div class="form-row">
               <div class="form-group">
-                <label for="f-phone">Téléphone</label>
+                <label for="f-phone" data-i18n="form-phone">Téléphone</label>
                 <input type="tel" id="f-phone" name="phone" placeholder="+33 6 00 00 00 00" autocomplete="tel">
               </div>
               <div class="form-group">
-                <label for="f-service">Service souhaité</label>
+                <label for="f-service" data-i18n="form-service">Service souhaité</label>
                 <select id="f-service" name="service">
                   <option value="">-- Choisir --</option>
                   <option value="Site Vitrine">Site Vitrine</option>
@@ -634,7 +645,7 @@
             </div>
 
             <div class="form-group">
-              <label>Budget approximatif</label>
+              <label data-i18n="form-budget">Budget approximatif</label>
               <div class="budget-chips" id="budget-chips">
                 <button type="button" class="budget-chip" data-value="Moins de 1 000€">&lt; 1 000€</button>
                 <button type="button" class="budget-chip" data-value="1 000 – 2 000€">1–2k€</button>
@@ -645,7 +656,7 @@
             </div>
 
             <div class="form-group">
-              <label for="f-message">Décrivez votre projet *</label>
+              <label for="f-message" data-i18n="form-message">Décrivez votre projet *</label>
               <textarea id="f-message" name="message" rows="5"
                 placeholder="Parlez-nous de votre activité, vos objectifs, votre cible, vos délais..." required></textarea>
               <span class="form-error" id="err-message"></span>
@@ -654,7 +665,7 @@
             <div id="form-feedback" class="form-feedback" aria-live="polite"></div>
 
             <button type="submit" class="btn-submit" id="btn-submit">
-              <span id="btn-text">Envoyer mon message →</span>
+              <span id="btn-text" data-i18n="form-submit">Envoyer mon message →</span>
               <span id="btn-loader" hidden>
                 <svg class="spin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18">
                   <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
@@ -663,7 +674,7 @@
               </span>
             </button>
 
-            <p class="form-legal">En soumettant ce formulaire, vous acceptez que vos données soient utilisées pour vous recontacter. Aucun spam.</p>
+            <p class="form-legal" data-i18n="form-legal">En soumettant ce formulaire, vous acceptez que vos données soient utilisées pour vous recontacter. Aucun spam.</p>
           </form>
         </div>
 
@@ -678,7 +689,7 @@
         <a href="#" class="footer-logo">
           <img src="logo/4dayvelopment_logo.png" alt="4dayvelopment" class="logo-img">
         </a>
-        <p>Agence web nouvelle génération.<br>Sites livrés en 4 jours, garantis.</p>
+        <p data-i18n="footer-tagline">Agence web nouvelle génération.<br>Sites livrés en 4 jours, garantis.</p>
         <div class="footer-socials">
           <a href="#" aria-label="LinkedIn">in</a>
           <a href="#" aria-label="Instagram">ig</a>
