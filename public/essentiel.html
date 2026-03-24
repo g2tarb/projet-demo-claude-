@@ -396,6 +396,17 @@
     .field-error { font-size: 11px; color: #ef4444; display: none; }
     .field-error.show { display: block; }
 
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      15%  { transform: translateX(-8px); }
+      30%  { transform: translateX(8px); }
+      45%  { transform: translateX(-6px); }
+      60%  { transform: translateX(6px); }
+      75%  { transform: translateX(-4px); }
+      90%  { transform: translateX(4px); }
+    }
+    .shake { animation: shake 0.55s ease; }
+
     /* Pages checkbox */
     .pages-grid {
       display: grid;
@@ -905,6 +916,13 @@
       const el = document.getElementById(id);
       if (el) el.classList.toggle('err', show);
     }
+    function shake(el) {
+      if (!el) return;
+      el.classList.remove('shake');
+      void el.offsetWidth;
+      el.classList.add('shake');
+      el.addEventListener('animationend', () => el.classList.remove('shake'), { once: true });
+    }
 
     function validate() {
       let ok = true;
@@ -929,7 +947,12 @@
 
     document.getElementById('form-essentiel').addEventListener('submit', async e => {
       e.preventDefault();
-      if (!validate()) return;
+      if (!validate()) {
+        shake(document.getElementById('form-essentiel'));
+        const firstErr = document.querySelector('.field input.err, .field textarea.err');
+        if (firstErr) { firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' }); firstErr.focus(); }
+        return;
+      }
 
       const btn = document.getElementById('btn-submit');
       const fb  = document.getElementById('form-feedback');
