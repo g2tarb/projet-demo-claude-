@@ -1133,7 +1133,7 @@
         </button>
       </div>
 
-      <p style="font-size:12px;color:var(--c-muted);text-align:center;margin-top:16px;">
+      <p id="lead-legal" style="font-size:12px;color:var(--c-muted);text-align:center;margin-top:16px;">
         En soumettant ce formulaire, vous acceptez que vos données soient utilisées pour vous recontacter. Aucun spam.
       </p>
     </section>
@@ -1362,26 +1362,28 @@
     }
     function getFonctionnalites() {
       const checked = [...document.querySelectorAll('input[name="fonctionnalites"]:checked')];
-      return checked.map(c => c.value).join(', ') || 'Aucune sélectionnée';
+      const en = localStorage.getItem('lang') === 'en';
+      return checked.map(c => c.value).join(', ') || (en ? 'None selected' : 'Aucune sélectionnée');
     }
 
     function buildRecap() {
       const data = collectData();
       const grid = document.getElementById('recap-grid');
+      const en = localStorage.getItem('lang') === 'en';
       const rows = [
-        { l: 'Prénom / Nom', v: [data.prenom, data.nom].filter(Boolean).join(' ') },
+        { l: en ? 'First name / Last name' : 'Prénom / Nom', v: [data.prenom, data.nom].filter(Boolean).join(' ') },
         { l: 'Email',        v: data.email },
-        { l: 'Téléphone',   v: data.tel || '—' },
-        { l: 'Société',     v: data.societe || '—' },
-        { l: 'Secteur',     v: data.secteur || '—' },
-        { l: 'Site actuel', v: data.siteActuel || '—' },
-        { l: 'Type de site', v: data.typeSite || '—' },
+        { l: en ? 'Phone'    : 'Téléphone',   v: data.tel || '—' },
+        { l: en ? 'Company'  : 'Société',     v: data.societe || '—' },
+        { l: en ? 'Sector'   : 'Secteur',     v: data.secteur || '—' },
+        { l: en ? 'Current site' : 'Site actuel', v: data.siteActuel || '—' },
+        { l: en ? 'Site type'    : 'Type de site', v: data.typeSite || '—' },
         { l: 'Budget',      v: data.budget },
-        { l: 'Délai',       v: data.delai || '—' },
-        { l: 'Objectif',    v: data.objectif || '—' },
+        { l: en ? 'Timeline' : 'Délai',       v: data.delai || '—' },
+        { l: en ? 'Goal'     : 'Objectif',    v: data.objectif || '—' },
         { l: 'Pages',       v: data.pages, full: true },
-        { l: 'Fonctionnalités', v: data.fonctionnalites, full: true },
-        { l: 'Style visuel', v: data.style || '—' },
+        { l: en ? 'Features' : 'Fonctionnalités', v: data.fonctionnalites, full: true },
+        { l: en ? 'Visual style' : 'Style visuel', v: data.style || '—' },
         { l: 'Description', v: data.description, full: true },
       ];
 
@@ -1503,65 +1505,282 @@ ${d.description}
       const el  = els[idx === undefined ? 0 : idx];
       if (el) el.innerHTML = html;
     }
+    function setPH(sel, text) {
+      const el = document.querySelector(sel);
+      if (el) el.placeholder = text;
+    }
+
     const T = {
       fr: [
-        ['#secure-text',              'Données sécurisées · Sans engagement'],
-        ['.lead-badge',               '🚀 Devis personnalisé sous 24h'],
-        ['.lead-hero h1',             'Démarrons votre<br><span class="g">projet ensemble</span>'],
-        ['.lead-hero p',              'Remplissez ce formulaire en 3 minutes et recevez une proposition sur-mesure.'],
-        ['.si-step span',             'Identité', 0],
-        ['.si-step span',             'Projet', 1],
-        ['.si-step span',             'Besoins', 2],
-        ['.si-step span',             'Récapitulatif', 3],
-        ['.section-title-wrap h2',    'Qui êtes-vous ?', 0],
-        ['.section-title-wrap p',     'Quelques informations pour personnaliser votre devis.', 0],
-        ['.section-title-wrap h2',    'Votre projet', 1],
-        ['.section-title-wrap p',     'Dites-nous ce que vous recherchez.', 1],
-        ['.section-title-wrap h2',    'Vos besoins détaillés', 2],
-        ['.section-title-wrap p',     'Plus vous êtes précis, meilleur sera notre devis.', 2],
-        ['.section-title-wrap h2',    'Votre récapitulatif', 3],
-        ['.section-title-wrap p',     'Vérifiez vos informations avant d\'envoyer.', 3],
-        ['.btn-next-sec',             'Continuer <span>→</span>', 0],
-        ['.btn-next-sec',             'Continuer <span>→</span>', 1],
-        ['.btn-next-sec',             'Voir le récapitulatif <span>→</span>', 2],
-        ['.btn-label',                '✉️ Envoyer ma demande'],
-        ['.recap-header h3',          'Résumé de votre demande'],
-        ['#success-screen h2',        'Demande envoyée <span class="g">avec succès !</span>'],
-        ['#success-screen p',         'Notre équipe analyse votre projet et vous contactera <strong style="color:var(--c-text)">sous 24h</strong> avec une proposition personnalisée.'],
+        /* header */
+        ['#secure-text',   'Données sécurisées · Sans engagement'],
+        /* hero */
+        ['.lead-badge',    '🚀 Devis personnalisé sous 24h'],
+        ['.lead-hero h1',  'Démarrons votre<br><span class="g">projet ensemble</span>'],
+        ['.lead-hero p',   'Remplissez ce formulaire en 3 minutes et recevez une proposition sur-mesure.'],
+        /* steps */
+        ['.si-step span',  'Identité', 0],
+        ['.si-step span',  'Projet', 1],
+        ['.si-step span',  'Besoins', 2],
+        ['.si-step span',  'Récapitulatif', 3],
+        /* section titles */
+        ['.section-title-wrap h2', 'Qui êtes-vous ?', 0],
+        ['.section-title-wrap p',  'Quelques informations pour personnaliser votre devis.', 0],
+        ['.section-title-wrap h2', 'Votre projet', 1],
+        ['.section-title-wrap p',  'Dites-nous ce que vous recherchez.', 1],
+        ['.section-title-wrap h2', 'Vos besoins détaillés', 2],
+        ['.section-title-wrap p',  'Plus vous êtes précis, meilleur sera notre devis.', 2],
+        ['.section-title-wrap h2', 'Votre récapitulatif', 3],
+        ['.section-title-wrap p',  'Vérifiez vos informations avant d\'envoyer.', 3],
+        /* section 0 — labels */
+        ['[data-section="0"] .form-group label', 'Prénom <span class="req">*</span>', 0],
+        ['[data-section="0"] .form-group label', 'Nom', 1],
+        ['[data-section="0"] .form-group label', 'Email professionnel <span class="req">*</span>', 2],
+        ['[data-section="0"] .form-group label', 'Téléphone', 3],
+        ['[data-section="0"] .form-group label', 'Nom de la société / marque', 4],
+        ['[data-section="0"] .form-group label', 'Secteur d\'activité', 5],
+        ['[data-section="0"] .form-group label', 'Site web actuel (si vous en avez un)', 6],
+        /* section 0 — errors */
+        ['#err-prenom', 'Prénom requis (min. 2 caractères).'],
+        ['#err-email',  'Adresse email invalide.'],
+        /* section 0 — select secteur */
+        ['#f-secteur', '<option value="">— Choisir —</option><option>Commerce / E-commerce</option><option>Restauration / Food</option><option>Santé / Bien-être</option><option>Immobilier</option><option>Services B2B</option><option>Artisanat / Bâtiment</option><option>Consulting / Formation</option><option>Création / Art</option><option>Tech / Startup</option><option>Association / ONG</option><option>Autre</option>'],
+        /* section 1 — labels */
+        ['[data-section="1"] .form-group > label', 'Type de site souhaité <span class="req">*</span>', 0],
+        ['[data-section="1"] .form-group > label', 'Budget estimé', 1],
+        ['[data-section="1"] .form-group > label', 'Délai souhaité <span class="req">*</span>', 2],
+        ['[data-section="1"] .form-group > label', 'Objectif principal de ce projet', 3],
+        /* section 1 — type cards */
+        ['#type-grid .card-label', 'Site vitrine', 0],
+        ['#type-grid .card-sub',   'Présenter votre activité', 0],
+        ['#type-grid .card-label', 'E-commerce', 1],
+        ['#type-grid .card-sub',   'Vendre en ligne', 1],
+        ['#type-grid .card-label', 'App web', 2],
+        ['#type-grid .card-sub',   'Outil sur-mesure', 2],
+        ['#type-grid .card-label', 'Refonte', 3],
+        ['#type-grid .card-sub',   'Moderniser l\'existant', 3],
+        ['#type-grid .card-label', 'Blog / Média', 4],
+        ['#type-grid .card-sub',   'Contenu & publication', 4],
+        ['#type-grid .card-label', 'Landing page', 5],
+        ['#type-grid .card-sub',   'Page de conversion', 5],
+        /* section 1 — délai tags */
+        ['#delai-tags .tag-btn', '⚡ Urgent', 0],
+        ['#delai-tags .tag-btn', '📅 Ce mois-ci', 1],
+        ['#delai-tags .tag-btn', '🗓️ 1 à 3 mois', 2],
+        ['#delai-tags .tag-btn', '🔭 + de 3 mois', 3],
+        ['#delai-tags .tag-btn', '🤷 Pas encore défini', 4],
+        /* section 1 — errors */
+        ['#err-type',  'Veuillez choisir un type de site.'],
+        ['#err-delai', 'Veuillez sélectionner un délai.'],
+        /* section 1 — objectif select */
+        ['#f-objectif', '<option value="">— Choisir —</option><option>Attirer plus de clients</option><option>Vendre mes produits en ligne</option><option>Améliorer mon image de marque</option><option>Automatiser des processus internes</option><option>Me démarquer de la concurrence</option><option>Générer des leads qualifiés</option><option>Fidéliser ma clientèle existante</option>'],
+        /* section 2 — labels */
+        ['[data-section="2"] .form-group > label', 'Pages souhaitées (cochez tout ce qui s\'applique)', 0],
+        ['[data-section="2"] .form-group > label', 'Fonctionnalités souhaitées', 1],
+        ['[data-section="2"] .form-group > label', 'Style visuel préféré', 2],
+        ['[data-section="2"] .form-group > label', 'Décrivez votre projet en quelques mots <span class="req">*</span>', 3],
+        /* section 2 — pages check items */
+        ['[data-section="2"] .check-label', 'Accueil', 0],
+        ['[data-section="2"] .check-sub',   'Page principale de votre site', 0],
+        ['[data-section="2"] .check-label', 'À propos / Notre histoire', 1],
+        ['[data-section="2"] .check-sub',   'Votre équipe et vos valeurs', 1],
+        ['[data-section="2"] .check-label', 'Services / Offres', 2],
+        ['[data-section="2"] .check-sub',   'Ce que vous proposez', 2],
+        ['[data-section="2"] .check-label', 'Portfolio / Réalisations', 3],
+        ['[data-section="2"] .check-sub',   'Vos projets et cas clients', 3],
+        ['[data-section="2"] .check-label', 'Blog / Actualités', 4],
+        ['[data-section="2"] .check-sub',   'Articles et publications', 4],
+        ['[data-section="2"] .check-label', 'Boutique / Catalogue', 5],
+        ['[data-section="2"] .check-sub',   'Produits et e-commerce', 5],
+        ['[data-section="2"] .check-label', 'Contact / Formulaire', 6],
+        ['[data-section="2"] .check-sub',   'Prise de contact', 6],
+        ['[data-section="2"] .check-label', 'FAQ', 7],
+        ['[data-section="2"] .check-sub',   'Questions fréquentes', 7],
+        /* section 2 — fonctionnalités card labels */
+        ['[data-section="2"] .card-grid .card-label', '💬 Formulaire de contact', 0],
+        ['[data-section="2"] .card-grid .card-label', '📅 Prise de rendez-vous', 1],
+        ['[data-section="2"] .card-grid .card-label', '💳 Paiement en ligne', 2],
+        ['[data-section="2"] .card-grid .card-label', '🔐 Espace membre', 3],
+        ['[data-section="2"] .card-grid .card-label', '🌍 Multilingue', 4],
+        ['[data-section="2"] .card-grid .card-label', '📈 SEO avancé', 5],
+        ['[data-section="2"] .card-grid .card-label', '💬 Chat / Support', 6],
+        ['[data-section="2"] .card-grid .card-label', '📊 Dashboard admin', 7],
+        /* section 2 — style tags */
+        ['#style-tags .tag-btn', '✨ Moderne & épuré', 0],
+        ['#style-tags .tag-btn', '💎 Luxe & premium', 1],
+        ['#style-tags .tag-btn', '🎨 Coloré & dynamique', 2],
+        ['#style-tags .tag-btn', '🏛️ Corporatif', 3],
+        ['#style-tags .tag-btn', '◯ Minimaliste', 4],
+        ['#style-tags .tag-btn', '⚡ Bold & audacieux', 5],
+        /* section 2 — hint & error */
+        ['.section-hint', '<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Plus vous donnez de détails, plus notre devis sera précis.'],
+        ['#err-description', 'Veuillez décrire votre projet (min. 20 caractères).'],
+        /* nav buttons */
+        ['.btn-prev', '← Retour', 0],
+        ['.btn-prev', '← Retour', 1],
+        ['.btn-prev', '← Retour', 2],
+        ['.btn-prev', '← Modifier', 3],
+        ['.btn-next-sec', 'Continuer <span>→</span>', 0],
+        ['.btn-next-sec', 'Continuer <span>→</span>', 1],
+        ['.btn-next-sec', 'Voir le récapitulatif <span>→</span>', 2],
+        /* section 3 */
+        ['.btn-label',       '✉️ Envoyer ma demande'],
+        ['.recap-header h3', 'Résumé de votre demande'],
+        ['#lead-legal',      'En soumettant ce formulaire, vous acceptez que vos données soient utilisées pour vous recontacter. Aucun spam.'],
+        /* success */
+        ['#success-screen h2', 'Demande envoyée <span class="g">avec succès !</span>'],
+        ['#success-screen p',  'Notre équipe analyse votre projet et vous contactera <strong style="color:var(--c-text)">sous 24h</strong> avec une proposition personnalisée.'],
         ['.success-actions .btn-outline', '← Retour au site', 0],
         ['.success-actions .btn-outline', '💬 Discuter sur WhatsApp', 1],
       ],
       en: [
-        ['#secure-text',              'Secured data · No commitment'],
-        ['.lead-badge',               '🚀 Personalised quote within 24h'],
-        ['.lead-hero h1',             'Let\'s build your<br><span class="g">project together</span>'],
-        ['.lead-hero p',              'Fill in this form in 3 minutes and receive a tailor-made proposal.'],
-        ['.si-step span',             'Identity', 0],
-        ['.si-step span',             'Project', 1],
-        ['.si-step span',             'Needs', 2],
-        ['.si-step span',             'Summary', 3],
-        ['.section-title-wrap h2',    'Who are you?', 0],
-        ['.section-title-wrap p',     'A few details to personalise your quote.', 0],
-        ['.section-title-wrap h2',    'Your project', 1],
-        ['.section-title-wrap p',     'Tell us what you\'re looking for.', 1],
-        ['.section-title-wrap h2',    'Your detailed needs', 2],
-        ['.section-title-wrap p',     'The more precise you are, the better our quote.', 2],
-        ['.section-title-wrap h2',    'Your summary', 3],
-        ['.section-title-wrap p',     'Review your information before sending.', 3],
-        ['.btn-next-sec',             'Continue <span>→</span>', 0],
-        ['.btn-next-sec',             'Continue <span>→</span>', 1],
-        ['.btn-next-sec',             'View summary <span>→</span>', 2],
-        ['.btn-label',                '✉️ Send my request'],
-        ['.recap-header h3',          'Summary of your request'],
-        ['#success-screen h2',        'Request sent <span class="g">successfully!</span>'],
-        ['#success-screen p',         'Our team will analyse your project and contact you <strong style="color:var(--c-text)">within 24h</strong> with a personalised proposal.'],
+        /* header */
+        ['#secure-text',   'Secured data · No commitment'],
+        /* hero */
+        ['.lead-badge',    '🚀 Personalised quote within 24h'],
+        ['.lead-hero h1',  'Let\'s build your<br><span class="g">project together</span>'],
+        ['.lead-hero p',   'Fill in this form in 3 minutes and receive a tailor-made proposal.'],
+        /* steps */
+        ['.si-step span',  'Identity', 0],
+        ['.si-step span',  'Project', 1],
+        ['.si-step span',  'Needs', 2],
+        ['.si-step span',  'Summary', 3],
+        /* section titles */
+        ['.section-title-wrap h2', 'Who are you?', 0],
+        ['.section-title-wrap p',  'A few details to personalise your quote.', 0],
+        ['.section-title-wrap h2', 'Your project', 1],
+        ['.section-title-wrap p',  'Tell us what you\'re looking for.', 1],
+        ['.section-title-wrap h2', 'Your detailed needs', 2],
+        ['.section-title-wrap p',  'The more precise you are, the better our quote.', 2],
+        ['.section-title-wrap h2', 'Your summary', 3],
+        ['.section-title-wrap p',  'Review your information before sending.', 3],
+        /* section 0 — labels */
+        ['[data-section="0"] .form-group label', 'First name <span class="req">*</span>', 0],
+        ['[data-section="0"] .form-group label', 'Last name', 1],
+        ['[data-section="0"] .form-group label', 'Professional email <span class="req">*</span>', 2],
+        ['[data-section="0"] .form-group label', 'Phone', 3],
+        ['[data-section="0"] .form-group label', 'Company / brand name', 4],
+        ['[data-section="0"] .form-group label', 'Industry', 5],
+        ['[data-section="0"] .form-group label', 'Current website (if any)', 6],
+        /* section 0 — errors */
+        ['#err-prenom', 'First name required (min. 2 characters).'],
+        ['#err-email',  'Invalid email address.'],
+        /* section 0 — select secteur */
+        ['#f-secteur', '<option value="">— Select —</option><option>Retail / E-commerce</option><option>Restaurant / Food</option><option>Health / Wellness</option><option>Real estate</option><option>B2B Services</option><option>Trades / Construction</option><option>Consulting / Training</option><option>Arts / Creative</option><option>Tech / Startup</option><option>Non-profit / NGO</option><option>Other</option>'],
+        /* section 1 — labels */
+        ['[data-section="1"] .form-group > label', 'Desired site type <span class="req">*</span>', 0],
+        ['[data-section="1"] .form-group > label', 'Estimated budget', 1],
+        ['[data-section="1"] .form-group > label', 'Preferred timeline <span class="req">*</span>', 2],
+        ['[data-section="1"] .form-group > label', 'Main goal of this project', 3],
+        /* section 1 — type cards */
+        ['#type-grid .card-label', 'Showcase site', 0],
+        ['#type-grid .card-sub',   'Present your business', 0],
+        ['#type-grid .card-label', 'E-commerce', 1],
+        ['#type-grid .card-sub',   'Sell online', 1],
+        ['#type-grid .card-label', 'Web app', 2],
+        ['#type-grid .card-sub',   'Custom tool', 2],
+        ['#type-grid .card-label', 'Redesign', 3],
+        ['#type-grid .card-sub',   'Modernise existing', 3],
+        ['#type-grid .card-label', 'Blog / Media', 4],
+        ['#type-grid .card-sub',   'Content & publishing', 4],
+        ['#type-grid .card-label', 'Landing page', 5],
+        ['#type-grid .card-sub',   'Conversion page', 5],
+        /* section 1 — délai tags */
+        ['#delai-tags .tag-btn', '⚡ Urgent', 0],
+        ['#delai-tags .tag-btn', '📅 This month', 1],
+        ['#delai-tags .tag-btn', '🗓️ 1 to 3 months', 2],
+        ['#delai-tags .tag-btn', '🔭 3+ months', 3],
+        ['#delai-tags .tag-btn', '🤷 Not yet decided', 4],
+        /* section 1 — errors */
+        ['#err-type',  'Please choose a site type.'],
+        ['#err-delai', 'Please select a timeline.'],
+        /* section 1 — objectif select */
+        ['#f-objectif', '<option value="">— Select —</option><option>Attract more clients</option><option>Sell my products online</option><option>Improve my brand image</option><option>Automate internal processes</option><option>Stand out from the competition</option><option>Generate qualified leads</option><option>Retain existing customers</option>'],
+        /* section 2 — labels */
+        ['[data-section="2"] .form-group > label', 'Desired pages (check all that apply)', 0],
+        ['[data-section="2"] .form-group > label', 'Desired features', 1],
+        ['[data-section="2"] .form-group > label', 'Preferred visual style', 2],
+        ['[data-section="2"] .form-group > label', 'Describe your project in a few words <span class="req">*</span>', 3],
+        /* section 2 — pages check items */
+        ['[data-section="2"] .check-label', 'Home', 0],
+        ['[data-section="2"] .check-sub',   'Main page of your site', 0],
+        ['[data-section="2"] .check-label', 'About / Our story', 1],
+        ['[data-section="2"] .check-sub',   'Your team and values', 1],
+        ['[data-section="2"] .check-label', 'Services / Offers', 2],
+        ['[data-section="2"] .check-sub',   'What you provide', 2],
+        ['[data-section="2"] .check-label', 'Portfolio / Work', 3],
+        ['[data-section="2"] .check-sub',   'Your projects and case studies', 3],
+        ['[data-section="2"] .check-label', 'Blog / News', 4],
+        ['[data-section="2"] .check-sub',   'Articles and posts', 4],
+        ['[data-section="2"] .check-label', 'Shop / Catalogue', 5],
+        ['[data-section="2"] .check-sub',   'Products and e-commerce', 5],
+        ['[data-section="2"] .check-label', 'Contact / Form', 6],
+        ['[data-section="2"] .check-sub',   'Get in touch', 6],
+        ['[data-section="2"] .check-label', 'FAQ', 7],
+        ['[data-section="2"] .check-sub',   'Frequently asked questions', 7],
+        /* section 2 — fonctionnalités card labels */
+        ['[data-section="2"] .card-grid .card-label', '💬 Contact form', 0],
+        ['[data-section="2"] .card-grid .card-label', '📅 Online booking', 1],
+        ['[data-section="2"] .card-grid .card-label', '💳 Online payment', 2],
+        ['[data-section="2"] .card-grid .card-label', '🔐 Member area', 3],
+        ['[data-section="2"] .card-grid .card-label', '🌍 Multilingual', 4],
+        ['[data-section="2"] .card-grid .card-label', '📈 Advanced SEO', 5],
+        ['[data-section="2"] .card-grid .card-label', '💬 Chat / Support', 6],
+        ['[data-section="2"] .card-grid .card-label', '📊 Admin dashboard', 7],
+        /* section 2 — style tags */
+        ['#style-tags .tag-btn', '✨ Modern & clean', 0],
+        ['#style-tags .tag-btn', '💎 Luxury & premium', 1],
+        ['#style-tags .tag-btn', '🎨 Colourful & dynamic', 2],
+        ['#style-tags .tag-btn', '🏛️ Corporate', 3],
+        ['#style-tags .tag-btn', '◯ Minimalist', 4],
+        ['#style-tags .tag-btn', '⚡ Bold & daring', 5],
+        /* section 2 — hint & error */
+        ['.section-hint', '<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>The more details you provide, the more accurate our quote.'],
+        ['#err-description', 'Please describe your project (min. 20 characters).'],
+        /* nav buttons */
+        ['.btn-prev', '← Back', 0],
+        ['.btn-prev', '← Back', 1],
+        ['.btn-prev', '← Back', 2],
+        ['.btn-prev', '← Edit', 3],
+        ['.btn-next-sec', 'Continue <span>→</span>', 0],
+        ['.btn-next-sec', 'Continue <span>→</span>', 1],
+        ['.btn-next-sec', 'View summary <span>→</span>', 2],
+        /* section 3 */
+        ['.btn-label',       '✉️ Send my request'],
+        ['.recap-header h3', 'Summary of your request'],
+        ['#lead-legal',      'By submitting this form, you agree that your data will be used to contact you back. No spam.'],
+        /* success */
+        ['#success-screen h2', 'Request sent <span class="g">successfully!</span>'],
+        ['#success-screen p',  'Our team will analyse your project and contact you <strong style="color:var(--c-text)">within 24h</strong> with a personalised proposal.'],
         ['.success-actions .btn-outline', '← Back to website', 0],
         ['.success-actions .btn-outline', '💬 Chat on WhatsApp', 1],
       ],
     };
 
+    const PH = {
+      fr: [
+        ['#f-prenom',      'Marie'],
+        ['#f-nom',         'Dupont'],
+        ['#f-email',       'marie@entreprise.fr'],
+        ['#f-tel',         '+33 6 12 34 56 78'],
+        ['#f-societe',     'Dupont Consulting'],
+        ['#f-site-actuel', 'https://monsite.fr'],
+        ['#f-description', 'Ex: Je suis coach sportif, je veux un site pour présenter mes programmes, prendre des RDV en ligne et vendre mes guides PDF...'],
+      ],
+      en: [
+        ['#f-prenom',      'Sophie'],
+        ['#f-nom',         'Smith'],
+        ['#f-email',       'sophie@company.com'],
+        ['#f-tel',         '+44 7700 900 000'],
+        ['#f-societe',     'Smith Consulting'],
+        ['#f-site-actuel', 'https://mysite.com'],
+        ['#f-description', 'E.g.: I\'m a fitness coach, I want a site to present my programmes, take online bookings and sell my PDF guides...'],
+      ],
+    };
+
     function applyLang(lang) {
       (T[lang] || []).forEach(([sel, html, idx]) => set(sel, html, idx));
+      (PH[lang] || []).forEach(([sel, text]) => setPH(sel, text));
       document.documentElement.lang = lang;
       const btn = document.getElementById('lang-btn');
       if (btn) btn.textContent = lang === 'fr' ? '🇬🇧 EN' : '🇫🇷 FR';
