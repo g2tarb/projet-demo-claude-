@@ -20,7 +20,10 @@
     <div class="progress-wrap">
       <div class="progress-bar" id="progress-bar"></div>
     </div>
-    <div class="progress-label" id="progress-label">1 / 12</div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button id="lang-btn" class="lang-btn-ext" onclick="toggleLang()">🇬🇧 EN</button>
+      <div class="progress-label" id="progress-label">1 / 12</div>
+    </div>
   </header>
 
   <!-- ── CONTENEUR PRINCIPAL ── -->
@@ -511,5 +514,99 @@
   </footer>
 
   <script src="brief.js"></script>
+
+  <script>
+  /* ── i18n brief.html ── */
+  (function () {
+    function set(sel, html, idx) {
+      const els = document.querySelectorAll(sel);
+      const el  = els[idx === undefined ? 0 : idx];
+      if (el) el.innerHTML = html;
+    }
+    const T = {
+      fr: [
+        // Step 0 — Bienvenue
+        ['[data-step="0"] h1',          'Bienvenue chez<br><span class="g">4dayvelopment</span>'],
+        ['[data-step="0"] p',           'On va construire votre brief complet en <strong>3 minutes</strong>.<br>Une question à la fois, sans prise de tête.'],
+        ['[data-step="0"] .btn-next',   'Commencer <span class="btn-arrow">→</span>'],
+        ['[data-step="0"] .step-hint',  'Appuyez sur <kbd>Entrée</kbd> pour avancer'],
+        // Step 1
+        ['[data-step="1"] .step-label', 'Quel est votre <span class="g">prénom</span> ? *'],
+        ['[data-step="1"] .step-hint',  'Appuyez sur <kbd>Entrée</kbd> ↵'],
+        // Step 2
+        ['[data-step="2"] .step-label', 'Votre <span class="g">adresse email</span> ? *'],
+        ['[data-step="2"] .step-sub',   'On vous répondra ici sous 24h.'],
+        ['[data-step="2"] .step-hint',  'Appuyez sur <kbd>Entrée</kbd> ↵'],
+        // Step 3
+        ['[data-step="3"] .step-label', 'Votre <span class="g">numéro de téléphone</span> ?'],
+        ['[data-step="3"] .step-sub',   'Facultatif — pour qu\'on puisse vous rappeler si besoin.'],
+        ['[data-step="3"] .btn-skip',   'Passer →'],
+        // Step 4
+        ['[data-step="4"] .step-label', 'Nom de votre <span class="g">entreprise ou activité</span> ? *'],
+        ['[data-step="4"] .step-sub',   'Indiquez votre nom si vous êtes freelance ou particulier.'],
+        // Step 5
+        ['[data-step="5"] .step-label', 'Quel <span class="g">type de site</span> souhaitez-vous ? *'],
+        ['[data-step="5"] .step-sub',   'Choisissez celui qui correspond le mieux à votre besoin.'],
+        // Step 6
+        ['[data-step="6"] .step-label', 'Votre <span class="g">secteur d\'activité</span> ? *'],
+        // Step 7
+        ['[data-step="7"] .step-label', 'Quelles <span class="g">pages</span> souhaitez-vous ? *'],
+        ['[data-step="7"] .step-sub',   'Sélectionnez au moins une page. Vous pourrez modifier après.'],
+        // Footer
+        ['.footer-secure',              '🔒 Données sécurisées'],
+        ['#btn-prev',                   '← Précédent'],
+      ],
+      en: [
+        // Step 0
+        ['[data-step="0"] h1',          'Welcome to<br><span class="g">4dayvelopment</span>'],
+        ['[data-step="0"] p',           'We\'ll build your complete brief in <strong>3 minutes</strong>.<br>One question at a time, stress-free.'],
+        ['[data-step="0"] .btn-next',   'Get started <span class="btn-arrow">→</span>'],
+        ['[data-step="0"] .step-hint',  'Press <kbd>Enter</kbd> to continue'],
+        // Step 1
+        ['[data-step="1"] .step-label', 'What is your <span class="g">first name</span>? *'],
+        ['[data-step="1"] .step-hint',  'Press <kbd>Enter</kbd> ↵'],
+        // Step 2
+        ['[data-step="2"] .step-label', 'Your <span class="g">email address</span>? *'],
+        ['[data-step="2"] .step-sub',   'We\'ll reply here within 24h.'],
+        ['[data-step="2"] .step-hint',  'Press <kbd>Enter</kbd> ↵'],
+        // Step 3
+        ['[data-step="3"] .step-label', 'Your <span class="g">phone number</span>?'],
+        ['[data-step="3"] .step-sub',   'Optional — so we can call you back if needed.'],
+        ['[data-step="3"] .btn-skip',   'Skip →'],
+        // Step 4
+        ['[data-step="4"] .step-label', 'Name of your <span class="g">business or activity</span>? *'],
+        ['[data-step="4"] .step-sub',   'Enter your name if you\'re a freelancer or individual.'],
+        // Step 5
+        ['[data-step="5"] .step-label', 'What <span class="g">type of website</span> do you want? *'],
+        ['[data-step="5"] .step-sub',   'Choose the one that best fits your needs.'],
+        // Step 6
+        ['[data-step="6"] .step-label', 'Your <span class="g">industry</span>? *'],
+        // Step 7
+        ['[data-step="7"] .step-label', 'Which <span class="g">pages</span> do you need? *'],
+        ['[data-step="7"] .step-sub',   'Select at least one page. You can update later.'],
+        // Footer
+        ['.footer-secure',              '🔒 Secured data'],
+        ['#btn-prev',                   '← Previous'],
+      ],
+    };
+
+    function applyLang(lang) {
+      (T[lang] || []).forEach(([sel, html, idx]) => set(sel, html, idx));
+      document.documentElement.lang = lang;
+      const btn = document.getElementById('lang-btn');
+      if (btn) btn.textContent = lang === 'fr' ? '🇬🇧 EN' : '🇫🇷 FR';
+      localStorage.setItem('lang', lang);
+    }
+
+    window.toggleLang = function () {
+      applyLang(localStorage.getItem('lang') === 'en' ? 'fr' : 'en');
+    };
+
+    const saved = localStorage.getItem('lang') || 'fr';
+    const btn = document.getElementById('lang-btn');
+    if (btn) btn.textContent = saved === 'fr' ? '🇬🇧 EN' : '🇫🇷 FR';
+    if (saved === 'en') applyLang('en');
+  })();
+  </script>
 </body>
 </html>

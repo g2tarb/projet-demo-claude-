@@ -686,6 +686,20 @@
       .btn-prev { justify-content: center; }
       .btn-next-sec { justify-content: center; }
     }
+    .lang-btn-ext {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--c-sub);
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      font-family: var(--font-body);
+      letter-spacing: 0.3px;
+    }
+    .lang-btn-ext:hover { background: rgba(255,255,255,0.12); color: var(--c-text); }
   </style>
 </head>
 <body>
@@ -696,11 +710,12 @@
       <img src="logo/4dayvelopment_logo.png" alt="4dayvelopment">
     </a>
     <div class="lead-header-right">
+      <button id="lang-btn" class="lang-btn-ext" onclick="toggleLang()">🇬🇧 EN</button>
       <div class="secure-badge">
         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
         </svg>
-        Données sécurisées · Sans engagement
+        <span id="secure-text">Données sécurisées · Sans engagement</span>
       </div>
     </div>
   </header>
@@ -1478,6 +1493,90 @@ ${d.description}
         else if (currentSection === 3) submitForm();
       }
     });
+  </script>
+
+  <script>
+  /* ── i18n lead.html ── */
+  (function () {
+    function set(sel, html, idx) {
+      const els = document.querySelectorAll(sel);
+      const el  = els[idx === undefined ? 0 : idx];
+      if (el) el.innerHTML = html;
+    }
+    const T = {
+      fr: [
+        ['#secure-text',              'Données sécurisées · Sans engagement'],
+        ['.lead-badge',               '🚀 Devis personnalisé sous 24h'],
+        ['.lead-hero h1',             'Démarrons votre<br><span class="g">projet ensemble</span>'],
+        ['.lead-hero p',              'Remplissez ce formulaire en 3 minutes et recevez une proposition sur-mesure.'],
+        ['.si-step span',             'Identité', 0],
+        ['.si-step span',             'Projet', 1],
+        ['.si-step span',             'Besoins', 2],
+        ['.si-step span',             'Récapitulatif', 3],
+        ['.section-title-wrap h2',    'Qui êtes-vous ?', 0],
+        ['.section-title-wrap p',     'Quelques informations pour personnaliser votre devis.', 0],
+        ['.section-title-wrap h2',    'Votre projet', 1],
+        ['.section-title-wrap p',     'Dites-nous ce que vous recherchez.', 1],
+        ['.section-title-wrap h2',    'Vos besoins détaillés', 2],
+        ['.section-title-wrap p',     'Plus vous êtes précis, meilleur sera notre devis.', 2],
+        ['.section-title-wrap h2',    'Votre récapitulatif', 3],
+        ['.section-title-wrap p',     'Vérifiez vos informations avant d\'envoyer.', 3],
+        ['.btn-next-sec',             'Continuer <span>→</span>', 0],
+        ['.btn-next-sec',             'Continuer <span>→</span>', 1],
+        ['.btn-next-sec',             'Voir le récapitulatif <span>→</span>', 2],
+        ['.btn-label',                '✉️ Envoyer ma demande'],
+        ['.recap-header h3',          'Résumé de votre demande'],
+        ['#success-screen h2',        'Demande envoyée <span class="g">avec succès !</span>'],
+        ['#success-screen p',         'Notre équipe analyse votre projet et vous contactera <strong style="color:var(--c-text)">sous 24h</strong> avec une proposition personnalisée.'],
+        ['.success-actions .btn-outline', '← Retour au site', 0],
+        ['.success-actions .btn-outline', '💬 Discuter sur WhatsApp', 1],
+      ],
+      en: [
+        ['#secure-text',              'Secured data · No commitment'],
+        ['.lead-badge',               '🚀 Personalised quote within 24h'],
+        ['.lead-hero h1',             'Let\'s build your<br><span class="g">project together</span>'],
+        ['.lead-hero p',              'Fill in this form in 3 minutes and receive a tailor-made proposal.'],
+        ['.si-step span',             'Identity', 0],
+        ['.si-step span',             'Project', 1],
+        ['.si-step span',             'Needs', 2],
+        ['.si-step span',             'Summary', 3],
+        ['.section-title-wrap h2',    'Who are you?', 0],
+        ['.section-title-wrap p',     'A few details to personalise your quote.', 0],
+        ['.section-title-wrap h2',    'Your project', 1],
+        ['.section-title-wrap p',     'Tell us what you\'re looking for.', 1],
+        ['.section-title-wrap h2',    'Your detailed needs', 2],
+        ['.section-title-wrap p',     'The more precise you are, the better our quote.', 2],
+        ['.section-title-wrap h2',    'Your summary', 3],
+        ['.section-title-wrap p',     'Review your information before sending.', 3],
+        ['.btn-next-sec',             'Continue <span>→</span>', 0],
+        ['.btn-next-sec',             'Continue <span>→</span>', 1],
+        ['.btn-next-sec',             'View summary <span>→</span>', 2],
+        ['.btn-label',                '✉️ Send my request'],
+        ['.recap-header h3',          'Summary of your request'],
+        ['#success-screen h2',        'Request sent <span class="g">successfully!</span>'],
+        ['#success-screen p',         'Our team will analyse your project and contact you <strong style="color:var(--c-text)">within 24h</strong> with a personalised proposal.'],
+        ['.success-actions .btn-outline', '← Back to website', 0],
+        ['.success-actions .btn-outline', '💬 Chat on WhatsApp', 1],
+      ],
+    };
+
+    function applyLang(lang) {
+      (T[lang] || []).forEach(([sel, html, idx]) => set(sel, html, idx));
+      document.documentElement.lang = lang;
+      const btn = document.getElementById('lang-btn');
+      if (btn) btn.textContent = lang === 'fr' ? '🇬🇧 EN' : '🇫🇷 FR';
+      localStorage.setItem('lang', lang);
+    }
+
+    window.toggleLang = function () {
+      applyLang(localStorage.getItem('lang') === 'en' ? 'fr' : 'en');
+    };
+
+    const saved = localStorage.getItem('lang') || 'fr';
+    const btn = document.getElementById('lang-btn');
+    if (btn) btn.textContent = saved === 'fr' ? '🇬🇧 EN' : '🇫🇷 FR';
+    if (saved === 'en') applyLang('en');
+  })();
   </script>
 </body>
 </html>

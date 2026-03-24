@@ -590,6 +590,22 @@
     @keyframes drawCircle { to { stroke-dashoffset: 0; } }
     @keyframes drawCheck  { to { stroke-dashoffset: 0; } }
 
+    /* Lang toggle */
+    .lang-btn-ext {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--muted);
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.3px;
+    }
+    .lang-btn-ext:hover { background: rgba(255,255,255,0.12); color: var(--text); }
+
     /* Responsive */
     @media (max-width: 900px) {
       .page { grid-template-columns: 1fr; }
@@ -612,7 +628,10 @@
 
   <header>
     <a href="/"><img src="logo/4dayvelopment_logo.png" alt="4dayvelopment"></a>
-    <a href="/" class="back-link">← Retour au site</a>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button id="lang-btn" class="lang-btn-ext" onclick="toggleLang()">🇬🇧 EN</button>
+      <a href="/" class="back-link">← Retour au site</a>
+    </div>
   </header>
 
   <div class="page">
@@ -966,6 +985,128 @@ ${getVal('e-description')}
         btn.classList.remove('loading');
       }
     });
+  </script>
+
+  <script>
+  /* ── i18n essentiel.html ── */
+  (function () {
+    function set(sel, html, idx) {
+      const els = document.querySelectorAll(sel);
+      const el  = els[idx === undefined ? 0 : idx];
+      if (el) el.innerHTML = html;
+    }
+    const T = {
+      fr: [
+        ['.back-link',               '← Retour au site'],
+        ['.badge-4j-main',           'Livré en 4 jours'],
+        ['.badge-4j-sub',            'Garanti contractuellement · Délai respecté ou remboursé'],
+        ['.pitch h1',                'Formule <span class="g">Essentiel</span><br>à 990€'],
+        ['.pitch .desc',             'Votre site vitrine professionnel, livré en 4 jours chrono. Idéal pour démarrer avec une présence en ligne qui rassure vos clients et génère des contacts.'],
+        ['.inclus-title',            'Ce qui est inclus', 0],
+        ['.inclus-list .inclus-item','<div class="inclus-check">✓</div>Site vitrine jusqu\'à 3 pages', 0],
+        ['.inclus-list .inclus-item','<div class="inclus-check">✓</div>Design personnalisé à votre image', 1],
+        ['.inclus-list .inclus-item','<div class="inclus-check">✓</div>100% responsive (mobile, tablette, desktop)', 2],
+        ['.inclus-list .inclus-item','<div class="inclus-check">✓</div>Formulaire de contact intégré', 3],
+        ['.inclus-list .inclus-item','<div class="inclus-check">✓</div>SEO de base (balises, vitesse, indexation)', 4],
+        ['.inclus-list .inclus-item','<div class="inclus-check">✓</div>Hébergement & nom de domaine 1 an offerts', 5],
+        ['.inclus-list .inclus-item','<div class="inclus-check">✓</div>Formation administration 1h incluse', 6],
+        ['.inclus-list .inclus-item','<div class="inclus-check">✓</div>⚡ Livraison garantie en <strong>4 jours</strong>', 7],
+        ['.prix-detail',             'Paiement unique · Sans abonnement caché'],
+        ['.mb-title',                'Ajoutez la maintenance'],
+        ['.mb-sub',                  'Protégez votre investissement après la livraison'],
+        ['.mb-per',                  '/mois'],
+        ['.mb-item',                 '🔒 Mises à jour de sécurité', 0],
+        ['.mb-item',                 '🐛 Correction de bugs sous 24h', 1],
+        ['.mb-item',                 '💾 Sauvegardes quotidiennes', 2],
+        ['.mb-item',                 '📧 Support email sous 4h', 3],
+        ['.mb-footer',               'Engagement 12 mois · <strong style="color:var(--text)">960€/an</strong> · Résiliable à l\'issue de l\'engagement'],
+        ['.mb-toggle span:last-child','Ajouter la maintenance à ma commande'],
+        ['.inclus-title',            'Les 4 jours en détail', 1],
+        ['.tl-day',                  'Jour 1 — Brief & Maquette', 0],
+        ['.tl-desc',                 'On analyse votre brief, on crée la maquette visuelle et on vous la soumet pour validation.', 0],
+        ['.tl-day',                  'Jour 2 — Validation & Développement', 1],
+        ['.tl-desc',                 'Après votre accord, on développe le site complet avec votre contenu.', 1],
+        ['.tl-day',                  'Jour 3 — Finalisation & Tests', 2],
+        ['.tl-desc',                 'Tests sur tous les appareils, optimisation vitesse, ajustements finaux.', 2],
+        ['.tl-day',                  'Jour 4 — Mise en ligne ✅', 3],
+        ['.tl-desc',                 'Votre site est en ligne. On vous forme à l\'administration en 1h. C\'est parti !', 3],
+        ['.form-title',              'Démarrez votre projet'],
+        ['.form-subtitle',           'Remplissez ce formulaire · On vous répond sous 2h'],
+        ['.btn-label',               '⚡ Commander ma formule Essentiel →'],
+        ['.garanties .garantie',     '<span class="garantie-icon">🔒</span>Paiement 100% sécurisé', 0],
+        ['.garanties .garantie',     '<span class="garantie-icon">↩️</span>Satisfait ou remboursé sous 14 jours', 1],
+        ['.garanties .garantie',     '<span class="garantie-icon">⚡</span>Livraison en 4 jours garantie contractuellement', 2],
+        ['.garanties .garantie',     '<span class="garantie-icon">💬</span>Réponse sous 2h par email ou WhatsApp', 3],
+        ['.form-legal',              'En soumettant ce formulaire, vous acceptez que vos données soient utilisées pour traiter votre commande. Aucun spam.'],
+        ['#success h2',              'Commande reçue ! <span class="g">⚡</span>'],
+        ['#success p',               'On a bien reçu votre demande pour la formule Essentiel. Notre équipe vous contacte <strong style="color:var(--text)">sous 2h</strong> pour confirmer votre commande et démarrer les 4 jours.'],
+        ['.btn-retour',              '← Retour au site'],
+      ],
+      en: [
+        ['.back-link',               '← Back to website'],
+        ['.badge-4j-main',           'Delivered in 4 days'],
+        ['.badge-4j-sub',            'Contractually guaranteed · Full refund if delayed'],
+        ['.pitch h1',                '<span class="g">Essential</span> Plan<br>at €990'],
+        ['.pitch .desc',             'Your professional showcase website, delivered in 4 days flat. Perfect for launching with an online presence that reassures your clients and generates leads.'],
+        ['.inclus-title',            "What's included", 0],
+        ['.inclus-list .inclus-item','<div class="inclus-check">✓</div>Showcase website up to 3 pages', 0],
+        ['.inclus-list .inclus-item','<div class="inclus-check">✓</div>Custom design tailored to your brand', 1],
+        ['.inclus-list .inclus-item','<div class="inclus-check">✓</div>100% responsive (mobile, tablet, desktop)', 2],
+        ['.inclus-list .inclus-item','<div class="inclus-check">✓</div>Integrated contact form', 3],
+        ['.inclus-list .inclus-item','<div class="inclus-check">✓</div>Basic SEO (tags, speed, indexing)', 4],
+        ['.inclus-list .inclus-item','<div class="inclus-check">✓</div>Hosting & domain name for 1 year included', 5],
+        ['.inclus-list .inclus-item','<div class="inclus-check">✓</div>1-hour admin training included', 6],
+        ['.inclus-list .inclus-item','<div class="inclus-check">✓</div>⚡ Delivery guaranteed in <strong>4 days</strong>', 7],
+        ['.prix-detail',             'One-time payment · No hidden subscription'],
+        ['.mb-title',                'Add maintenance'],
+        ['.mb-sub',                  'Protect your investment after delivery'],
+        ['.mb-per',                  '/mo'],
+        ['.mb-item',                 '🔒 Security updates', 0],
+        ['.mb-item',                 '🐛 Bug fixes within 24h', 1],
+        ['.mb-item',                 '💾 Daily backups', 2],
+        ['.mb-item',                 '📧 Email support within 4h', 3],
+        ['.mb-footer',               '12-month commitment · <strong style="color:var(--text)">€960/yr</strong> · Cancellable after commitment'],
+        ['.mb-toggle span:last-child','Add maintenance to my order'],
+        ['.inclus-title',            'The 4 days in detail', 1],
+        ['.tl-day',                  'Day 1 — Brief & Mockup', 0],
+        ['.tl-desc',                 'We analyse your brief, create the visual mockup and submit it for your approval.', 0],
+        ['.tl-day',                  'Day 2 — Validation & Development', 1],
+        ['.tl-desc',                 'Once approved, we build the complete site with your content.', 1],
+        ['.tl-day',                  'Day 3 — Finalisation & Testing', 2],
+        ['.tl-desc',                 'Testing on all devices, speed optimisation, final adjustments.', 2],
+        ['.tl-day',                  'Day 4 — Go Live ✅', 3],
+        ['.tl-desc',                 'Your site is live. We provide 1-hour admin training. Off we go!', 3],
+        ['.form-title',              'Start your project'],
+        ['.form-subtitle',           'Fill in this form · We reply within 2h'],
+        ['.btn-label',               '⚡ Order my Essential plan →'],
+        ['.garanties .garantie',     '<span class="garantie-icon">🔒</span>100% secure payment', 0],
+        ['.garanties .garantie',     '<span class="garantie-icon">↩️</span>Satisfied or refunded within 14 days', 1],
+        ['.garanties .garantie',     '<span class="garantie-icon">⚡</span>4-day delivery contractually guaranteed', 2],
+        ['.garanties .garantie',     '<span class="garantie-icon">💬</span>Reply within 2h by email or WhatsApp', 3],
+        ['.form-legal',              'By submitting this form, you agree that your data will be used to process your order. No spam.'],
+        ['#success h2',              'Order received! <span class="g">⚡</span>'],
+        ['#success p',               'We have received your Essential plan request. Our team will contact you <strong style="color:var(--text)">within 2h</strong> to confirm your order and start the 4 days.'],
+        ['.btn-retour',              '← Back to website'],
+      ],
+    };
+
+    function applyLang(lang) {
+      (T[lang] || []).forEach(([sel, html, idx]) => set(sel, html, idx));
+      document.documentElement.lang = lang;
+      const btn = document.getElementById('lang-btn');
+      if (btn) btn.textContent = lang === 'fr' ? '🇬🇧 EN' : '🇫🇷 FR';
+      localStorage.setItem('lang', lang);
+    }
+
+    window.toggleLang = function () {
+      applyLang(localStorage.getItem('lang') === 'en' ? 'fr' : 'en');
+    };
+
+    const saved = localStorage.getItem('lang') || 'fr';
+    const btn = document.getElementById('lang-btn');
+    if (btn) btn.textContent = saved === 'fr' ? '🇬🇧 EN' : '🇫🇷 FR';
+    if (saved === 'en') applyLang('en');
+  })();
   </script>
 </body>
 </html>
