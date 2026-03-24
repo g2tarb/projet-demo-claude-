@@ -12,6 +12,22 @@ const rateLimit  = require('express-rate-limit');
 const helmet     = require('helmet');
 const path       = require('path');
 
+/* ── Validation des variables d'environnement critiques ── */
+function bootstrap() {
+  const required = ['MAIL_USER', 'MAIL_PASS', 'ALLOWED_ORIGIN'];
+  const missing  = required.filter(k => !process.env[k]);
+  if (missing.length === 0) return;
+
+  console.error('\n  ╔══════════════════════════════════════════╗');
+  console.error('  ║  ❌  Variables manquantes dans .env      ║');
+  console.error('  ╚══════════════════════════════════════════╝');
+  missing.forEach(k => console.error(`     • ${k} est requis`));
+  console.error('\n  → Créez un fichier .env à la racine du projet.');
+  console.error('  → Exemple : MAIL_USER=contact@mondomaine.fr\n');
+  process.exit(1);
+}
+bootstrap();
+
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
