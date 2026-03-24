@@ -738,11 +738,31 @@
     // Three.js after THREE is loaded
     setTimeout(initThreeUniverse, 300);
 
+    // Budget chips
+    initBudgetChips();
+
     // Formulaire Node.js
     initContactForm();
 
     console.log('%c4DAYVELOPMENT', 'color:#f2b13b;font-size:22px;font-weight:900;font-family:Syne,sans-serif;');
     console.log('%cMasterclass 2026 · Maximum Conversion', 'color:#DA5426;font-size:12px;');
+  }
+
+  /* ── BUDGET CHIPS → Redirections ─────────────────────── */
+  function initBudgetChips() {
+    $$('.budget-chip').forEach(chip => {
+      on(chip, 'click', () => {
+        $$('.budget-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        const budgetInput = $('#f-budget');
+        if (budgetInput) budgetInput.value = chip.dataset.value;
+        if (chip.dataset.value === 'Moins de 1 000€') {
+          window.location.href = '/essentiel.html';
+        } else if (chip.dataset.value === '5 000€ et plus') {
+          window.location.href = '/lead.html';
+        }
+      });
+    });
   }
 
   /* ── FORMULAIRE CONTACT → API Node.js ────────────────── */
@@ -755,20 +775,7 @@
     const btnSubmit = $('#btn-submit');
     const feedback  = $('#form-feedback');
 
-    // Budget chips
-    $$('.budget-chip').forEach(chip => {
-      on(chip, 'click', () => {
-        $$('.budget-chip').forEach(c => c.classList.remove('active'));
-        chip.classList.add('active');
-        $('#f-budget').value = chip.dataset.value;
-        if (chip.dataset.value === 'Moins de 1 000€') {
-          window.location.href = '/essentiel.html';
-        }
-        if (chip.dataset.value === '5 000€ et plus') {
-          window.location.href = '/lead.html';
-        }
-      });
-    });
+    // Budget chips (redirection gérée dans initBudgetChips)
 
     // Validation temps réel
     function validateField(input) {
