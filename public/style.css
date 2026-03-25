@@ -2448,7 +2448,7 @@ footer {
     padding: 14px 20px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: justify-content: center; gap: 16px;
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: var(--radius);
