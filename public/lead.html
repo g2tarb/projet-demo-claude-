@@ -856,7 +856,7 @@
 
       <div class="form-nav">
         <button class="btn-prev hidden" type="button">← Retour</button>
-        <button class="btn-next-sec" type="button" onclick="nextSection()">
+        <button class="btn-next-sec" type="button">
           Continuer <span>→</span>
         </button>
       </div>
@@ -966,8 +966,8 @@
       </div>
 
       <div class="form-nav">
-        <button class="btn-prev" type="button" onclick="prevSection()">← Retour</button>
-        <button class="btn-next-sec" type="button" onclick="nextSection()">
+        <button class="btn-prev" type="button">← Retour</button>
+        <button class="btn-next-sec" type="button">
           Continuer <span>→</span>
         </button>
       </div>
@@ -1145,8 +1145,8 @@
       </div>
 
       <div class="form-nav">
-        <button class="btn-prev" type="button" onclick="prevSection()">← Retour</button>
-        <button class="btn-next-sec" type="button" onclick="nextSection()">
+        <button class="btn-prev" type="button">← Retour</button>
+        <button class="btn-next-sec" type="button">
           Voir le récapitulatif <span>→</span>
         </button>
       </div>
@@ -1173,8 +1173,8 @@
       <div class="form-feedback error" id="submit-error"></div>
 
       <div class="form-nav" style="justify-content:space-between;">
-        <button class="btn-prev" type="button" onclick="prevSection()">← Modifier</button>
-        <button class="btn-submit" type="button" id="btn-submit" onclick="submitForm()">
+        <button class="btn-prev" type="button">← Modifier</button>
+        <button class="btn-submit" type="button" id="btn-submit">
           <span class="spinner"></span>
           <span class="btn-label">✉️ Envoyer ma demande</span>
         </button>
@@ -1495,7 +1495,7 @@ ${d.description}
       `.trim();
 
       try {
-        const res = await fetch('/api/contact', {
+        const res = await fetch('https://n8n.srv1263084.hstgr.cloud/webhook/lead-entrant', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -1533,6 +1533,15 @@ ${d.description}
       d.textContent = String(str);
       return d.innerHTML;
     }
+
+    /* ══ BUTTON LISTENERS ══ */
+    document.querySelectorAll('.btn-next-sec').forEach(btn => {
+      btn.addEventListener('click', nextSection);
+    });
+    document.querySelectorAll('.btn-prev').forEach(btn => {
+      btn.addEventListener('click', prevSection);
+    });
+    document.getElementById('btn-submit').addEventListener('click', submitForm);
 
     /* ══ KEYBOARD ══ */
     document.addEventListener('keydown', e => {
