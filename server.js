@@ -310,9 +310,9 @@ app.get('/api/toasts', apiLimiter, (req, res) => {
   res.json(toasts);
 });
 
-/* ── Fallback → index.html (SPA) ─────────────────────── */
+/* ── Fallback → 404 ──────────────────────────────────── */
 app.get('/{*splat}', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.status(404).sendFile(path.join(__dirname, 'public', '404.html'));
 });
 
 /* ── Démarrage ────────────────────────────────────────── */

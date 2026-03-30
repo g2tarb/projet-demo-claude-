@@ -1142,7 +1142,6 @@ section { padding: 100px 24px; }
 .plan-price sup {
   font-size: 0.75rem;
   font-weight: 600;
-  vertical-align: middle;
   letter-spacing: 0;
   opacity: 0.7;
   display: block;
