@@ -409,7 +409,7 @@ async function submitBrief() {
   };
 
   try {
-    const res = await fetch('/api/contact', {
+    const res = await fetch('https://n8n.srv1263084.hstgr.cloud/webhook/lead-entrant', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify(payload),
