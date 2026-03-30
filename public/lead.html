@@ -1496,7 +1496,7 @@ ${d.description}
       `.trim();
 
       try {
-        const res = await fetch('https://n8n.srv1263084.hstgr.cloud/webhook/lead-entrant', {
+        const res = await fetch('/api/contact', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -1852,6 +1852,24 @@ ${d.description}
     const btn = document.getElementById('lang-btn');
     if (btn) btn.textContent = saved === 'fr' ? '🇬🇧 EN' : '🇫🇷 FR';
     if (saved === 'en') applyLang('en');
+  })();
+  </script>
+
+  <script>
+  (function () {
+    const name   = sessionStorage.getItem('prefill_name');
+    const email  = sessionStorage.getItem('prefill_email');
+    if (name) {
+      const parts = name.split(' ');
+      const prenom = document.getElementById('f-prenom');
+      const nom    = document.getElementById('f-nom');
+      if (prenom) prenom.value = parts[0] || '';
+      if (nom)    nom.value    = parts.slice(1).join(' ') || '';
+    }
+    if (email) {
+      const el = document.getElementById('f-email');
+      if (el) el.value = email;
+    }
   })();
   </script>
 </body>

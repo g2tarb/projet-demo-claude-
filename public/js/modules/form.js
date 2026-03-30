@@ -1,17 +1,35 @@
 /* ── Forms : contact form, budget chips, toasts, exit intent ── */
 import { $, $$, on, raf } from './utils.js';
 
+const BUDGET_REDIRECT = {
+  'Moins de 1 000€': '/essentiel.html',
+  '1 000 – 2 000€':  '/lead.html',
+  '2 000 – 5 000€':  '/lead.html',
+  '5 000€ et plus':  '/lead.html',
+};
+
+function savePrefill(budget) {
+  const name  = $('#f-name')?.value.trim()  || '';
+  const email = $('#f-email')?.value.trim() || '';
+  if (name)   sessionStorage.setItem('prefill_name',   name);
+  if (email)  sessionStorage.setItem('prefill_email',  email);
+  if (budget) sessionStorage.setItem('prefill_budget', budget);
+}
+
 export function initBudgetChips() {
   $$('.budget-chip').forEach(chip => {
     on(chip, 'click', () => {
       $$('.budget-chip').forEach(c => c.classList.remove('active'));
       chip.classList.add('active');
+      const budget = chip.dataset.value;
       const budgetInput = $('#f-budget');
-      if (budgetInput) budgetInput.value = chip.dataset.value;
-      if (chip.dataset.value === 'Moins de 1 000€') {
-        window.location.href = '/essentiel.html';
-      } else if (chip.dataset.value === '5 000€ et plus') {
-        window.location.href = '/lead.html';
+      if (budgetInput) budgetInput.value = budget;
+
+      savePrefill(budget);
+
+      const dest = BUDGET_REDIRECT[budget];
+      if (dest) {
+        setTimeout(() => { window.location.href = dest; }, 150);
       }
     });
   });
@@ -63,7 +81,7 @@ export function initContactForm() {
     feedback.textContent = '';
 
     try {
-      const res = await fetch('https://n8n.srv1263084.hstgr.cloud/webhook/lead-entrant', {
+      const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

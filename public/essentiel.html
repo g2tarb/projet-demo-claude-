@@ -1015,7 +1015,7 @@ ${getVal('e-description')}
       `.trim();
 
       try {
-        const res = await fetch('https://n8n.srv1263084.hstgr.cloud/webhook/lead-entrant', {
+        const res = await fetch('/api/contact', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -1274,6 +1274,21 @@ ${getVal('e-description')}
     const btn = document.getElementById('lang-btn');
     if (btn) btn.textContent = saved === 'fr' ? '🇬🇧 EN' : '🇫🇷 FR';
     if (saved === 'en') applyLang('en');
+  })();
+  </script>
+
+  <script>
+  (function () {
+    const name   = sessionStorage.getItem('prefill_name');
+    const email  = sessionStorage.getItem('prefill_email');
+    if (name) {
+      const el = document.getElementById('e-prenom');
+      if (el) el.value = name.split(' ')[0];
+    }
+    if (email) {
+      const el = document.getElementById('e-email');
+      if (el) el.value = email;
+    }
   })();
   </script>
 </body>

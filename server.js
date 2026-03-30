@@ -242,46 +242,48 @@ app.post('/api/contact', contactLimiter, validateWith(contactSchema), async (req
     }
   }
 
-  try {
-    await transporter.sendMail({
-      from:    `"4dayvelopment" <${process.env.MAIL_USER}>`,
-      to:      process.env.MAIL_TO || process.env.MAIL_USER,
-      replyTo: data.email,
-      subject: `[Contact] ${data.subject || 'Nouveau message'} — ${data.name}`,
-      html:    buildEmailHTML(data),
-    });
+  const mailConfigured = process.env.MAIL_USER && !process.env.MAIL_USER.includes('ton-email');
 
-    await transporter.sendMail({
-      from:    `"4dayvelopment" <${process.env.MAIL_USER}>`,
-      to:      data.email,
-      subject: '✅ On a bien reçu votre message !',
-      html: `
-        <div style="font-family:sans-serif;background:#0a0a0a;padding:32px;">
-          <div style="max-width:500px;margin:0 auto;background:#141414;border-radius:20px;padding:40px;border:1px solid #222;">
-            <h2 style="color:#f2b13b;font-size:22px;margin-bottom:16px;">Bonjour ${escapeHtml(data.name)} 👋</h2>
-            <p style="color:#aaa;line-height:1.7;margin-bottom:24px;">
-              Merci pour votre message ! Notre équipe l'a bien reçu et vous répondra <strong style="color:#f0f0f0">sous 24h</strong>.
-            </p>
-            <div style="background:rgba(218,84,38,0.1);border:1px solid rgba(218,84,38,0.2);border-radius:12px;padding:20px;margin-bottom:28px;">
-              <p style="color:#f2b13b;font-size:13px;font-weight:700;margin-bottom:8px;">📋 VOTRE MESSAGE</p>
-              <p style="color:#d0d0d0;font-size:14px;line-height:1.6;">${escapeHtml(data.message)}</p>
+  if (mailConfigured) {
+    try {
+      await transporter.sendMail({
+        from:    `"4dayvelopment" <${process.env.MAIL_USER}>`,
+        to:      process.env.MAIL_TO || process.env.MAIL_USER,
+        replyTo: data.email,
+        subject: `[Contact] ${data.subject || 'Nouveau message'} — ${data.name}`,
+        html:    buildEmailHTML(data),
+      });
+
+      await transporter.sendMail({
+        from:    `"4dayvelopment" <${process.env.MAIL_USER}>`,
+        to:      data.email,
+        subject: '✅ On a bien reçu votre message !',
+        html: `
+          <div style="font-family:sans-serif;background:#0a0a0a;padding:32px;">
+            <div style="max-width:500px;margin:0 auto;background:#141414;border-radius:20px;padding:40px;border:1px solid #222;">
+              <h2 style="color:#f2b13b;font-size:22px;margin-bottom:16px;">Bonjour ${escapeHtml(data.name)} 👋</h2>
+              <p style="color:#aaa;line-height:1.7;margin-bottom:24px;">
+                Merci pour votre message ! Notre équipe l'a bien reçu et vous répondra <strong style="color:#f0f0f0">sous 24h</strong>.
+              </p>
+              <div style="background:rgba(218,84,38,0.1);border:1px solid rgba(218,84,38,0.2);border-radius:12px;padding:20px;margin-bottom:28px;">
+                <p style="color:#f2b13b;font-size:13px;font-weight:700;margin-bottom:8px;">📋 VOTRE MESSAGE</p>
+                <p style="color:#d0d0d0;font-size:14px;line-height:1.6;">${escapeHtml(data.message)}</p>
+              </div>
+              <p style="color:#555;font-size:13px;">En attendant, vous pouvez nous joindre directement sur WhatsApp ou consulter notre site.</p>
             </div>
-            <p style="color:#555;font-size:13px;">En attendant, vous pouvez nous joindre directement sur WhatsApp ou consulter notre site.</p>
           </div>
-        </div>
-      `,
-    });
+        `,
+      });
 
-    logger.info({ name: data.name, email: data.email }, 'Email envoyé avec succès');
-    return res.json({ success: true, message: 'Message envoyé avec succès ! Nous vous répondons sous 24h.' });
-
-  } catch (err) {
-    logger.error({ err: err.message, ip: req.ip }, 'Erreur envoi email');
-    return res.status(500).json({
-      success: false,
-      message: 'Erreur lors de l\'envoi. Réessayez ou contactez-nous directement.',
-    });
+      logger.info({ name: data.name, email: data.email }, 'Email envoyé avec succès');
+    } catch (err) {
+      logger.warn({ err: err.message }, 'Envoi email échoué (non bloquant)');
+    }
+  } else {
+    logger.info({ name: data.name }, 'Email non configuré — skipped');
   }
+
+  return res.json({ success: true, message: 'Message envoyé avec succès ! Nous vous répondons sous 24h.' });
 });
 
 /* ── GET /api/stats ───────────────────────────────────── */
