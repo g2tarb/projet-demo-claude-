@@ -6,7 +6,7 @@ export function initPageTransition() {
   if (!overlay) return;
 
   // Sélectionne tous les liens vers les formes externes
-  const formLinks = $$('a[href="/essentiel.html"], a[href="/lead.html"], a[href="/brief.html"]');
+  const formLinks = $$('a[href="/essentiel.html"], a[href="/lead.html"]');
 
   formLinks.forEach(link => {
     on(link, 'click', e => {
