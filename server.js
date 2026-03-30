@@ -228,6 +228,20 @@ app.post('/api/contact', contactLimiter, validateWith(contactSchema), async (req
     return res.status(400).json({ success: false, message: 'Bot détecté.' });
   }
 
+  // Appel webhook n8n
+  if (process.env.N8N_WEBHOOK_URL) {
+    try {
+      await fetch(process.env.N8N_WEBHOOK_URL, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(data),
+      });
+      logger.info({ name: data.name }, 'Webhook n8n déclenché');
+    } catch (webhookErr) {
+      logger.warn({ err: webhookErr.message }, 'Webhook n8n échoué (non bloquant)');
+    }
+  }
+
   try {
     await transporter.sendMail({
       from:    `"4dayvelopment" <${process.env.MAIL_USER}>`,
