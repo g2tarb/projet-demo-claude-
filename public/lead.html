@@ -1500,14 +1500,13 @@ ${d.description}
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            name:    `${d.prenom} ${d.nom}`.trim(),
-            email:   d.email,
-            phone:   d.tel,
-            subject: `[Lead] ${d.typeSite || 'Demande'} — ${d.societe || d.prenom}`,
-            budget:  d.budget,
-            service: d.typeSite,
+            prenom:    d.prenom,
+            email:     d.email,
+            telephone: d.tel,
+            secteur:   `${d.typeSite || 'Non renseigné'} — ${d.secteur || ''} — budget: ${d.budget}`,
             message,
           }),
+          
         });
 
         const json = await res.json();
