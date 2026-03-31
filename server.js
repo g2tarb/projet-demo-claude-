@@ -100,7 +100,7 @@ const transporter = nodemailer.createTransport({
 
 /* ── Schéma Zod ───────────────────────────────────────── */
 const contactSchema = z.object({
-  name: z.string()
+  prenom: z.string()
     .trim()
     .min(2, 'Le nom doit contenir au moins 2 caractères.')
     .max(100, 'Le nom ne peut pas dépasser 100 caractères.'),
@@ -110,15 +110,15 @@ const contactSchema = z.object({
     .email('Adresse email invalide.')
     .max(254, 'Email trop long.'),
 
-  phone: z.string()
+  telephone: z.string()
     .trim()
     .max(30, 'Numéro trop long.')
     .optional()
     .or(z.literal('')),
 
-  subject: z.string()
+  secteur: z.string()
     .trim()
-    .max(200, 'Sujet trop long.')
+    .max(200, 'Secteur trop long.')
     .optional()
     .or(z.literal('')),
 
@@ -126,18 +126,6 @@ const contactSchema = z.object({
     .trim()
     .min(10, 'Le message doit contenir au moins 10 caractères.')
     .max(5000, 'Le message ne peut pas dépasser 5000 caractères.'),
-
-  budget: z.string()
-    .trim()
-    .max(50)
-    .optional()
-    .or(z.literal('')),
-
-  service: z.string()
-    .trim()
-    .max(100)
-    .optional()
-    .or(z.literal('')),
 
   // Honeypot — doit rester vide
   website: z.literal('').optional(),
@@ -236,7 +224,7 @@ app.post('/api/contact', contactLimiter, validateWith(contactSchema), async (req
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify(data),
       });
-      logger.info({ name: data.name }, 'Webhook n8n déclenché');
+      logger.info({ name: data.prenom }, 'Webhook n8n déclenché');
     } catch (webhookErr) {
       logger.warn({ err: webhookErr.message }, 'Webhook n8n échoué (non bloquant)');
     }
@@ -250,7 +238,7 @@ app.post('/api/contact', contactLimiter, validateWith(contactSchema), async (req
         from:    `"4dayvelopment" <${process.env.MAIL_USER}>`,
         to:      process.env.MAIL_TO || process.env.MAIL_USER,
         replyTo: data.email,
-        subject: `[Contact] ${data.subject || 'Nouveau message'} — ${data.name}`,
+        subject: `[Contact] ${data.subject || 'Nouveau message'} — ${data.prenom}`,
         html:    buildEmailHTML(data),
       });
 
@@ -261,7 +249,7 @@ app.post('/api/contact', contactLimiter, validateWith(contactSchema), async (req
         html: `
           <div style="font-family:sans-serif;background:#0a0a0a;padding:32px;">
             <div style="max-width:500px;margin:0 auto;background:#141414;border-radius:20px;padding:40px;border:1px solid #222;">
-              <h2 style="color:#f2b13b;font-size:22px;margin-bottom:16px;">Bonjour ${escapeHtml(data.name)} 👋</h2>
+              <h2 style="color:#f2b13b;font-size:22px;margin-bottom:16px;">Bonjour ${escapeHtml(data.prenom)} 👋</h2>
               <p style="color:#aaa;line-height:1.7;margin-bottom:24px;">
                 Merci pour votre message ! Notre équipe l'a bien reçu et vous répondra <strong style="color:#f0f0f0">sous 24h</strong>.
               </p>
@@ -275,12 +263,12 @@ app.post('/api/contact', contactLimiter, validateWith(contactSchema), async (req
         `,
       });
 
-      logger.info({ name: data.name, email: data.email }, 'Email envoyé avec succès');
+      logger.info({ name: data.prenom, email: data.email }, 'Email envoyé avec succès');
     } catch (err) {
       logger.warn({ err: err.message }, 'Envoi email échoué (non bloquant)');
     }
   } else {
-    logger.info({ name: data.name }, 'Email non configuré — skipped');
+    logger.info({ name: data.prenom }, 'Email non configuré — skipped');
   }
 
   return res.json({ success: true, message: 'Message envoyé avec succès ! Nous vous répondons sous 24h.' });
