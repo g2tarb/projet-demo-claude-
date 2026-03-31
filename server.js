@@ -17,7 +17,7 @@ const pino       = require('pino');
 /* ── Logger Pino ──────────────────────────────────────── */
 const logger = pino(
   process.env.NODE_ENV === 'production'
-    ? {}                                          // JSON brut en prod
+    ? {}
     : { transport: { target: 'pino-pretty', options: { colorize: true } } }
 );
 
@@ -33,6 +33,7 @@ bootstrap();
 
 /* ── App ──────────────────────────────────────────────── */
 const app  = express();
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000;
 
 /* ── Helmet avec CSP explicite ────────────────────────── */
@@ -42,17 +43,17 @@ app.use(helmet({
       defaultSrc:  ["'self'"],
       scriptSrc:   [
         "'self'",
-        'cdnjs.cloudflare.com',          // Three.js CDN
-        "'unsafe-inline'",               // inline scripts des pages externes (essentiel/lead/brief)
+        'cdnjs.cloudflare.com',
+        "'unsafe-inline'",
       ],
       styleSrc:    [
         "'self'",
         'fonts.googleapis.com',
-        "'unsafe-inline'",               // styles inline nécessaires
+        "'unsafe-inline'",
       ],
       fontSrc:     ["'self'", 'fonts.googleapis.com', 'fonts.gstatic.com'],
       imgSrc:      ["'self'", 'data:', 'blob:'],
-      connectSrc:  ["'self'"],
+      connectSrc:  ["'self'", 'https://n8n.srv1263084.hstgr.cloud'],
       frameSrc:    ["'none'"],
       objectSrc:   ["'none'"],
       upgradeInsecureRequests: process.env.NODE_ENV === 'production' ? [] : null,
@@ -143,7 +144,6 @@ function validateWith(schema) {
       logger.warn({ errors, ip: req.ip }, 'Validation échouée');
       return res.status(400).json({ success: false, errors });
     }
-    // Remplace req.body par les données parsées (trimmed, typées)
     req.validatedBody = result.data;
     next();
   };
@@ -161,7 +161,7 @@ function escapeHtml(str) {
 
 /* ── Template email HTML ──────────────────────────────── */
 function buildEmailHTML(data) {
-  const { name, email, phone, subject, message, budget, service } = data;
+  const { prenom, email, telephone, secteur, message } = data;
   return `
   <!DOCTYPE html>
   <html lang="fr">
@@ -185,12 +185,10 @@ function buildEmailHTML(data) {
     <div class="card">
       <div class="header">🚀 Nouveau message — 4dayvelopment</div>
       <div class="body">
-        <div class="field"><div class="label">Nom</div><div class="value">${escapeHtml(name)}</div></div>
+        <div class="field"><div class="label">Prénom</div><div class="value">${escapeHtml(prenom)}</div></div>
         <div class="field"><div class="label">Email</div><div class="value"><a href="mailto:${escapeHtml(email)}" style="color:#f2b13b">${escapeHtml(email)}</a></div></div>
-        ${phone  ? `<div class="field"><div class="label">Téléphone</div><div class="value">${escapeHtml(phone)}</div></div>` : ''}
-        ${service ? `<div class="field"><div class="label">Service</div><div class="value"><span class="badge">${escapeHtml(service)}</span></div></div>` : ''}
-        ${budget  ? `<div class="field"><div class="label">Budget</div><div class="value"><span class="badge">${escapeHtml(budget)}</span></div></div>` : ''}
-        ${subject ? `<div class="field"><div class="label">Sujet</div><div class="value">${escapeHtml(subject)}</div></div>` : ''}
+        ${telephone ? `<div class="field"><div class="label">Téléphone</div><div class="value">${escapeHtml(telephone)}</div></div>` : ''}
+        ${secteur   ? `<div class="field"><div class="label">Secteur</div><div class="value"><span class="badge">${escapeHtml(secteur)}</span></div></div>` : ''}
         <div class="field"><div class="label">Message</div><div class="message-box">${escapeHtml(message)}</div></div>
       </div>
       <div class="footer">
@@ -210,7 +208,6 @@ function buildEmailHTML(data) {
 app.post('/api/contact', contactLimiter, validateWith(contactSchema), async (req, res) => {
   const data = req.validatedBody;
 
-  // Honeypot — bot détecté si le champ est rempli
   if (data.website) {
     logger.warn({ ip: req.ip }, 'Honeypot déclenché');
     return res.status(400).json({ success: false, message: 'Bot détecté.' });
@@ -238,7 +235,7 @@ app.post('/api/contact', contactLimiter, validateWith(contactSchema), async (req
         from:    `"4dayvelopment" <${process.env.MAIL_USER}>`,
         to:      process.env.MAIL_TO || process.env.MAIL_USER,
         replyTo: data.email,
-        subject: `[Contact] ${data.subject || 'Nouveau message'} — ${data.prenom}`,
+        subject: `[Contact] ${data.secteur || 'Nouveau message'} — ${data.prenom}`,
         html:    buildEmailHTML(data),
       });
 
