@@ -85,12 +85,11 @@ export function initContactForm() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name:    $('#f-name').value.trim(),
-          email:   $('#f-email').value.trim(),
-          phone:   $('#f-phone').value.trim(),
-          service: $('#f-service').value,
-          budget:  $('#f-budget').value,
-          message: $('#f-message').value.trim(),
+         prenom:    $('#f-name').value.trim(),
+         email:     $('#f-email').value.trim(),
+         telephone: $('#f-phone').value.trim(),
+         secteur:   $('#f-service').value + ($('#f-budget').value ? ' — budget: ' + $('#f-budget').value : ''),
+         message:   $('#f-message').value.trim(),
         }),
       });
       const data = await res.json();
