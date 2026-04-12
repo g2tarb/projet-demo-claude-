@@ -359,6 +359,297 @@ app.get('/api/toasts', apiLimiter, (req, res) => {
   res.json(toasts);
 });
 
+/* ═══════════════════════════════════════════════════════
+   BLOG — Publication depuis n8n
+═══════════════════════════════════════════════════════ */
+
+const BLOG_DIR    = path.join(__dirname, 'public', 'blog');
+const SITEMAP_PATH = path.join(__dirname, 'public', 'sitemap.xml');
+const BLOG_TOKEN  = process.env.N8N_BLOG_TOKEN || '';
+
+const articleSchema = z.object({
+  title:       z.string().trim().min(10).max(200),
+  slug:        z.string().trim().min(3).max(120).regex(/^[a-z0-9-]+$/, 'Slug invalide (minuscules, chiffres, tirets uniquement)'),
+  description: z.string().trim().min(20).max(300),
+  category:    z.string().trim().max(50).optional().default('Guide'),
+  content:     z.string().trim().min(100),
+  readTime:    z.string().trim().max(20).optional().default('5 min de lecture'),
+});
+
+function buildArticleHTML(data) {
+  const { title, slug, description, category, content, readTime } = data;
+  const date     = new Date().toISOString().split('T')[0];
+  const dateFR   = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+  const url      = `https://4dayvelopment.fr/blog/${slug}`;
+
+  return `<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${escapeHtml(title)} — 4dayvelopment</title>
+  <meta name="description" content="${escapeHtml(description)}">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <meta name="theme-color" content="#DA5426">
+  <link rel="canonical" href="${url}">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="4dayvelopment">
+  <meta property="og:title" content="${escapeHtml(title)}">
+  <meta property="og:description" content="${escapeHtml(description)}">
+  <meta property="og:url" content="${url}">
+  <meta property="og:image" content="https://4dayvelopment.fr/og-image.svg">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="article:published_time" content="${date}">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${escapeHtml(title)}">
+  <meta name="twitter:description" content="${escapeHtml(description)}">
+
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="/manifest.json">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <nav id="navbar">
+    <a href="/" class="nav-logo">
+      <img src="/logo/logo4day.png" alt="4dayvelopment" class="logo-img" width="160" height="40">
+    </a>
+    <ul class="nav-links">
+      <li><a href="/services/site-vitrine">Site Vitrine</a></li>
+      <li><a href="/services/e-commerce">E-commerce</a></li>
+      <li><a href="/services/referencement-seo">SEO</a></li>
+      <li><a href="/blog" class="active">Blog</a></li>
+      <li><a href="/#tarifs">Tarifs</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="/#contact" class="nav-cta">Devis gratuit →</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <main>
+  <article style="max-width:800px;margin:0 auto;padding:140px 20px 80px;">
+
+    <nav aria-label="Fil d'Ariane" class="breadcrumb">
+      <ol itemscope itemtype="https://schema.org/BreadcrumbList" style="display:flex;gap:8px;list-style:none;padding:0;font-size:14px;color:#666;">
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a itemprop="item" href="/" style="color:#888;text-decoration:none;"><span itemprop="name">Accueil</span></a>
+          <meta itemprop="position" content="1"><span style="margin-left:8px;color:#444;">›</span>
+        </li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a itemprop="item" href="/blog" style="color:#888;text-decoration:none;"><span itemprop="name">Blog</span></a>
+          <meta itemprop="position" content="2"><span style="margin-left:8px;color:#444;">›</span>
+        </li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <span itemprop="name" style="color:#f2b13b;">${escapeHtml(title)}</span>
+          <meta itemprop="position" content="3">
+        </li>
+      </ol>
+    </nav>
+
+    <div style="display:flex;gap:12px;align-items:center;margin:24px 0 20px;">
+      <span style="background:rgba(218,84,38,0.15);color:#f2b13b;padding:4px 12px;border-radius:100px;font-size:12px;font-weight:600;">${escapeHtml(category)}</span>
+      <time datetime="${date}" style="font-size:13px;color:#666;">${dateFR}</time>
+      <span style="font-size:13px;color:#666;">· ${escapeHtml(readTime)}</span>
+    </div>
+
+    <h1 style="font-family:'Syne',sans-serif;font-size:clamp(2rem,4.5vw,3rem);font-weight:800;line-height:1.15;color:#e8e8e8;margin-bottom:24px;">${escapeHtml(title)}</h1>
+
+    <div style="color:#bbb;line-height:1.9;font-size:16px;">
+      ${content}
+    </div>
+
+    <div style="background:rgba(218,84,38,0.08);border:1px solid rgba(218,84,38,0.2);border-radius:14px;padding:28px;margin:40px 0;text-align:center;">
+      <p style="font-size:18px;color:#e8e8e8;font-weight:700;margin-bottom:12px;">Un projet en tete ?</p>
+      <p style="font-size:14px;color:#888;margin-bottom:20px;">Devis gratuit sous 24h · Livraison en 4 jours · Sans engagement</p>
+      <a href="/#contact" class="btn-primary magnetic" style="display:inline-flex;">Demander mon devis gratuit →</a>
+    </div>
+
+    <a href="/blog" style="color:#f2b13b;font-weight:600;font-size:14px;text-decoration:none;">← Retour au blog</a>
+
+  </article>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="/" class="footer-logo"><img src="/logo/logo4day.png" alt="4dayvelopment" class="logo-img" width="160" height="40"></a>
+        <p>Un site qui vend, livre en 4 jours.<br>Garanti ou c'est gratuit.</p>
+      </div>
+      <div class="footer-links-group">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="/services/site-vitrine">Site Vitrine</a></li>
+          <li><a href="/services/e-commerce">E-commerce</a></li>
+          <li><a href="/services/referencement-seo">SEO</a></li>
+        </ul>
+      </div>
+      <div class="footer-links-group">
+        <h4>Agence</h4>
+        <ul>
+          <li><a href="/#process">Processus</a></li>
+          <li><a href="/#tarifs">Tarifs</a></li>
+          <li><a href="/blog">Blog</a></li>
+        </ul>
+      </div>
+      <div class="footer-links-group">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="/#contact">Prendre RDV</a></li>
+          <li><a href="mailto:contact@4dayvelopment.fr">contact@4dayvelopment.fr</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 4dayvelopment. Tous droits reserves.</p>
+    </div>
+  </footer>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "${escapeHtml(title)}",
+    "description": "${escapeHtml(description)}",
+    "datePublished": "${date}",
+    "dateModified": "${date}",
+    "author": { "@type": "Organization", "name": "4dayvelopment", "url": "https://4dayvelopment.fr/" },
+    "publisher": {
+      "@type": "Organization",
+      "name": "4dayvelopment",
+      "logo": { "@type": "ImageObject", "url": "https://4dayvelopment.fr/logo/logo4day.png" }
+    },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "${url}" }
+  }
+  </script>
+</body>
+</html>`;
+}
+
+function addToSitemap(slug) {
+  try {
+    let sitemap = fs.readFileSync(SITEMAP_PATH, 'utf-8');
+    const url = `https://4dayvelopment.fr/blog/${slug}`;
+    if (sitemap.includes(url)) return;
+    const entry = `
+  <url>
+    <loc>${url}</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+`;
+    sitemap = sitemap.replace('</urlset>', entry + '</urlset>');
+    fs.writeFileSync(SITEMAP_PATH, sitemap, 'utf-8');
+    logger.info({ slug }, 'Sitemap mis a jour');
+  } catch (err) {
+    logger.warn({ err: err.message }, 'Echec mise a jour sitemap');
+  }
+}
+
+function addToBlogIndex(data) {
+  try {
+    const indexPath = path.join(BLOG_DIR, 'index.html');
+    let html = fs.readFileSync(indexPath, 'utf-8');
+    const date   = new Date().toISOString().split('T')[0];
+    const dateFR = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+
+    const card = `
+      <!-- Article: ${escapeHtml(data.slug)} -->
+      <article style="background:#141414;border:1px solid #222;border-radius:16px;padding:32px;margin-bottom:24px;">
+        <div style="display:flex;gap:12px;align-items:center;margin-bottom:16px;">
+          <span style="background:rgba(218,84,38,0.15);color:#f2b13b;padding:4px 12px;border-radius:100px;font-size:12px;font-weight:600;">${escapeHtml(data.category)}</span>
+          <time datetime="${date}" style="font-size:13px;color:#666;">${dateFR}</time>
+          <span style="font-size:13px;color:#666;">· ${escapeHtml(data.readTime)}</span>
+        </div>
+        <h2 style="font-size:1.5rem;margin-bottom:12px;">
+          <a href="/blog/${escapeHtml(data.slug)}" style="color:#e8e8e8;text-decoration:none;">${escapeHtml(data.title)}</a>
+        </h2>
+        <p style="color:#888;line-height:1.7;margin-bottom:16px;">${escapeHtml(data.description)}</p>
+        <a href="/blog/${escapeHtml(data.slug)}" style="color:#f2b13b;font-weight:600;font-size:14px;text-decoration:none;">Lire l'article →</a>
+      </article>`;
+
+    // Inserer apres le premier <div class="container"> de la section articles
+    const marker = '<div class="container" style="max-width:900px;">';
+    const insertPos = html.indexOf(marker);
+    if (insertPos !== -1) {
+      const afterMarker = insertPos + marker.length;
+      html = html.slice(0, afterMarker) + '\n' + card + html.slice(afterMarker);
+      fs.writeFileSync(indexPath, html, 'utf-8');
+      logger.info({ slug: data.slug }, 'Index blog mis a jour');
+    }
+  } catch (err) {
+    logger.warn({ err: err.message }, 'Echec mise a jour index blog');
+  }
+}
+
+/* ── POST /api/blog/publish ──────────────────────────── */
+app.post('/api/blog/publish', apiLimiter, validateWith(articleSchema), (req, res) => {
+  // Auth par token partage
+  const token = req.headers['x-blog-token'] || req.query.token || '';
+  if (!BLOG_TOKEN || token !== BLOG_TOKEN) {
+    logger.warn({ ip: req.ip }, 'Blog publish — token invalide');
+    return res.status(401).json({ success: false, message: 'Token invalide.' });
+  }
+
+  const data = req.validatedBody;
+  const filePath = path.join(BLOG_DIR, `${data.slug}.html`);
+
+  // Eviter d'ecraser un article existant
+  if (fs.existsSync(filePath)) {
+    return res.status(409).json({ success: false, message: `L'article "${data.slug}" existe deja.` });
+  }
+
+  try {
+    fs.writeFileSync(filePath, buildArticleHTML(data), 'utf-8');
+
+    // Enregistrer la route propre
+    cleanPages[`/blog/${data.slug}`] = `blog/${data.slug}.html`;
+
+    // Ajouter dynamiquement la route Express
+    app.get(`/blog/${data.slug}`, (req, res) => {
+      res.sendFile(filePath);
+    });
+
+    addToSitemap(data.slug);
+    addToBlogIndex(data);
+
+    logger.info({ slug: data.slug, title: data.title }, 'Article publie avec succes');
+    return res.json({
+      success: true,
+      message: 'Article publie.',
+      url: `https://4dayvelopment.fr/blog/${data.slug}`,
+    });
+  } catch (err) {
+    logger.error({ err: err.message }, 'Echec publication article');
+    return res.status(500).json({ success: false, message: 'Erreur serveur.' });
+  }
+});
+
+/* ── GET /api/blog/list ──────────────────────────────── */
+app.get('/api/blog/list', apiLimiter, (req, res) => {
+  try {
+    const files = fs.readdirSync(BLOG_DIR)
+      .filter(f => f.endsWith('.html') && f !== 'index.html')
+      .map(f => {
+        const slug = f.replace('.html', '');
+        const stat = fs.statSync(path.join(BLOG_DIR, f));
+        return { slug, url: `/blog/${slug}`, createdAt: stat.birthtime };
+      })
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    res.json({ success: true, count: files.length, articles: files });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Erreur lecture articles.' });
+  }
+});
+
 /* ── URLs propres (sans .html) ────────────────────────── */
 const cleanPages = {
   '/essentiel':      'essentiel.html',

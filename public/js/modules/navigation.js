@@ -6,7 +6,7 @@ export function initPageTransition() {
   if (!overlay) return;
 
   // Sélectionne tous les liens vers les formes externes
-  const formLinks = $$('a[href="/essentiel.html"], a[href="/lead.html"]');
+  const formLinks = $$('a[href="/essentiel.html"], a[href="/lead.html"], a[href="/essentiel"], a[href="/devis"]');
 
   formLinks.forEach(link => {
     on(link, 'click', e => {
@@ -98,6 +98,78 @@ export function initSmoothScroll() {
       t.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
+}
+
+/* ── Sticky CTA mobile (apparait apres hero) ──────────── */
+export function initStickyCTA() {
+  const sticky = $('#sticky-cta');
+  const hero = $('#hero');
+  if (!sticky || !hero || !matchMedia('(max-width: 768px)').matches) return;
+
+  document.body.classList.add('has-sticky-cta');
+
+  const observer = new IntersectionObserver(([entry]) => {
+    sticky.classList.toggle('visible', !entry.isIntersecting);
+  }, { threshold: 0.1 });
+
+  observer.observe(hero);
+
+  // Fermer quand on clique un lien du sticky
+  $$('#sticky-cta a[href^="#"]').forEach(a => {
+    on(a, 'click', () => {
+      // Petit delai pour laisser le smooth scroll commencer
+      setTimeout(() => sticky.classList.remove('visible'), 100);
+    });
+  });
+}
+
+/* ── Bottom sheet swipe-to-close ──────────────────────── */
+export function initBottomSheetSwipe() {
+  const menu = $('#mobile-menu');
+  const ham = $('#hamburger');
+  if (!menu || !matchMedia('(max-width: 768px)').matches) return;
+
+  let startY = 0;
+  let currentY = 0;
+  let isDragging = false;
+
+  on(menu, 'touchstart', e => {
+    // Seulement si on touche la zone du handle (top 40px)
+    const rect = menu.getBoundingClientRect();
+    const touchY = e.touches[0].clientY - rect.top;
+    if (touchY > 50 && menu.scrollTop > 0) return;
+    startY = e.touches[0].clientY;
+    isDragging = true;
+    menu.style.transition = 'none';
+  }, { passive: true });
+
+  on(menu, 'touchmove', e => {
+    if (!isDragging) return;
+    currentY = e.touches[0].clientY;
+    const diff = currentY - startY;
+    if (diff > 0) {
+      menu.style.transform = `translateY(${diff}px)`;
+    }
+  }, { passive: true });
+
+  on(menu, 'touchend', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    menu.style.transition = '';
+    const diff = currentY - startY;
+
+    if (diff > 80) {
+      // Swipe down assez long → fermer
+      menu.classList.remove('open');
+      ham && ham.classList.remove('open');
+      const overlay = document.querySelector('.mobile-menu-overlay');
+      if (overlay) overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    menu.style.transform = '';
+    startY = 0;
+    currentY = 0;
+  }, { passive: true });
 }
 
 export function initFloatingCTA() {

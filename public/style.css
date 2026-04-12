@@ -2447,7 +2447,7 @@ footer {
     padding: 14px 20px;
     display: flex;
     align-items: center;
-    justify-content: justify-content: center; gap: 16px;
+    justify-content: center; gap: 16px;
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: var(--radius);
@@ -2769,4 +2769,467 @@ footer {
   #rgpd-banner { bottom: 16px; padding: 16px; }
   .rgpd-inner { flex-direction: column; align-items: flex-start; }
   .rgpd-actions { width: 100%; justify-content: flex-end; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE PREMIUM — Niveau agence digitale 2026
+   Touch-first · Fluid · GPU-optimized · iOS-safe
+═══════════════════════════════════════════════════════════ */
+
+/* ── Fluid spacing system ────────────────────────────────── */
+:root {
+  --space-xs: clamp(4px, 1vw, 8px);
+  --space-sm: clamp(8px, 2vw, 16px);
+  --space-md: clamp(16px, 4vw, 32px);
+  --space-lg: clamp(24px, 6vw, 48px);
+  --space-xl: clamp(40px, 8vw, 72px);
+  --space-2xl: clamp(56px, 10vw, 96px);
+}
+
+/* ── Touch targets minimum 48px (Google / Apple guidelines) ── */
+@media (pointer: coarse) {
+  button, a, [role="button"], select,
+  .budget-chip, .faq-question, .nav-toggle,
+  .bar-close, .hamburger, #fcta-main,
+  .btn-primary, .btn-secondary, .btn-plan,
+  .btn-submit, .mobile-cta, .exit-cta, .exit-close {
+    min-height: 48px;
+    min-width: 48px;
+  }
+
+  /* Active state tactile — feedback visuel instantane */
+  .btn-primary:active,
+  .btn-secondary:active,
+  .btn-plan:active,
+  .btn-submit:active,
+  .nav-cta:active {
+    transform: scale(0.97);
+    transition: transform 0.1s;
+  }
+
+  .service-card:active,
+  .pricing-card:active,
+  .testimonial-card:active,
+  .faq-question:active {
+    transform: scale(0.985);
+    transition: transform 0.1s;
+  }
+
+  .budget-chip:active {
+    transform: scale(0.93);
+    transition: transform 0.08s;
+  }
+
+  /* Espacement tactile entre elements interactifs */
+  .budget-chips { gap: 10px; }
+  .nav-links { gap: 4px; }
+  .footer-links-group a { padding: 6px 0; }
+  .footer-legal a { padding: 8px 4px; }
+}
+
+/* ── iOS smooth momentum scroll ──────────────────────────── */
+@supports (-webkit-overflow-scrolling: touch) {
+  html { -webkit-overflow-scrolling: touch; }
+}
+
+/* ── GPU-only animations on mobile ───────────────────────── */
+@media (max-width: 768px) {
+  /* Force compositing layer pour les elements animes */
+  .reveal, .badge, .hero-title, .hero-desc,
+  .hero-actions, .hero-stats, .service-card,
+  .step, .pricing-card, .testimonial-card,
+  .faq-item, #floating-cta, #exit-modal,
+  #page-transition, #scroll-progress {
+    will-change: transform, opacity;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
+  /* Desactiver le grain sur mobile (perf GPU) */
+  body::after {
+    display: none;
+  }
+
+  /* Optimiser Three.js canvas */
+  #three-bg {
+    image-rendering: optimizeSpeed;
+  }
+}
+
+/* ── Mobile menu bottom-sheet style ──────────────────────── */
+@media (max-width: 768px) {
+  .mobile-menu {
+    right: auto;
+    left: 0;
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    height: auto;
+    max-height: 85vh;
+    max-height: 85dvh;
+    border-left: none;
+    border-top: 1px solid var(--border);
+    border-radius: 24px 24px 0 0;
+    padding: 16px 24px 32px;
+    transform: translateY(100%);
+    transition: transform 0.4s var(--ease-spring);
+    box-shadow: 0 -16px 60px rgba(0,0,0,0.6);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .mobile-menu.open {
+    right: auto;
+    transform: translateY(0);
+  }
+
+  /* Handle bar (indicateur de swipe) */
+  .mobile-menu::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 4px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 100px;
+    margin: 0 auto 20px;
+  }
+
+  .mobile-menu ul { gap: 4px; }
+  .mobile-menu a {
+    font-size: 1rem;
+    padding: 16px 16px;
+    border-bottom: none;
+    border-radius: 12px;
+    transition: background 0.2s;
+  }
+  .mobile-menu a:hover,
+  .mobile-menu a:active {
+    background: rgba(255,255,255,0.05);
+    color: var(--text);
+  }
+  .mobile-cta {
+    margin-top: 12px;
+    padding: 16px 24px !important;
+    font-size: 1rem !important;
+    border-radius: 14px !important;
+  }
+}
+
+/* ── Sticky CTA mobile (visible apres scroll hero) ───────── */
+@media (max-width: 768px) {
+  .sticky-mobile-cta {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 8990;
+    padding: 12px 20px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    background: rgba(8,8,8,0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
+    transform: translateY(100%);
+    transition: transform 0.35s var(--ease-out);
+    display: flex;
+    gap: 10px;
+  }
+  .sticky-mobile-cta.visible {
+    transform: translateY(0);
+  }
+  .sticky-mobile-cta .btn-primary {
+    flex: 1;
+    justify-content: center;
+    padding: 14px 20px;
+    font-size: 14px;
+    border-radius: 12px;
+    min-height: 48px;
+  }
+  .sticky-mobile-cta .btn-secondary {
+    padding: 14px 16px;
+    font-size: 13px;
+    border-radius: 12px;
+    min-height: 48px;
+    white-space: nowrap;
+  }
+
+  /* Decaler le floating CTA quand sticky est visible */
+  .sticky-mobile-cta.visible ~ #floating-cta {
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Padding body pour eviter que le contenu soit cache */
+  body.has-sticky-cta {
+    padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* ── Pricing cards — swipe horizontal mobile ─────────────── */
+@media (max-width: 768px) {
+  .pricing-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 16px;
+    padding: 0 20px 16px;
+    margin: 0 -20px;
+    max-width: calc(100% + 40px);
+    scrollbar-width: none;
+  }
+  .pricing-grid::-webkit-scrollbar { display: none; }
+
+  .pricing-card {
+    flex: 0 0 min(320px, 85vw);
+    scroll-snap-align: center;
+  }
+  .pricing-card.featured {
+    order: -1; /* Popular en premier sur mobile */
+  }
+
+  /* Indicateur de scroll (dots) */
+  .pricing-grid::after {
+    content: '';
+    flex: 0 0 4px; /* ghost padding a droite */
+  }
+}
+
+/* ── Testimonials — carousel swipe mobile ────────────────── */
+@media (max-width: 768px) {
+  .testimonials-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 14px;
+    padding: 0 20px 12px;
+    margin: 0 -20px;
+    max-width: calc(100% + 40px);
+    scrollbar-width: none;
+  }
+  .testimonials-grid::-webkit-scrollbar { display: none; }
+
+  .testimonial-card {
+    flex: 0 0 min(340px, 88vw);
+    scroll-snap-align: center;
+  }
+  .testimonial-card.featured-testimonial {
+    order: -1;
+  }
+}
+
+/* ── Services cards — 2-col compact on tablets ───────────── */
+@media (min-width: 481px) and (max-width: 768px) {
+  .services-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .service-card {
+    padding: 22px 18px;
+  }
+  .service-icon { width: 40px; height: 40px; font-size: 1.1rem; }
+  .service-card h3 { font-size: 0.95rem; }
+  .service-card p { font-size: 0.85rem; }
+}
+
+/* ── Process steps — timeline vertical mobile ────────────── */
+@media (max-width: 480px) {
+  .step {
+    position: relative;
+    padding-left: 56px;
+    padding-bottom: 32px;
+  }
+  .step-num {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .step-connector {
+    left: 19px !important;
+    top: 44px !important;
+    bottom: 0;
+    height: auto !important;
+  }
+}
+
+/* ── Contact form — enhanced mobile UX ───────────────────── */
+@media (max-width: 768px) {
+  .contact-right {
+    border: 1px solid var(--border);
+    background: var(--bg2);
+  }
+
+  .form-group label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-size: 16px; /* Prevent iOS zoom */
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1.5px solid var(--border);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(218,84,38,0.15);
+    outline: none;
+  }
+
+  .btn-submit {
+    font-size: 16px;
+    padding: 16px;
+    border-radius: 14px;
+    min-height: 56px;
+    font-weight: 700;
+  }
+
+  /* Budget chips — wrap propre */
+  .budget-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .budget-chip {
+    flex: 1 1 calc(50% - 4px);
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 10px 12px;
+  }
+}
+
+/* ── FAQ — smooth expand animation ───────────────────────── */
+@media (max-width: 768px) {
+  .faq-item {
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .faq-question {
+    padding: 18px 16px;
+    gap: 12px;
+    min-height: 56px;
+  }
+  .faq-q-inner {
+    gap: 12px;
+  }
+  .faq-num {
+    min-width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+  .faq-answer-inner {
+    padding: 0 16px 20px;
+  }
+  .faq-answer-inner p {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .faq-list-items li {
+    font-size: 13px;
+    padding: 4px 0;
+  }
+}
+
+/* ── Logo img responsive ─────────────────────────────────── */
+@media (max-width: 768px) {
+  .logo-img {
+    height: clamp(48px, 12vw, 72px);
+  }
+}
+@media (max-width: 375px) {
+  .logo-img {
+    height: clamp(40px, 11vw, 56px);
+  }
+}
+
+/* ── Prospect button mobile ──────────────────────────────── */
+@media (max-width: 768px) {
+  .btn-prospect {
+    width: 100%;
+    max-width: 380px;
+    margin: 0 auto;
+  }
+  .btn-prospect-text {
+    font-size: 13px;
+  }
+}
+
+/* ── Announcement bar mobile — slide down ────────────────── */
+@media (max-width: 480px) {
+  #announcement-bar {
+    font-size: 11px;
+    padding: 8px 40px 8px 12px;
+    text-align: left;
+    justify-content: flex-start;
+  }
+  .bar-text {
+    line-height: 1.3;
+  }
+}
+
+/* ── Dark mode scrollbar mobile ──────────────────────────── */
+@media (max-width: 768px) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.1) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.08);
+    border-radius: 100px;
+  }
+}
+
+/* ── Notch & Dynamic Island safe areas ───────────────────── */
+@supports (padding: env(safe-area-inset-top)) {
+  @media (max-width: 768px) {
+    nav {
+      padding-top: calc(14px + env(safe-area-inset-top, 0px));
+    }
+    nav.scrolled {
+      padding-top: calc(11px + env(safe-area-inset-top, 0px));
+    }
+    .mobile-menu {
+      padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+    }
+    footer {
+      padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+    }
+  }
+}
+
+/* ── Orientation change — prevent layout shift ───────────── */
+@media (max-width: 768px) {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+}
+
+/* ── Print — clean output ────────────────────────────────── */
+@media print {
+  nav, #floating-cta, #toast-container, #exit-overlay,
+  #scroll-progress, #announcement-bar, #three-bg,
+  .mobile-menu, .sticky-mobile-cta, #rgpd-banner,
+  body::after { display: none !important; }
+  body { background: #fff; color: #111; }
+  .hero { min-height: auto; padding: 40px 0; }
+  section { padding: 30px 0; }
 }

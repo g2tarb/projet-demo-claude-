@@ -1,0 +1,184 @@
+{
+  "name": "4DAY — Blog Auto Publisher",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "blog-generate",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\n\nconst keyword = input.keyword || 'creation site internet';\nconst category = input.category || 'Guide';\n\n// Generer le slug a partir du keyword\nconst slug = keyword\n  .toLowerCase()\n  .normalize('NFD').replace(/[\\u0300-\\u036f]/g, '')\n  .replace(/[^a-z0-9]+/g, '-')\n  .replace(/^-|-$/g, '')\n  + '-' + new Date().getFullYear();\n\nconst prompt = `Tu es un redacteur SEO expert pour une agence web francaise appelee 4dayvelopment.\n\nEcris un article de blog SEO-optimise en francais sur le sujet : \"${keyword}\"\n\nRegles :\n- Le contenu doit faire entre 1200 et 2000 mots\n- Utilise du HTML pour la mise en forme (h2, h3, p, ul, li, strong)\n- Integre naturellement le mot-cle principal \"${keyword}\" dans les titres et le corps\n- Utilise ces styles inline pour le HTML :\n  - Titres h2 : style=\"color:#e8e8e8;font-size:1.8rem;margin-top:40px;margin-bottom:16px;\"\n  - Titres h3 : style=\"color:#e8e8e8;font-size:1.3rem;margin-top:32px;margin-bottom:12px;\"\n  - Paragraphes : pas de style (herite du parent)\n  - Texte important : <strong style=\"color:#e8e8e8;\">texte</strong>\n  - Texte accent : <strong style=\"color:#f2b13b;\">texte</strong>\n  - Listes ul : style=\"margin:16px 0;padding-left:20px;\"\n  - Items li : style=\"margin:10px 0;\"\n  - Cartes comparatives : style=\"background:#141414;border:1px solid #222;border-radius:14px;padding:24px;margin:20px 0;\"\n- Ajoute des liens internes vers :\n  - /services/site-vitrine (pour site vitrine)\n  - /services/e-commerce (pour e-commerce)\n  - /services/referencement-seo (pour SEO)\n  - /#contact (pour devis/contact)\n  Utilise le format : <a href=\"/services/...\" style=\"color:#f2b13b;\">texte du lien</a>\n- Termine par un paragraphe qui mentionne 4dayvelopment et ses avantages (livraison 4 jours, prix clair)\n- NE PAS inclure de balise <h1>, elle est generee automatiquement\n- NE PAS inclure de CTA final, il est genere automatiquement\n- Reponds UNIQUEMENT avec le HTML du contenu, sans balises html/head/body`;\n\nreturn {\n  keyword,\n  category,\n  slug,\n  prompt\n};"
+      },
+      "id": "prepare-prompt",
+      "name": "Preparer le prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://api.anthropic.com/v1/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "={{ $env.ANTHROPIC_API_KEY }}"
+            },
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 4096, messages: [{ role: 'user', content: $json.prompt }] }) }}",
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "id": "call-claude",
+      "name": "Claude — Rediger article",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [720, 300],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\nconst prev = $('Preparer le prompt').first().json;\n\n// Extraire le contenu de la reponse Claude\nlet content = '';\nif (input.content && input.content[0]) {\n  content = input.content[0].text || '';\n}\n\n// Nettoyer le contenu (enlever les ```html si present)\ncontent = content.replace(/^```html\\n?/, '').replace(/\\n?```$/, '').trim();\n\n// Generer le title SEO a partir du keyword\nconst keyword = prev.keyword;\nconst titleMap = {\n  'default': `${keyword.charAt(0).toUpperCase() + keyword.slice(1)} — Guide complet`\n};\n\nconst title = titleMap['default'];\n\n// Generer la meta description\nconst descClean = content.replace(/<[^>]+>/g, ' ').replace(/\\s+/g, ' ').trim();\nconst description = descClean.substring(0, 150).replace(/\\s\\S*$/, '') + '...';\n\n// Estimer le temps de lecture\nconst wordCount = descClean.split(' ').filter(w => w.length > 2).length;\nconst readMin = Math.max(3, Math.ceil(wordCount / 200));\n\nreturn {\n  title: title,\n  slug: prev.slug,\n  description: description,\n  category: prev.category,\n  content: content,\n  readTime: `${readMin} min de lecture`\n};"
+      },
+      "id": "format-article",
+      "name": "Formater l'article",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [960, 300]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.SITE_URL || 'https://4dayvelopment.fr' }}/api/blog/publish",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-blog-token",
+              "value": "={{ $env.N8N_BLOG_TOKEN }}"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ title: $json.title, slug: $json.slug, description: $json.description, category: $json.category, content: $json.content, readTime: $json.readTime }) }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "publish-article",
+      "name": "Publier sur le site",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1200, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const result = $input.first().json;\n\nif (result.success) {\n  return {\n    status: 'publie',\n    url: result.url,\n    message: `Article publie avec succes : ${result.url}`\n  };\n} else {\n  return {\n    status: 'erreur',\n    message: result.message || 'Erreur inconnue'\n  };\n}"
+      },
+      "id": "response",
+      "name": "Reponse",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1440, 300]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Preparer le prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparer le prompt": {
+      "main": [
+        [
+          {
+            "node": "Claude — Rediger article",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude — Rediger article": {
+      "main": [
+        [
+          {
+            "node": "Formater l'article",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formater l'article": {
+      "main": [
+        [
+          {
+            "node": "Publier sur le site",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Publier sur le site": {
+      "main": [
+        [
+          {
+            "node": "Reponse",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "name": "blog",
+      "createdAt": "2026-04-12T00:00:00.000Z",
+      "updatedAt": "2026-04-12T00:00:00.000Z"
+    },
+    {
+      "name": "seo",
+      "createdAt": "2026-04-12T00:00:00.000Z",
+      "updatedAt": "2026-04-12T00:00:00.000Z"
+    }
+  ]
+}
