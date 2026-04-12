@@ -101,6 +101,13 @@ export function initSmoothScroll() {
 }
 
 /* ── Sticky CTA mobile (apparait apres hero) ──────────── */
+const STICKY_BUDGET_REDIRECT = {
+  'Moins de 1 000€': '/essentiel',
+  '1 000 – 2 000€':  '/devis',
+  '2 000 – 5 000€':  '/devis',
+  '5 000€ et plus':  '/devis',
+};
+
 export function initStickyCTA() {
   const sticky = $('#sticky-cta');
   const hero = $('#hero');
@@ -114,11 +121,29 @@ export function initStickyCTA() {
 
   observer.observe(hero);
 
-  // Fermer quand on clique un lien du sticky
-  $$('#sticky-cta a[href^="#"]').forEach(a => {
-    on(a, 'click', () => {
-      // Petit delai pour laisser le smooth scroll commencer
-      setTimeout(() => sticky.classList.remove('visible'), 100);
+  // Budget chips dans le sticky
+  $$('.sticky-chip').forEach(chip => {
+    on(chip, 'click', () => {
+      const budget = chip.dataset.budget;
+
+      // Visual feedback
+      $$('.sticky-chip').forEach(c => c.classList.remove('selected'));
+      chip.classList.add('selected');
+
+      // Sauvegarder dans sessionStorage pour pre-remplir le vrai form
+      sessionStorage.setItem('prefill_budget', budget);
+
+      // Capturer le nom/email si deja remplis dans le form principal
+      const name  = $('#f-name')?.value.trim()  || '';
+      const email = $('#f-email')?.value.trim() || '';
+      if (name)  sessionStorage.setItem('prefill_name', name);
+      if (email) sessionStorage.setItem('prefill_email', email);
+
+      // Redirection vers le bon formulaire
+      const dest = STICKY_BUDGET_REDIRECT[budget];
+      if (dest) {
+        setTimeout(() => { window.location.href = dest; }, 200);
+      }
     });
   });
 }

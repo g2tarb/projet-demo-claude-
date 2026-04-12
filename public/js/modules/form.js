@@ -2,10 +2,10 @@
 import { $, $$, on, raf } from './utils.js';
 
 const BUDGET_REDIRECT = {
-  'Moins de 1 000€': '/essentiel.html',
-  '1 000 – 2 000€':  '/lead.html',
-  '2 000 – 5 000€':  '/lead.html',
-  '5 000€ et plus':  '/lead.html',
+  'Moins de 1 000€': '/essentiel',
+  '1 000 – 2 000€':  '/devis',
+  '2 000 – 5 000€':  '/devis',
+  '5 000€ et plus':  '/devis',
 };
 
 function savePrefill(budget) {
@@ -115,33 +115,7 @@ export function initContactForm() {
 }
 
 export function initToasts() {
-  if (matchMedia('(max-width: 768px)').matches) return;
-  const container = $('#toast-container');
-  if (!container) return;
-
-  fetch('/api/toasts')
-    .then(r => r.json())
-    .then(data => {
-      let idx = 0;
-      function show() {
-        const d = data[idx++ % data.length];
-        const t = document.createElement('div');
-        t.className = 'toast';
-        t.innerHTML = `
-          <div class="toast-av">${d.emoji}</div>
-          <div class="toast-body">
-            <div class="toast-name">${d.name}</div>
-            <div class="toast-detail">${d.detail}</div>
-          </div>
-          <div class="toast-time">${d.time}</div>
-        `;
-        container.appendChild(t);
-        raf(() => raf(() => t.classList.add('show')));
-        setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 500); }, 5500);
-      }
-      setTimeout(() => { show(); setInterval(show, 9000); }, 5000);
-    })
-    .catch(() => {});
+  // Desactive — les faux toasts social proof degradent la confiance
 }
 
 export function initExit() {

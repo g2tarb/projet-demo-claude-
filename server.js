@@ -657,6 +657,10 @@ const cleanPages = {
   '/services/site-vitrine':  'services/site-vitrine.html',
   '/services/e-commerce':    'services/e-commerce.html',
   '/services/referencement-seo': 'services/referencement-seo.html',
+  '/portfolio':       'portfolio.html',
+  '/mentions-legales': 'mentions-legales.html',
+  '/confidentialite': 'confidentialite.html',
+  '/cgv':            'cgv.html',
   '/blog':           'blog/index.html',
   '/blog/combien-coute-site-internet-2026': 'blog/combien-coute-site-internet-2026.html',
 };

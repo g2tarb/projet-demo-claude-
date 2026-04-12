@@ -11,7 +11,48 @@ import { checkMotion, initTheme, initFAQ } from './modules/ui.js';
 import { initThreeUniverse } from './modules/three-bg.js';
 import { initConsent } from './modules/consent.js';
 
+/* ── Injection auto des elements globaux (pages secondaires) ── */
+function injectGlobalElements() {
+  // Page transition overlay
+  if (!document.getElementById('page-transition')) {
+    const pt = document.createElement('div');
+    pt.id = 'page-transition';
+    document.body.insertBefore(pt, document.body.firstChild);
+  }
+
+  // Scroll progress
+  if (!document.getElementById('scroll-progress')) {
+    const sp = document.createElement('div');
+    sp.id = 'scroll-progress';
+    document.body.insertBefore(sp, document.body.firstChild);
+  }
+
+  // Mobile menu (si hamburger existe mais pas le menu)
+  if (document.getElementById('hamburger') && !document.getElementById('mobile-menu')) {
+    const nav = document.getElementById('navbar');
+    const links = nav ? nav.querySelectorAll('.nav-links a') : [];
+    const menu = document.createElement('div');
+    menu.className = 'mobile-menu';
+    menu.id = 'mobile-menu';
+    let html = '<ul>';
+    links.forEach(a => {
+      const href = a.getAttribute('href');
+      const text = a.textContent;
+      html += `<li><a href="${href}">${text}</a></li>`;
+    });
+    const ctaLink = nav ? nav.querySelector('.nav-cta') : null;
+    if (ctaLink) {
+      html += `<li><a href="${ctaLink.getAttribute('href')}" class="mobile-cta">${ctaLink.textContent}</a></li>`;
+    }
+    html += '</ul>';
+    menu.innerHTML = html;
+    document.body.appendChild(menu);
+  }
+}
+
 async function init() {
+  injectGlobalElements();
+
   // Priorité haute — bloquant le rendu si absent
   checkMotion();
   initTheme();
