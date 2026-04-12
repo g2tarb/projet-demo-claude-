@@ -1,0 +1,10 @@
+# 4dayvelopment — robots.txt
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://4dayvelopment.fr/sitemap.xml
+
+# Block admin/API paths
+Disallow: /api/
+Disallow: /data/

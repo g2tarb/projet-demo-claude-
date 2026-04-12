@@ -9,9 +9,10 @@ const express    = require('express');
 const nodemailer = require('nodemailer');
 const cors       = require('cors');
 const rateLimit  = require('express-rate-limit');
-const helmet     = require('helmet');
-const path       = require('path');
-const fs         = require('fs');
+const helmet      = require('helmet');
+const compression = require('compression');
+const path        = require('path');
+const fs          = require('fs');
 const { z }      = require('zod');
 const pino       = require('pino');
 
@@ -108,6 +109,7 @@ app.use(helmet({
 }));
 
 /* ── Middlewares ──────────────────────────────────────── */
+app.use(compression());
 app.use(express.json({ limit: '50kb' }));
 app.use(express.urlencoded({ extended: true, limit: '50kb' }));
 
@@ -116,7 +118,18 @@ app.use(cors({
   methods: ['GET', 'POST'],
 }));
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), {
+  maxAge: process.env.NODE_ENV === 'production' ? '7d' : 0,
+  etag: true,
+  setHeaders(res, filePath) {
+    if (filePath.endsWith('.html')) {
+      res.setHeader('Cache-Control', 'no-cache');
+    }
+    if (/\.(js|css|svg|png|jpg|woff2?)$/.test(filePath)) {
+      res.setHeader('Cache-Control', 'public, max-age=604800, immutable');
+    }
+  },
+}));
 
 /* ── Rate limiting ────────────────────────────────────── */
 const contactLimiter = rateLimit({
@@ -345,6 +358,38 @@ app.get('/api/toasts', apiLimiter, (req, res) => {
   ];
   res.json(toasts);
 });
+
+/* ── URLs propres (sans .html) ────────────────────────── */
+const cleanPages = {
+  '/essentiel':      'essentiel.html',
+  '/devis':          'lead.html',
+  '/services/site-vitrine':  'services/site-vitrine.html',
+  '/services/e-commerce':    'services/e-commerce.html',
+  '/services/referencement-seo': 'services/referencement-seo.html',
+  '/blog':           'blog/index.html',
+  '/blog/combien-coute-site-internet-2026': 'blog/combien-coute-site-internet-2026.html',
+};
+
+// Servir les URLs propres
+for (const [route, file] of Object.entries(cleanPages)) {
+  app.get(route, (req, res) => {
+    const filePath = path.join(__dirname, 'public', file);
+    if (fs.existsSync(filePath)) {
+      res.sendFile(filePath);
+    } else {
+      res.status(404).sendFile(path.join(__dirname, 'public', '404.html'));
+    }
+  });
+}
+
+// Redirection 301 des anciennes URLs .html vers URLs propres
+const htmlRedirects = {
+  '/lead.html':      '/devis',
+  '/essentiel.html': '/essentiel',
+};
+for (const [oldUrl, newUrl] of Object.entries(htmlRedirects)) {
+  app.get(oldUrl, (req, res) => res.redirect(301, newUrl));
+}
 
 /* ── Fallback → 404 ──────────────────────────────────── */
 app.get('/{*splat}', (req, res) => {

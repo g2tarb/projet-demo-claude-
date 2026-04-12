@@ -1,22 +1,61 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>4dayvelopment — Site Web livrés en 4 jours | Garanti ou gratuit</title>
+  <title>Création de Site Internet en 4 Jours | Agence Web Paris — 4dayvelopment</title>
+  <meta name="description" content="Agence web Paris spécialisée dans la création de sites internet livrés en 4 jours ouvrés. Site vitrine, e-commerce, SEO inclus. Garanti ou remboursé. Devis gratuit.">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="author" content="4dayvelopment">
+  <meta name="theme-color" content="#DA5426">
+  <meta name="color-scheme" content="dark light">
 
-<meta name="description" content="Site web sur-mesure livré en 4 jours pour coachs, artisans et indépendants. Design premium, SEO inclus. Garanti ou c'est gratuit.">
+  <!-- Canonical & Alternates -->
+  <link rel="canonical" href="https://4dayvelopment.fr/">
+  <link rel="alternate" hreflang="fr" href="https://4dayvelopment.fr/">
+  <link rel="alternate" hreflang="en" href="https://4dayvelopment.fr/?lang=en">
+  <link rel="alternate" hreflang="x-default" href="https://4dayvelopment.fr/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="4dayvelopment">
+  <meta property="og:title" content="Création de Site Internet en 4 Jours | Agence Web Paris">
+  <meta property="og:description" content="Sites web sur-mesure livrés en 4 jours pour indépendants, artisans et coachs. Design premium, SEO inclus, garanti ou remboursé.">
+  <meta property="og:url" content="https://4dayvelopment.fr/">
+  <meta property="og:image" content="https://4dayvelopment.fr/og-image.svg">
+  <meta property="og:image:type" content="image/svg+xml">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="4dayvelopment — Votre site internet livré en 4 jours">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:locale:alternate" content="en_US">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Création de Site Internet en 4 Jours | 4dayvelopment">
+  <meta name="twitter:description" content="Sites web sur-mesure livrés en 4 jours. Design premium, SEO inclus. Garanti ou remboursé.">
+  <meta name="twitter:image" content="https://4dayvelopment.fr/og-image.svg">
+  <meta name="twitter:image:alt" content="4dayvelopment — Votre site internet livré en 4 jours">
+
+  <!-- Favicons -->
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.json">
+
   <!-- Preconnect -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 
   <!-- Fonts -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&family=Fredoka+One&display=swap">
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&family=Fredoka+One&display=swap" rel="stylesheet">
 
   <!-- Three.js -->
   <script src="js/vendor/three-loader.js" defer></script>
 
+  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -37,14 +76,14 @@
   <!-- ── NAV ── -->
   <nav id="navbar">
     <a href="#" class="nav-logo">
-      <img src="logo/logo4day.png" alt="4dayvelopment" class="logo-img">
+      <img src="logo/logo4day.png" alt="4dayvelopment — Agence web Paris, sites livrés en 4 jours" class="logo-img" width="160" height="40">
     </a>
     <ul class="nav-links">
       <li><a href="#services" data-i18n="nav-services">Services</a></li>
       <li><a href="#process" data-i18n="nav-process">Processus</a></li>
       <li><a href="#tarifs" data-i18n="nav-tarifs">Tarifs</a></li>
       <li><a href="#avis" data-i18n="nav-avis">Avis</a></li>
-      <li><a href="#faq" data-i18n="nav-faq">FAQ</a></li>
+      <li><a href="/blog">Blog</a></li>
     </ul>
     <div class="nav-right">
       <button id="theme-toggle" class="nav-toggle" aria-label="Mode clair/sombre" title="Mode clair/sombre">🌙</button>
@@ -63,11 +102,12 @@
       <li><a href="#process" data-i18n="nav-process">Processus</a></li>
       <li><a href="#tarifs" data-i18n="nav-tarifs">Tarifs</a></li>
       <li><a href="#avis" data-i18n="nav-avis">Avis</a></li>
-      <li><a href="#faq" data-i18n="nav-faq">FAQ</a></li>
-      <li><a href="#contact" class="mobile-cta" data-i18n="nav-cta-mobile">Démarrer mon projet →</a></li>
+      <li><a href="/blog">Blog</a></li>
+      <li><a href="#contact" class="mobile-cta" data-i18n="nav-cta-mobile">Demarrer mon projet →</a></li>
     </ul>
   </div>
 
+  <main>
   <!-- ── HERO ── -->
   <section id="hero" class="hero">
     <div class="hero-inner">
@@ -77,7 +117,7 @@
       </div>
 
       <h1 class="hero-title reveal">
-        <span data-i18n="hero-h1">Votre site internet,<br><em class="gradient-text">livré en 4 jours.</em>
+        <span data-i18n="hero-h1">Votre site internet,<br><em class="gradient-text">livré en 4 jours.</em></span>
       </h1>
 
       <p class="hero-desc reveal" data-i18n="hero-desc">
@@ -185,30 +225,30 @@
       </div>
 
       <div class="services-grid">
-        <div class="service-card reveal" data-delay="0">
+        <a href="/services/site-vitrine" class="service-card reveal" data-delay="0" style="text-decoration:none;color:inherit;">
           <div class="service-icon">🌐</div>
           <h3 data-i18n="srv-vitrine-h">Site Vitrine</h3>
           <p data-i18n="srv-vitrine-p">Un site élégant et professionnel pour présenter votre activité, rassurer vos visiteurs et générer des contacts qualifiés.</p>
           <div class="service-tag">Dès 1 290€</div>
-        </div>
-        <div class="service-card reveal" data-delay="100">
+        </a>
+        <a href="/services/e-commerce" class="service-card reveal" data-delay="100" style="text-decoration:none;color:inherit;">
           <div class="service-icon">🛒</div>
           <h3 data-i18n="srv-ecom-h">E-commerce</h3>
           <p data-i18n="srv-ecom-p">Vendez vos produits ou services en ligne avec une boutique optimisée pour la conversion et la performance maximale.</p>
           <div class="service-tag">Dès 2 990€</div>
-        </div>
+        </a>
         <div class="service-card reveal" data-delay="200">
           <div class="service-icon">📱</div>
           <h3 data-i18n="srv-responsive-h">Design Responsive</h3>
           <p data-i18n="srv-responsive-p">Chaque site est parfait sur mobile, tablette et ordinateur. 72% du trafic vient du mobile  on ne laisse rien au hasard.</p>
           <div class="service-tag">Inclus</div>
         </div>
-        <div class="service-card reveal" data-delay="300">
+        <a href="/services/referencement-seo" class="service-card reveal" data-delay="300" style="text-decoration:none;color:inherit;">
           <div class="service-icon">🔍</div>
           <h3 data-i18n="srv-seo-h">SEO & Référencement</h3>
           <p data-i18n="srv-seo-p">Vos pages sont optimisées dès le départ pour apparaître dans Google et attirer des visiteurs qualifiés prêts à acheter.</p>
           <div class="service-tag">Inclus</div>
-        </div>
+        </a>
         <div class="service-card reveal" data-delay="400">
           <div class="service-icon">⚡</div>
           <h3 data-i18n="srv-perf-h">Performance</h3>
@@ -522,7 +562,7 @@
           </button>
           <div class="faq-answer" id="faq-answer-3" role="region" aria-labelledby="">
             <div class="faq-answer-inner">
-              <p data-i18n="faq-3-a"><p>On offre des allers-retours <strong>illimités</strong> pendant la phase de design jusqu'à ce que vous soyez 100% satisfait. Si malgré tout le site n'est pas livré en 4 jours ouvrés, <strong>vous ne payez pas.</strong></p>
+              <p data-i18n="faq-3-a">On offre des allers-retours <strong>illimités</strong> pendant la phase de design jusqu'à ce que vous soyez 100% satisfait. Si malgré tout le site n'est pas livré en 4 jours ouvrés, <strong>vous ne payez pas.</strong></p>
 
             </div>
           </div>
@@ -601,7 +641,7 @@
           </div>
 
           <div class="reveal" style="margin-top:28px;">
-            <a href="/lead.html" class="btn-prospect magnetic" style="text-decoration:none;">
+            <a href="/devis" class="btn-prospect magnetic" style="text-decoration:none;">
               <span class="btn-prospect-bg"></span>
               <span class="btn-prospect-content">
                 <span class="btn-prospect-icon">📋</span>
@@ -688,27 +728,29 @@
     </div>
   </section>
 
+  </main>
+
   <!-- ── FOOTER ── -->
   <footer>
     <div class="footer-inner">
       <div class="footer-brand">
         <a href="#" class="footer-logo">
-          <img src="logo/logo4day.png" alt="4dayvelopment" class="logo-img">
+          <img src="logo/logo4day.png" alt="4dayvelopment — Agence web Paris, sites livrés en 4 jours" class="logo-img" width="160" height="40">
         </a>
         <p data-i18n="footer-tagline">Un site qui vend, livré en 4 jours.<br>Garanti ou c'est gratuit.</p>
         <div class="footer-socials">
-          <a href="#" aria-label="LinkedIn">in</a>
-          <a href="#" aria-label="Instagram">ig</a>
-          <a href="#" aria-label="Twitter">𝕏</a>
+          <a href="#" aria-label="LinkedIn" rel="noopener noreferrer" target="_blank">in</a>
+          <a href="#" aria-label="Instagram" rel="noopener noreferrer" target="_blank">ig</a>
+          <a href="#" aria-label="Twitter / X" rel="noopener noreferrer" target="_blank">𝕏</a>
         </div>
       </div>
 
       <div class="footer-links-group">
         <h4 data-i18n="footer-srv-h">Services</h4>
         <ul>
-          <li><a href="#services" data-i18n="footer-srv-1">Site Vitrine</a></li>
-          <li><a href="#services" data-i18n="footer-srv-2">E-commerce</a></li>
-          <li><a href="#services" data-i18n="footer-srv-3">SEO & Référencement</a></li>
+          <li><a href="/services/site-vitrine">Site Vitrine</a></li>
+          <li><a href="/services/e-commerce">E-commerce</a></li>
+          <li><a href="/services/referencement-seo">SEO & Referencement</a></li>
           <li><a href="#services" data-i18n="footer-srv-4">Maintenance</a></li>
         </ul>
       </div>
@@ -719,7 +761,7 @@
           <li><a href="#process" data-i18n="footer-agen-1">Notre Processus</a></li>
           <li><a href="#tarifs" data-i18n="footer-agen-2">Tarifs</a></li>
           <li><a href="#avis" data-i18n="footer-agen-3">Avis clients</a></li>
-          <li><a href="#faq" data-i18n="footer-agen-4">FAQ</a></li>
+          <li><a href="/blog">Blog</a></li>
         </ul>
       </div>
 
@@ -727,6 +769,7 @@
         <h4 data-i18n="footer-cont-h">Contact</h4>
         <ul>
           <li><a href="#contact" data-i18n="footer-cont-1">Prendre RDV</a></li>
+          <li><a href="/devis">Demander un devis</a></li>
           <li><a href="mailto:contact@4dayvelopment.fr">contact@4dayvelopment.fr</a></li>
         </ul>
       </div>
@@ -775,5 +818,165 @@
 </div>
 
   <script type="module" src="js/main.js"></script>
+
+  <!-- ── STRUCTURED DATA (JSON-LD) ── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://4dayvelopment.fr/#website",
+        "url": "https://4dayvelopment.fr/",
+        "name": "4dayvelopment",
+        "description": "Agence web Paris — Création de sites internet livrés en 4 jours",
+        "inLanguage": ["fr-FR", "en-US"],
+        "publisher": { "@id": "https://4dayvelopment.fr/#organization" }
+      },
+      {
+        "@type": ["Organization", "LocalBusiness"],
+        "@id": "https://4dayvelopment.fr/#organization",
+        "name": "4dayvelopment",
+        "url": "https://4dayvelopment.fr/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://4dayvelopment.fr/logo/logo4day.png"
+        },
+        "image": "https://4dayvelopment.fr/og-image.png",
+        "email": "contact@4dayvelopment.fr",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Paris",
+          "addressCountry": "FR"
+        },
+        "areaServed": [
+          { "@type": "Country", "name": "France" },
+          { "@type": "Country", "name": "Belgium" }
+        ],
+        "priceRange": "€€",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "bestRating": "5",
+          "ratingCount": "17",
+          "reviewCount": "17"
+        },
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Services de création web",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Site Vitrine",
+                "description": "Site vitrine professionnel 3 à 5 pages, design sur-mesure, responsive mobile, SEO de base, livré en 4 jours.",
+                "provider": { "@id": "https://4dayvelopment.fr/#organization" }
+              },
+              "price": "1290",
+              "priceCurrency": "EUR",
+              "availability": "https://schema.org/InStock"
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Site Pro",
+                "description": "Site professionnel jusqu'à 8 pages, design premium, SEO avancé, 2 mois de maintenance inclus, livré en 4 jours.",
+                "provider": { "@id": "https://4dayvelopment.fr/#organization" }
+              },
+              "price": "1990",
+              "priceCurrency": "EUR",
+              "availability": "https://schema.org/InStock"
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "E-commerce",
+                "description": "Boutique en ligne complète, paiement sécurisé, emails automatiques, SEO e-commerce, 3 mois de maintenance, livré en 4 jours.",
+                "provider": { "@id": "https://4dayvelopment.fr/#organization" }
+              },
+              "price": "2990",
+              "priceCurrency": "EUR",
+              "availability": "https://schema.org/InStock"
+            }
+          ]
+        }
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://4dayvelopment.fr/#webpage",
+        "url": "https://4dayvelopment.fr/",
+        "name": "Création de Site Internet en 4 Jours | Agence Web Paris — 4dayvelopment",
+        "isPartOf": { "@id": "https://4dayvelopment.fr/#website" },
+        "about": { "@id": "https://4dayvelopment.fr/#organization" },
+        "description": "Agence web Paris spécialisée dans la création de sites internet livrés en 4 jours ouvrés.",
+        "breadcrumb": { "@id": "https://4dayvelopment.fr/#breadcrumb" },
+        "inLanguage": "fr-FR"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://4dayvelopment.fr/#breadcrumb",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://4dayvelopment.fr/" }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Comment fonctionne la livraison en 4 jours ?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Dès réception de vos contenus et du premier acompte, on démarre immédiatement. Jour 1 : brief & maquette. Jour 2 : validation & développement. Jours 3–4 : finalisation, tests et mise en ligne. Simple, rapide, garanti contractuellement."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Que comprend exactement la maintenance ?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "La maintenance couvre les mises à jour de sécurité, correction de bugs sous 24h, sauvegardes quotidiennes, surveillance des performances 24/7, support réactif par email sous 4h, et mises à jour des plugins et du CMS. 80€/mois avec engagement 12 mois."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Et si je ne suis pas satisfait du résultat ?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "On offre des allers-retours illimités pendant la phase de design jusqu'à ce que vous soyez 100% satisfait. Si malgré tout le site n'est pas livré en 4 jours ouvrés, vous ne payez pas."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Je n'ai pas de textes ni de photos, vous pouvez m'aider ?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Absolument. On propose un service de rédaction (copywriting) et de sélection d'images libres de droits. On peut partir de zéro et construire tout votre contenu de marque."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Vais-je pouvoir modifier mon site moi-même ?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "On vous remet tous les fichiers sources de votre site. Pour toute modification, notre maintenance est là : 2 demandes/mois incluses, réponse sous 48h."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Mon site sera-t-il visible sur Google ?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Tous nos sites intègrent un SEO technique de base (balises meta, vitesse, structure). Les formules Pro et E-commerce incluent un SEO avancé avec audit de mots-clés, optimisation des pages et soumission au Search Console. Votre site sera indexé et positionné dès le lancement."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 </body>
 </html>

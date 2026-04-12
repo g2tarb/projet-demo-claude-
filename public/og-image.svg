@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#080808"/>
+      <stop offset="100%" stop-color="#111111"/>
+    </linearGradient>
+    <linearGradient id="brand" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#DA5426"/>
+      <stop offset="50%" stop-color="#f2b13b"/>
+      <stop offset="100%" stop-color="#884083"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#DA5426" stop-opacity="0"/>
+      <stop offset="20%" stop-color="#DA5426"/>
+      <stop offset="80%" stop-color="#884083"/>
+      <stop offset="100%" stop-color="#884083" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Subtle grid dots -->
+  <pattern id="dots" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+    <circle cx="20" cy="20" r="0.8" fill="#333" opacity="0.4"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+
+  <!-- Gradient accent line top -->
+  <rect x="0" y="0" width="1200" height="4" fill="url(#brand)"/>
+
+  <!-- Brand badge -->
+  <rect x="80" y="80" width="220" height="36" rx="18" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="1"/>
+  <circle cx="100" cy="98" r="5" fill="#22c55e"/>
+  <text x="115" y="103" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#aaa" letter-spacing="0.5">AGENCE WEB PARIS</text>
+
+  <!-- Main title -->
+  <text x="80" y="200" font-family="system-ui, sans-serif" font-size="64" font-weight="800" fill="#f0f0f0" letter-spacing="-2">Votre site internet,</text>
+  <text x="80" y="280" font-family="system-ui, sans-serif" font-size="64" font-weight="800" fill="url(#brand)" letter-spacing="-2">livre en 4 jours.</text>
+
+  <!-- Divider -->
+  <rect x="80" y="310" width="1040" height="1" fill="url(#line)"/>
+
+  <!-- Subtitle -->
+  <text x="80" y="365" font-family="system-ui, sans-serif" font-size="24" font-weight="400" fill="#888">Design premium &amp; SEO inclus pour independants, artisans et coachs.</text>
+  <text x="80" y="400" font-family="system-ui, sans-serif" font-size="24" font-weight="600" fill="#f2b13b">Garanti ou rembourse.</text>
+
+  <!-- Stats row -->
+  <rect x="80" y="445" width="280" height="80" rx="12" fill="#141414" stroke="#222" stroke-width="1"/>
+  <text x="110" y="478" font-family="system-ui, sans-serif" font-size="28" font-weight="800" fill="url(#brand)">17+</text>
+  <text x="110" y="508" font-family="system-ui, sans-serif" font-size="14" fill="#666">sites livres</text>
+  <line x1="200" y1="462" x2="200" y2="518" stroke="#222" stroke-width="1"/>
+  <text x="225" y="478" font-family="system-ui, sans-serif" font-size="28" font-weight="800" fill="url(#brand)">4.9/5</text>
+  <text x="225" y="508" font-family="system-ui, sans-serif" font-size="14" fill="#666">satisfaction</text>
+
+  <rect x="385" y="445" width="280" height="80" rx="12" fill="#141414" stroke="#222" stroke-width="1"/>
+  <text x="415" y="478" font-family="system-ui, sans-serif" font-size="28" font-weight="800" fill="url(#brand)">4 jours</text>
+  <text x="415" y="508" font-family="system-ui, sans-serif" font-size="14" fill="#666">delai garanti</text>
+  <line x1="530" y1="462" x2="530" y2="518" stroke="#222" stroke-width="1"/>
+  <text x="555" y="478" font-family="system-ui, sans-serif" font-size="28" font-weight="800" fill="url(#brand)">100%</text>
+  <text x="555" y="508" font-family="system-ui, sans-serif" font-size="14" fill="#666">sur-mesure</text>
+
+  <!-- Logo area bottom right -->
+  <rect x="900" y="530" width="240" height="50" rx="10" fill="#141414" stroke="#222" stroke-width="1"/>
+  <text x="920" y="562" font-family="system-ui, sans-serif" font-size="22" font-weight="800" fill="url(#brand)">4</text>
+  <text x="940" y="562" font-family="system-ui, sans-serif" font-size="22" font-weight="800" fill="#f0f0f0">dayvelopment</text>
+
+  <!-- Decorative circles -->
+  <circle cx="1050" cy="180" r="120" fill="none" stroke="#DA5426" stroke-width="0.5" opacity="0.15"/>
+  <circle cx="1080" cy="200" r="80" fill="none" stroke="#f2b13b" stroke-width="0.5" opacity="0.12"/>
+  <circle cx="1020" cy="150" r="40" fill="none" stroke="#884083" stroke-width="0.5" opacity="0.2"/>
+</svg>

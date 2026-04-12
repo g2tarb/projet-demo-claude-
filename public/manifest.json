@@ -1,0 +1,24 @@
+{
+  "name": "4dayvelopment — Agence Web",
+  "short_name": "4dayvelopment",
+  "description": "Création de sites internet livrés en 4 jours. Garanti ou remboursé.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080808",
+  "theme_color": "#DA5426",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    },
+    {
+      "src": "/logo/logo4day.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "lang": "fr",
+  "categories": ["business", "web"]
+}
