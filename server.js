@@ -11,6 +11,7 @@ const cors       = require('cors');
 const rateLimit  = require('express-rate-limit');
 const helmet     = require('helmet');
 const path       = require('path');
+const fs         = require('fs');
 const { z }      = require('zod');
 const pino       = require('pino');
 
@@ -28,13 +29,59 @@ function bootstrap() {
   if (missing.length > 0) {
     logger.warn({ missing }, 'Variables d\'environnement manquantes : ' + missing.join(', '));
   }
+
+  const placeholders = { MAIL_USER: 'ton-email', MAIL_PASS: '' };
+  for (const [key, placeholder] of Object.entries(placeholders)) {
+    if (process.env[key] && (process.env[key].includes(placeholder) || process.env[key] === '')) {
+      logger.warn(`⚠ ${key} contient un placeholder — l'envoi d'emails sera désactivé.`);
+    }
+  }
+
+  if (!process.env.N8N_WEBHOOK_URL) {
+    logger.warn('⚠ N8N_WEBHOOK_URL non défini — le webhook CRM sera désactivé.');
+  }
 }
 bootstrap();
+
+/* ── Persistance locale des leads ────────────────────── */
+const LEADS_DIR  = path.join(__dirname, 'data');
+const LEADS_FILE = path.join(LEADS_DIR, 'leads.json');
+
+function ensureLeadsFile() {
+  if (!fs.existsSync(LEADS_DIR)) fs.mkdirSync(LEADS_DIR, { recursive: true });
+  if (!fs.existsSync(LEADS_FILE)) fs.writeFileSync(LEADS_FILE, '[]', 'utf-8');
+}
+ensureLeadsFile();
+
+function saveLead(data) {
+  try {
+    const leads = JSON.parse(fs.readFileSync(LEADS_FILE, 'utf-8'));
+    leads.push({
+      ...data,
+      receivedAt: new Date().toISOString(),
+      id: `lead_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+    });
+    fs.writeFileSync(LEADS_FILE, JSON.stringify(leads, null, 2), 'utf-8');
+    logger.info({ name: data.prenom }, 'Lead sauvegardé localement');
+  } catch (err) {
+    logger.error({ err: err.message }, 'Échec sauvegarde locale du lead');
+  }
+}
 
 /* ── App ──────────────────────────────────────────────── */
 const app  = express();
 app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000;
+
+/* ── Redirection HTTPS en production ──────────────────── */
+if (process.env.NODE_ENV === 'production') {
+  app.use((req, res, next) => {
+    if (req.headers['x-forwarded-proto'] !== 'https') {
+      return res.redirect(301, `https://${req.hostname}${req.originalUrl}`);
+    }
+    next();
+  });
+}
 
 /* ── Helmet avec CSP explicite ────────────────────────── */
 app.use(helmet({
@@ -44,7 +91,6 @@ app.use(helmet({
       scriptSrc:   [
         "'self'",
         'cdnjs.cloudflare.com',
-        "'unsafe-inline'",
       ],
       styleSrc:    [
         "'self'",
@@ -212,6 +258,9 @@ app.post('/api/contact', contactLimiter, validateWith(contactSchema), async (req
     logger.warn({ ip: req.ip }, 'Honeypot déclenché');
     return res.status(400).json({ success: false, message: 'Bot détecté.' });
   }
+
+  // Sauvegarde locale systématique (filet de sécurité)
+  saveLead(data);
 
   // Appel webhook n8n
   if (process.env.N8N_WEBHOOK_URL) {
